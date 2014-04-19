@@ -1,7 +1,7 @@
 <!-- Submit changes via emmail -->			
 	<?php
 				
-				$tngcontent = Upavadi_TngContent::instance()->init();
+				$tngcontent = Upavadi_tngcontent::instance()->init();
 				
 				 //get and hold current user
 				$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
@@ -27,7 +27,7 @@
 				$person_surname = $person['lastname'];
 							
 //get Person gotra
-				$personRow = $tngcontent->getGotra($person['personID']);
+				$personRow = $tngcontent->getgotra($person['personID']);
 				$person_gotra = $personRow['info'];
 
 				
@@ -101,7 +101,7 @@
 					$sortBy = null;
 				}
 			
-			$families = $tngcontent->getFamilyUser($person['personID'], $sortBy);
+			$families = $tngcontent->getfamilyuser($person['personID'], $sortBy);
 			if ($person['sex'] == 'M') {
 				$spousesex = "F";
 			} else {
@@ -199,12 +199,12 @@
 			<tr>	
 			<td class="tdback"><br/>Birth</br>Details</td>
 			<td valign="bottom" class="tdfront" colspan="2"><span style="color:#777777">Date Born(dd mmm yyyy)<br/></span><input type="text" name="spousebirthdate" value="" size="30"/></td>
-			<td valign="bottom" class="tdfront"><span style="color:#777777">Place Born(dd mmm yyyy)<br/></span><input type="text" name="spousebirthplace" value="" size="30"/></td>
+			<td valign="bottom" class="tdfront"><span style="color:#777777">Place Born<br/></span><input type="text" name="spousebirthplace" value="" size="30"/></td>
 		</tr>	
 		<tr>	
 			<td class="tdback"><br/>Death</br>Details</td>
 			<td valign="bottom" class="tdfront" colspan="2"><span style="color:#777777">Date Died(dd mmm yyyy)<br/></span><input type="text" name="spousedeathdate" value="" size="30"/></td>
-			<td valign="bottom" class="tdfront"><span style="color:#777777">Place Died(dd mmm yyyy)<br/></span><input type="text" name="spousedeathplace" value="" size="30"/></td>
+			<td valign="bottom" class="tdfront"><span style="color:#777777">Place Died<br/></span><input type="text" name="spousedeathplace" value="" size="30"/></td>
 		</tr>
 		
 		<tr>
@@ -280,7 +280,7 @@
 	<?php 			
 		//get All notes
 		
-		$allnotes = $tngcontent->getNotes($personId);
+		$allnotes = $tngcontent->getnotes($personId);
 		
 		//var_dump ($allnotes);
 		$note_generalID = "Personal Note";

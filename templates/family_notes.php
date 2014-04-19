@@ -1,7 +1,7 @@
 <!-- FAMILY -->
 			<?php
 				
-				$tngcontent = Upavadi_TngContent::instance()->init();
+				$tngcontent = Upavadi_tngcontent::instance()->init();
 				
 								
 				 //get and hold current user
@@ -21,7 +21,7 @@
 				$name = $person['firstname']. $person['lastname'];
 				
 				//get default media
-				$defaultmedia = $tngcontent->getDefaultMedia($personId);
+				$defaultmedia = $tngcontent->getdefaultmedia($personId);
 				//$mediaID = "../tng/photos/". $defaultmedia['thumbpath'];
 				
 				if ($defaultmedia['thumbpath'] == "") {
@@ -50,7 +50,7 @@
 	<body>
 	<?php 			
 		//get All notes
-		$allnotes = $tngcontent->getNotes($personId);
+		$allnotes = $tngcontent->getnotes($personId);
 		
 		//var_dump ($allnotes);
 		$note_generalID = "About Person";

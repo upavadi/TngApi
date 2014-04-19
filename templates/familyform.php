@@ -1,7 +1,7 @@
 <!-- Submit changes via emmail -->			
 			<?php
 				
-				$tngcontent = Upavadi_TngContent::instance()->init();
+				$tngcontent = Upavadi_tngcontent::instance()->init();
 				
 				 //get and hold current user
 				$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
@@ -27,7 +27,7 @@
 				$person_surname = $person['lastname'];
 							
 //get Person gotra
-				$personRow = $tngcontent->getGotra($person['personID']);
+				$personRow = $tngcontent->getgotra($person['personID']);
 				$person_gotra = $personRow['info'];
 
 				
@@ -101,7 +101,7 @@
 					$sortBy = null;
 				}
 			
-			$families = $tngcontent->getFamilyUser($person['personID'], $sortBy);
+			$families = $tngcontent->getfamilyuser($person['personID'], $sortBy);
 				
 			?>		
 
@@ -255,7 +255,7 @@
 // Father - Gotra
 				if ($father_name !== '')
 				{
-				$fatherRow = $tngcontent->getGotra($father['personID']);
+				$fatherRow = $tngcontent->getgotra($father['personID']);
 				$father_gotra = $fatherRow['info'];
 				} else {
 				$father_gotra = "Unknown";
@@ -317,7 +317,7 @@
 				//Mother - get Gotra
 				if ($mother_name !== '')
 				{
-				$motherRow = $tngcontent->getGotra($mother['personID']);
+				$motherRow = $tngcontent->getgotra($mother['personID']);
 				$mother_gotra = $motherRow['info'];		
 				} else {
 				$mother_gotra = "Unknown";
@@ -469,11 +469,11 @@
 				$spousemarrdate = $family['marrdate'];
 				}
 			
-				$spouseRow = $tngcontent->getGotra($spouse['personID']);
+				$spouseRow = $tngcontent->getgotra($spouse['personID']);
 				$spousegotra = $spouseRow['info'];
 				$spouseName = $spouse['firstname'] . $spouse['lastname'];
 								
-				$children = $tngcontent->getChildren($family['familyID']);
+				$children = $tngcontent->getchildren($family['familyID']);
 	
 		// if wife name is not in database
 		if ($family['wife'] == "" and $family['husband'] !== "") {
@@ -637,11 +637,11 @@ function initChildren(order) {
 					$deathdate = "  (Living)";
 				}
 			
-				$spouseRow = $tngcontent->getGotra($spouse['personID']);
+				$spouseRow = $tngcontent->getgotra($spouse['personID']);
 				$spousegotra = $spouseRow['info'];
 				$spouseName = $spouse['firstname'] . $spouse['lastname'];
 								
-				$children = $tngcontent->getChildren($family['familyID']);
+				$children = $tngcontent->getchildren($family['familyID']);
 			
 		// if wife name is not in database
 		if ($family['husband'] == "" and $family['wife'] !== "") {
