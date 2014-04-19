@@ -1,6 +1,6 @@
 <?php
 
-class Upavadi_Widget_FamilySearch
+class Upavadi_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
 {
 
     public function init()

@@ -1,6 +1,6 @@
 <?php
 
-function upadvadi_autoloader($class) {
+function upavadi_autoloader($class) {
     $parts = explode("_", $class);
     if ("Upavadi" !== $parts[0]) {
         return;
@@ -12,7 +12,10 @@ function upadvadi_autoloader($class) {
 
 /* Plugin Name: tng-api 
  */
-spl_autoload_register("upadvadi_autoloader");
+spl_autoload_register("upavadi_autoloader");
+if (function_exists('__autoload')) {
+    spl_autoload_register('__autoload');
+}
 
 $content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
@@ -20,4 +23,4 @@ $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
 $familySearch = new Upavadi_Widget_FamilySearch;
 
 add_action('init', array($content, 'initPlugin'), 1);
-add_action('widgets_init', array($this, 'init'));
+add_action('widgets_init', array($familySearch, 'init'));

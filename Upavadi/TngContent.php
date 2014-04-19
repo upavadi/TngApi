@@ -32,13 +32,14 @@ class Upavadi_TngContent
         return self::$instance;
     }
 
+    /**
+     * Add shortcodes
+     */
     public function addShortcode(Upavadi_Shortcode_AbstractShortcode $shortcode)
     {
         $this->shortcodes[] = $shortcode;
     }
-    /**
-     * Add shortcodes
-     */
+
     public function initPlugin()
     {
         foreach ($this->shortcodes as $shortcode) {
@@ -65,8 +66,6 @@ class Upavadi_TngContent
         add_shortcode('upavadi_pages_familyuser', array($this, 'showfamilyuser'));
         add_shortcode('upavadi_pages_familyform', array($this, 'showfamilyform'));
         add_shortcode('upavadi_pages_addfamilyform', array($this, 'showaddfamilyform'));
-        add_shortcode('upavadi_pages_personnotes', array($this, 'showpersonnotes'));
-        add_shortcode('upavadi_pages_familysearch', array($this, 'showSearch'));
     }
 
     public function initTables()
@@ -743,15 +742,6 @@ SQL;
         return ob_get_clean();
     }
 
-    //do shortcode Person Notes
-    public function showpersonnotes()
-    {
-        ob_start();
-        $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
-
-        Upavadi_Pages::instance()->personnotes($personId);
-        return ob_get_clean();
-    }
 
     //do shortcode Family user form
     public function showfamilyform()
@@ -801,15 +791,4 @@ SQL;
         }
         return $rows;
     }
-
-    public function showSearch()
-    {
-        ob_start();
-        $searchFirstName = filter_input(INPUT_GET, 'firstName', FILTER_SANITIZE_SPECIAL_CHARS);
-        $searchLastName = filter_input(INPUT_GET, 'lastName', FILTER_SANITIZE_SPECIAL_CHARS);
-
-        Upavadi_Pages::instance()->search($searchFirstName, $searchLastName);
-        return ob_get_clean();
-    }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-class Upavadi_Shortcode_AbstractShortcode
+abstract class Upavadi_Shortcode_AbstractShortcode
 {
     /**
      *
