@@ -42,10 +42,6 @@ class Upavadi_TngContent
 
     public function initPlugin()
     {
-        foreach ($this->shortcodes as $shortcode) {
-            $shortcode->init($this, Upavadi_Pages::instance());
-        }
-
         add_shortcode('upavadi_getuser', array($this, 'showUser'));
         add_shortcode('upavadi_getuserfamily', array($this, 'showUserfamily'));
         add_shortcode('upavadi_getuserchildren', array($this, 'showUserchildren'));
@@ -66,6 +62,10 @@ class Upavadi_TngContent
         add_shortcode('upavadi_pages_familyuser', array($this, 'showfamilyuser'));
         add_shortcode('upavadi_pages_familyform', array($this, 'showfamilyform'));
         add_shortcode('upavadi_pages_addfamilyform', array($this, 'showaddfamilyform'));
+        
+        foreach ($this->shortcodes as $shortcode) {
+            $shortcode->init($this);
+        }
     }
 
     public function initTables()

@@ -10,7 +10,7 @@ class Upavadi_Shortcode_FamilySearch extends Upavadi_Shortcode_AbstractShortcode
         $searchFirstName = filter_input(INPUT_GET, 'firstName', FILTER_SANITIZE_SPECIAL_CHARS);
         $searchLastName = filter_input(INPUT_GET, 'lastName', FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $this->pages->search($searchFirstName, $searchLastName);
+        Upavadi_Pages::instance()->search($searchFirstName, $searchLastName);
         return ob_get_clean();
     }
 }

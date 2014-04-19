@@ -9,7 +9,7 @@ class Upavadi_Shortcode_PersonNotes extends Upavadi_Shortcode_AbstractShortcode
         ob_start();
         $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
 
-        $this->pages->personnotes($personId);
+        Upavadi_Pages::instance()->personnotes($personId);
         return ob_get_clean();
     }
 }

@@ -8,16 +8,9 @@ abstract class Upavadi_Shortcode_AbstractShortcode
      */
     protected $content;
 
-    /**
-     *
-     * @var Upavadi_Pages
-     */
-    protected $pages;
-
-    public function init(Upavadi_TngContent $content, Upavadi_Pages $pages)
+    public function init(Upavadi_TngContent $content)
     {
         $this->content = $content;
-        $this->pages = $pages;
         add_shortcode(static::SHORTCODE, array($this, 'show'));
     }
     
