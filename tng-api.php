@@ -21,6 +21,7 @@ $content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
 $content->addShortcode(new Upavadi_Shortcode_PersonNotes);
 $content->addShortcode(new Upavadi_Shortcode_AddFamilyForm);
+$content->addShortcode(new Upavadi_Shortcode_Birthdays());
 
 $familySearch = new Upavadi_Widget_FamilySearch;
 

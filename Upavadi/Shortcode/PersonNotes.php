@@ -6,10 +6,11 @@ class Upavadi_Shortcode_PersonNotes extends Upavadi_Shortcode_AbstractShortcode
 
     public function show()
     {
-        ob_start();
+        $this->content->init();
         $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
-
-        Upavadi_Pages::instance()->personnotes($personId);
-        return ob_get_clean();
+        $context = array(
+            'personId' => $personId
+        );
+        return $this->templates->render('family_notes', $context);
     }
 }

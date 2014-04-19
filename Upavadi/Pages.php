@@ -86,16 +86,6 @@ class Upavadi_Pages
         include $this->templates . 'familyform.php';
     }
 
-    public function addfamilyForm($personId)
-    {
-        include $this->templates . 'addfamilyform.php';
-    }
-
-    public function personnotes($personId)
-    {
-        include $this->templates . 'family_notes.php';
-    }
-
     public function danniversaries($month = null)
     {
         if (!$month) {
