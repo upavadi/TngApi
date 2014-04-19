@@ -9,7 +9,7 @@ Clicking on a name takes you to the Individual's Family Page
 			<th class="theader">Birth Place</th>
 			<th class="theader">Age</th>
 			<th class="theader">Relationship</th>
-	
+
 			<?php
 			//get and hold current user
 			$tngcontent = Upavadi_TngContent::instance()->init();
