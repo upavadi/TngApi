@@ -19,8 +19,10 @@ spl_autoload_register("upavadi_autoloader");
 
 $content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
+$content->addShortcode(new Upavadi_Shortcode_PersonNotes);
+$content->addShortcode(new Upavadi_Shortcode_AddFamilyForm);
 
-// $familySearch = new Upavadi_Widget_FamilySearch;
+$familySearch = new Upavadi_Widget_FamilySearch;
 
 add_action('init', array($content, 'initPlugin'), 1);
-// add_action('widgets_init', array($familySearch, 'init'));
+add_action('widgets_init', array($familySearch, 'init'));

@@ -61,10 +61,10 @@ class Upavadi_TngContent
         add_shortcode('upavadi_pages_danniversariesplusthree', array($this, 'showdanniversariesplusthree'));
         add_shortcode('upavadi_pages_familyuser', array($this, 'showfamilyuser'));
         add_shortcode('upavadi_pages_familyform', array($this, 'showfamilyform'));
-        add_shortcode('upavadi_pages_addfamilyform', array($this, 'showaddfamilyform'));
         
+        $templates = new Upavadi_Templates();
         foreach ($this->shortcodes as $shortcode) {
-            $shortcode->init($this);
+            $shortcode->init($this, $templates);
         }
     }
 
@@ -80,6 +80,10 @@ class Upavadi_TngContent
     public function init()
     {
         global $current_user;
+
+        if ($this->db) {
+            return;
+        }
 
         if ($this->currentPerson) {
             return $this;
@@ -749,15 +753,6 @@ SQL;
         ob_start();
         $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
         Upavadi_Pages::instance()->familyForm($personId);
-        return ob_get_clean();
-    }
-
-    //do shortcode Add Family form
-    public function showaddfamilyform()
-    {
-        ob_start();
-        $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
-        Upavadi_Pages::instance()->addfamilyForm($personId);
         return ob_get_clean();
     }
 

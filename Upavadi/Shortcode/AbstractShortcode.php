@@ -8,9 +8,16 @@ abstract class Upavadi_Shortcode_AbstractShortcode
      */
     protected $content;
 
-    public function init(Upavadi_TngContent $content)
+    /**
+     * @var Upavadi_Templates
+     */
+    protected $templates;
+
+    public function init(Upavadi_TngContent $content, $templates)
     {
         $this->content = $content;
+        $this->templates = $templates;
+        
         add_shortcode(static::SHORTCODE, array($this, 'show'));
     }
     
