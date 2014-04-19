@@ -9,7 +9,7 @@ class Upavadi_Shortcode_Birthdays extends Upavadi_Shortcode_AbstractShortcode
         $this->content->init();
 
         $month = date('m');
-        $birthdays = $this->api->getBirthdays($month);
+        $birthdays = $this->content->getBirthdays($month);
         $date = new DateTime();
         $date->setDate(date('Y'), $month, 1);
         

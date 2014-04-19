@@ -82,7 +82,7 @@ class Upavadi_TngContent
         global $current_user;
 
         if ($this->db) {
-            return;
+            return $this;
         }
 
         if ($this->currentPerson) {

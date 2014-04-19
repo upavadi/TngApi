@@ -12,7 +12,7 @@ Clicking on a name takes you to the Individual's Family Page
 	
 			<?php
 			//get and hold current user
-			$tngcontent = Upavadi_tngcontent::instance()->init();
+			$tngcontent = Upavadi_TngContent::instance()->init();
 			$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
 			
 			?>
