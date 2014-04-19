@@ -14,7 +14,10 @@ function upadvadi_autoloader($class) {
  */
 spl_autoload_register("upadvadi_autoloader");
 
+$content = Upavadi_TngContent::instance();
+$content->addShortcode(new Upavadi_Shortcode_FamilySearch);
 
-$instance = Upavadi_TngContent::instance();
+$familySearch = new Upavadi_Widget_FamilySearch;
 
-add_action('init', array($instance, 'initPlugin'), 1);
+add_action('init', array($content, 'initPlugin'), 1);
+add_action('widgets_init', array($this, 'init'));

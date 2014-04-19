@@ -15,7 +15,7 @@ class Upavadi_Pages
         $this->templates = dirname(dirname(__FILE__)) . '/templates/';
     }
 
-    public function instance()
+    public static function instance()
     {
         if (!self::$instance instanceof self) {
             self::$instance = new self;
