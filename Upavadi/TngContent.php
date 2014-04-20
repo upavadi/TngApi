@@ -61,7 +61,7 @@ class Upavadi_TngContent
         add_shortcode('upavadi_pages_danniversariesplusthree', array($this, 'showdanniversariesplusthree'));
         add_shortcode('upavadi_pages_familyuser', array($this, 'showfamilyuser'));
         add_shortcode('upavadi_pages_familyform', array($this, 'showfamilyform'));
-        
+
         $templates = new Upavadi_Templates();
         foreach ($this->shortcodes as $shortcode) {
             $shortcode->init($this, $templates);
@@ -94,7 +94,14 @@ class Upavadi_TngContent
 
         get_currentuserinfo();
         $tng_user_name = mbtng_check_user($current_user->ID);
-        $db = mbtng_db_connect() or exit;
+        
+        $dbHost = esc_attr( get_option( 'tng-api-db-host' ) );
+        $dbUser = esc_attr( get_option( 'tng-api-db-user' ) );
+        $dbPassword = esc_attr( get_option( 'tng-api-db-password' ) );
+        $dbName = esc_attr( get_option( 'tng-api-db-database' ) );
+        
+        $db = mysql_connect($dbHost, $dbUser, $dbPassword);
+        mysql_select_db($dbName, $db);
         chdir($origin);
         $this->initTables();
         $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
@@ -110,6 +117,58 @@ class Upavadi_TngContent
     {
         $result = mysql_query($sql, $this->db) or die("Cannot execute query: $sql");
         return $result;
+    }
+
+    public function initAdmin()
+    {
+        register_setting('tng-api-options', 'tng-api-db-host');
+        register_setting('tng-api-options', 'tng-api-db-user');
+        register_setting('tng-api-options', 'tng-api-db-password');
+        register_setting('tng-api-options', 'tng-api-db-database');
+        
+        add_settings_section('db', 'Database', function() {
+            echo "Help goes here";
+        }, 'tng-api');
+        add_settings_field('db-host', 'Hostname', function () {
+            $dbHost = esc_attr( get_option( 'tng-api-db-host' ) );
+            echo "<input type='text' name='tng-api-db-host' value='$dbHost' />";
+        }, 'tng-api', 'db');
+        add_settings_field('db-user', 'Username', function () {
+            $dbUser = esc_attr( get_option( 'tng-api-db-user' ) );
+            echo "<input type='text' name='tng-api-db-user' value='$dbUser' />";
+        }, 'tng-api', 'db');
+        add_settings_field('db-password', 'Password', function () {
+            $dbPassword = esc_attr( get_option( 'tng-api-db-password' ) );
+            echo "<input type='password' name='tng-api-db-password' value='$dbPassword' />";
+        }, 'tng-api', 'db');
+        add_settings_field('db-database', 'Database Name', function () {
+            $dbName = esc_attr( get_option( 'tng-api-db-database' ) );
+            echo "<input type='text' name='tng-api-db-database' value='$dbName' />";
+        }, 'tng-api', 'db');
+    }
+
+    public function adminMenu()
+    {
+        add_options_page(
+            "Options", "TngApi", "manage_options", "tng-api", array($this, "pluginOptions")
+        );
+    }
+
+    function pluginOptions()
+    {
+        if (!current_user_can('manage_options')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+        ?>
+        <form method="POST" action="options.php">
+            <?php
+            settings_fields('tng-api-options'); //pass slug name of page, also referred
+            //to in Settings API as option group name
+            do_settings_sections('tng-api');  //pass slug name of page
+            submit_button();
+            ?>
+        </form>
+        <?php
     }
 
     public function showUser()
@@ -746,7 +805,6 @@ SQL;
         return ob_get_clean();
     }
 
-
     //do shortcode Family user form
     public function showfamilyform()
     {
@@ -786,4 +844,5 @@ SQL;
         }
         return $rows;
     }
+
 }
