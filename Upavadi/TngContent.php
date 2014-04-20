@@ -67,7 +67,7 @@ class Upavadi_TngContent
     public function initTables()
     {
         $tngPath = esc_attr(get_option('tng-api-tng-path'));
-        $configPath = $tngPath . DIRECTORY_SEPARATOR ."config.php";
+        $configPath = $tngPath . DIRECTORY_SEPARATOR . "config.php";
         include $configPath;
         $vars = get_defined_vars();
         foreach ($vars as $name => $value) {
@@ -101,7 +101,7 @@ class Upavadi_TngContent
         mysql_select_db($dbName, $db);
         $this->db = $db;
         $this->initTables();
-        
+
         $tng_user_name = $this->getTngUserName($current_user->ID);
         $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
         $result = mysql_query($query, $db) or die("Cannot execute query: $query");
@@ -167,113 +167,113 @@ class Upavadi_TngContent
         }
         ?>
         <form method="POST" action="options.php">
-        <?php
-        settings_fields('tng-api-options'); //pass slug name of page, also referred
-        //to in Settings API as option group name
-        do_settings_sections('tng-api');  //pass slug name of page
-        submit_button();
-        ?>
-        </form>
             <?php
+            settings_fields('tng-api-options'); //pass slug name of page, also referred
+            //to in Settings API as option group name
+            do_settings_sections('tng-api');  //pass slug name of page
+            submit_button();
+            ?>
+        </form>
+        <?php
+    }
+
+    public function showUser()
+    {
+        $user = $this->getPerson();
+        return print_r($user, true);
+    }
+
+    public function showUserfamily()
+    {
+        $user = $this->getFamily();
+        return print_r($user, true);
+    }
+
+    public function showUserchildren()
+    {
+        $user = $this->getChildren();
+        return print_r($user, true);
+    }
+
+    public function getCurrentPersonId()
+    {
+        return $this->currentPerson;
+    }
+
+    public function getPerson($personId = null)
+    {
+        if (!$personId) {
+            $personId = $this->currentPerson;
         }
 
-        public function showUser()
-        {
-            $user = $this->getPerson();
-            return print_r($user, true);
-        }
-
-        public function showUserfamily()
-        {
-            $user = $this->getFamily();
-            return print_r($user, true);
-        }
-
-        public function showUserchildren()
-        {
-            $user = $this->getChildren();
-            return print_r($user, true);
-        }
-
-        public function getCurrentPersonId()
-        {
-            return $this->currentPerson;
-        }
-
-        public function getPerson($personId = null)
-        {
-            if (!$personId) {
-                $personId = $this->currentPerson;
-            }
-
-            $sql = <<<SQL
+        $sql = <<<SQL
 SELECT *
 FROM {$this->tables['people_table']}
 WHERE personID = '{$personId}'
 SQL;
-            $result = $this->query($sql);
-            $row = mysql_fetch_assoc($result);
+        $result = $this->query($sql);
+        $row = mysql_fetch_assoc($result);
 
-            return $row;
+        return $row;
+    }
+
+    public function getFamily($personId = null)
+    {
+
+        if (!$personId) {
+            $personId = $this->currentPerson;
         }
 
-        public function getFamily($personId = null)
-        {
-
-            if (!$personId) {
-                $personId = $this->currentPerson;
-            }
-
-            $sql = <<<SQL
+        $sql = <<<SQL
 SELECT *
 FROM {$this->tables['families_table']}
 WHERE husband = '{$personId}' or wife = '{$personId}'
 SQL;
-            $result = $this->query($sql);
-            $row = mysql_fetch_assoc($result);
+        $result = $this->query($sql);
+        $row = mysql_fetch_assoc($result);
 
-            return $row;
+        return $row;
+    }
+
+    public function getGotra($personId = null)
+    {
+
+        if (!$personId) {
+            $personId = $this->currentPerson;
         }
 
-        public function getGotra($personId = null)
-        {
-
-            if (!$personId) {
-                $personId = $this->currentPerson;
-            }
-
-            $sql = <<<SQL
+        $sql = <<<SQL
 		SELECT *
 FROM {$this->tables['events_table']}
 where persfamID = '{$personId}' AND eventtypeID = "10"
 SQL;
-            $result = $this->query($sql);
-            $row = mysql_fetch_assoc($result);
+        $result = $this->query($sql);
+        $row = mysql_fetch_assoc($result);
 
-            return $row;
-        }
+        return $row;
+    }
 
-        public function getFamilyById($familyId)
-        {
-            $sql = <<<SQL
+    public function getFamilyById($familyId)
+    {
+        $sql = <<<SQL
 SELECT *
 FROM {$this->tables['families_table']}
 WHERE familyID = '{$familyId}'
 SQL;
 
-            $result = $this->query($sql);
-            $row = mysql_fetch_assoc($result);
+        $result = $this->query($sql);
+        $row = mysql_fetch_assoc($result);
 
-            return $row;
+        return $row;
+    }
+
+    public function getNotes($personId = null)
+    {
+        if (!$personId) {
+            $personId = $this->currentPerson;
         }
 
-        public function getNotes($personId = null)
-        {
-            if (!$personId) {
-                $personId = $this->currentPerson;
-            }
-
-            $sql = <<<SQL
+        $sql = <<<SQL
 SELECT *
 FROM   {$this->tables['notelinks_table']} as nl
     LEFT JOIN {$this->tables['xnotes_table']} AS xl
@@ -281,42 +281,42 @@ FROM   {$this->tables['notelinks_table']} as nl
 where persfamID = '{$personId}' AND secret="0"
        
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function getDefaultMedia($personId = null)
+    {
+
+        if (!$personId) {
+            $personId = $this->currentPerson;
         }
 
-        public function getDefaultMedia($personId = null)
-        {
-
-            if (!$personId) {
-                $personId = $this->currentPerson;
-            }
-
-            $sql = <<<SQL
+        $sql = <<<SQL
 		SELECT *
 FROM {$this->tables['medialinks_table']}
 JOIN {$this->tables['media_table']} USING (mediaID)
 where personID = '{$personId}' AND defphoto = "1"
 SQL;
-            $result = $this->query($sql);
-            $row = mysql_fetch_assoc($result);
+        $result = $this->query($sql);
+        $row = mysql_fetch_assoc($result);
 
-            return $row;
+        return $row;
+    }
+
+    public function getAllPersonMedia($personId = null)
+    {
+
+        if (!$personId) {
+            $personId = $this->currentPerson;
         }
 
-        public function getAllPersonMedia($personId = null)
-        {
-
-            if (!$personId) {
-                $personId = $this->currentPerson;
-            }
-
-            $sql = <<<SQL
+        $sql = <<<SQL
 SELECT *
 FROM   {$this->tables['medialinks_table']} as ml
     LEFT JOIN {$this->tables['media_table']} AS m
@@ -326,48 +326,48 @@ where personID = '{$personId}' AND defphoto <> 1
 ORDER  BY ml.ordernum
           
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+
+    public function getChildren($familyId = null)
+    {
+
+        if (!$familyId) {
+            return array();
         }
 
-        public function getChildren($familyId = null)
-        {
-
-            if (!$familyId) {
-                return array();
-            }
-
-            $sql = <<<SQL
+        $sql = <<<SQL
 	SELECT *
 FROM {$this->tables['children_table']}
 WHERE familyID = '{$familyId}'
 ORDER BY ordernum
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
+        $rows = array();
 
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-
-            return $rows;
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
 
-        public function getFamilyUser($personId = null, $sortBy = null)
-        {
+        return $rows;
+    }
 
-            if (!$personId) {
-                $personId = $this->currentPerson;
-            }
+    public function getFamilyUser($personId = null, $sortBy = null)
+    {
+
+        if (!$personId) {
+            $personId = $this->currentPerson;
+        }
 
 
-            $sql = <<<SQL
+        $sql = <<<SQL
 SELECT*
 		
 	
@@ -375,33 +375,33 @@ FROM {$this->tables['families_table']}
 
 WHERE (husband = '{$personId}' or wife = '{$personId}')
 SQL;
-            $result = $this->query($sql);
-            $rows = array();
+        $result = $this->query($sql);
+        $rows = array();
 
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            if ($sortBy) {
-                $this->sortBy = $sortBy;
-                usort($rows, array($this, 'sortRows'));
-            }
-            return $rows;
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
-
-        public function sortRows($a, $b)
-        {
-            if ($a[$this->sortBy] > $b[$this->sortBy]) {
-                return 1;
-            }
-            if ($a[$this->sortBy] < $b[$this->sortBy]) {
-                return -1;
-            }
-            return 0;
+        if ($sortBy) {
+            $this->sortBy = $sortBy;
+            usort($rows, array($this, 'sortRows'));
         }
+        return $rows;
+    }
 
-        public function getBirthdaysPlusOne($month)
-        {
-            $sql = <<<SQL
+    public function sortRows($a, $b)
+    {
+        if ($a[$this->sortBy] > $b[$this->sortBy]) {
+            return 1;
+        }
+        if ($a[$this->sortBy] < $b[$this->sortBy]) {
+            return -1;
+        }
+        return 0;
+    }
+
+    public function getBirthdaysPlusOne($month)
+    {
+        $sql = <<<SQL
 SELECT personid,
        firstname,
        lastname,
@@ -415,18 +415,18 @@ WHERE  Month(birthdatetr) = MONTH(ADDDATE(now(), INTERVAL 1 month))
 ORDER  BY Day(birthdatetr),
           lastname
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getBirthdaysPlusTwo($month)
-        {
-            $sql = <<<SQL
+    public function getBirthdaysPlusTwo($month)
+    {
+        $sql = <<<SQL
 SELECT personid,
        firstname,
        lastname,
@@ -440,18 +440,18 @@ WHERE  Month(birthdatetr) = MONTH(ADDDATE(now(), INTERVAL 2 month))
 ORDER  BY Day(birthdatetr),
           lastname
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getBirthdaysPlusThree($month)
-        {
-            $sql = <<<SQL
+    public function getBirthdaysPlusThree($month)
+    {
+        $sql = <<<SQL
 SELECT personid,
        firstname,
        lastname,
@@ -465,18 +465,18 @@ WHERE  Month(birthdatetr) = MONTH(ADDDATE(now(), INTERVAL 3 month))
 ORDER  BY Day(birthdatetr),
           lastname
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getBirthdays($month)
-        {
-            $sql = <<<SQL
+    public function getBirthdays($month)
+    {
+        $sql = <<<SQL
 SELECT personid,
        firstname,
        lastname,
@@ -490,18 +490,18 @@ WHERE  Month(birthdatetr) = {$month}
 ORDER  BY Day(birthdatetr),
           lastname
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getDeathAnniversaries($month)
-        {
-            $sql = <<<SQL
+    public function getDeathAnniversaries($month)
+    {
+        $sql = <<<SQL
 SELECT personid,
        firstname,
        lastname,
@@ -515,23 +515,23 @@ WHERE  Month(deathdatetr) = {$month}
 ORDER  BY Day(deathdatetr),
           lastname
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getDeathAnniversariesPlusOne()
-        {
-            return $this->getDeathAnniversaries('MONTH(ADDDATE(now(), INTERVAL 1 month))');
-        }
+    public function getDeathAnniversariesPlusOne()
+    {
+        return $this->getDeathAnniversaries('MONTH(ADDDATE(now(), INTERVAL 1 month))');
+    }
 
-        public function getDeathAnniversariesPlusTwo($month)
-        {
-            $sql = <<<SQL
+    public function getDeathAnniversariesPlusTwo($month)
+    {
+        $sql = <<<SQL
 SELECT personid,
        firstname,
        lastname,
@@ -545,18 +545,18 @@ WHERE  Month(deathdatetr) = MONTH(ADDDATE(now(), INTERVAL 2 month))
 ORDER  BY Day(deathdatetr),
           lastname
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getDeathAnniversariesPlusThree($month)
-        {
-            $sql = <<<SQL
+    public function getDeathAnniversariesPlusThree($month)
+    {
+        $sql = <<<SQL
 SELECT personid,
        firstname,
        lastname,
@@ -570,18 +570,18 @@ WHERE  Month(deathdatetr) = MONTH(ADDDATE(now(), INTERVAL 3 month))
 ORDER  BY Day(deathdatetr),
           lastname
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getMarriageAnniversaries($month)
-        {
-            $sql = <<<SQL
+    public function getMarriageAnniversaries($month)
+    {
+        $sql = <<<SQL
 SELECT h.gedcom,
 	   h.personid AS personid1,
        h.firstname AS firstname1,
@@ -603,18 +603,18 @@ WHERE  Month(f.marrdatetr) = {$month}
 ORDER  BY Day(f.marrdatetr)
           
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getMarriageAnniversariesPlusOne($month)
-        {
-            $sql = <<<SQL
+    public function getMarriageAnniversariesPlusOne($month)
+    {
+        $sql = <<<SQL
 SELECT h.gedcom,
 	   h.personid AS personid1,
        h.firstname AS firstname1,
@@ -636,18 +636,18 @@ WHERE  Month(f.marrdatetr) = MONTH(ADDDATE(now(), INTERVAL 1 month))
 ORDER  BY Day(f.marrdatetr)
           
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getmanniversariesplustwo($month)
-        {
-            $sql = <<<SQL
+    public function getmanniversariesplustwo($month)
+    {
+        $sql = <<<SQL
 SELECT h.gedcom,
 	   h.personid AS personid1,
        h.firstname AS firstname1,
@@ -669,18 +669,18 @@ WHERE  Month(f.marrdatetr) = MONTH(ADDDATE(now(), INTERVAL 2 month))
 ORDER  BY Day(f.marrdatetr)
           
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        public function getmanniversariesplusthree($month)
-        {
-            $sql = <<<SQL
+    public function getmanniversariesplusthree($month)
+    {
+        $sql = <<<SQL
 SELECT h.gedcom,
 	   h.personid AS personid1,
        h.firstname AS firstname1,
@@ -702,140 +702,140 @@ WHERE  Month(f.marrdatetr) = MONTH(ADDDATE(now(), INTERVAL 3 month))
 ORDER  BY Day(f.marrdatetr)
           
 SQL;
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            $rows = array();
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        $rows = array();
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
+        return $rows;
+    }
 
-        //do shortcode birthdays
-        public function showBirthdays()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->birthdays();
-            return ob_get_clean();
-        }
+    //do shortcode birthdays
+    public function showBirthdays()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->birthdays();
+        return ob_get_clean();
+    }
 
-        //do shortcode birthdays Next month
+    //do shortcode birthdays Next month
 
-        public function showBirthdaysplusone()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->birthdaysplusone();
-            return ob_get_clean();
-        }
+    public function showBirthdaysplusone()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->birthdaysplusone();
+        return ob_get_clean();
+    }
 
-        public function showBirthdaysplustwo()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->birthdaysplustwo();
-            return ob_get_clean();
-        }
+    public function showBirthdaysplustwo()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->birthdaysplustwo();
+        return ob_get_clean();
+    }
 
-        public function showBirthdaysplusthree()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->birthdaysplusthree();
-            return ob_get_clean();
-        }
+    public function showBirthdaysplusthree()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->birthdaysplusthree();
+        return ob_get_clean();
+    }
 
 //do shortcode Marriage anniversaries
-        public function showmanniversaries()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->manniversaries();
-            return ob_get_clean();
+    public function showmanniversaries()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->manniversaries();
+        return ob_get_clean();
+    }
+
+    //do shortcode Death anniversaries
+    public function showdanniversaries()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->danniversaries();
+        return ob_get_clean();
+    }
+
+    //do shortcode Marriage anniversaries plus one
+    public function showmanniversariesplusone()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->manniversariesplusone();
+        return ob_get_clean();
+    }
+
+    public function showmanniversariesplustwo()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->manniversariesplustwo();
+        return ob_get_clean();
+    }
+
+    public function showmanniversariesplusthree()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->manniversariesplusthree();
+        return ob_get_clean();
+    }
+
+    //do shortcode Death anniversaries plus one
+    public function showdanniversariesplusone()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->danniversariesplusone();
+        return ob_get_clean();
+    }
+
+    public function showdanniversariesplustwo()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->danniversariesplustwo();
+        return ob_get_clean();
+    }
+
+    public function showdanniversariesplusthree()
+    {
+        ob_start();
+        Upavadi_Pages::instance()->danniversariesplusthree();
+        return ob_get_clean();
+    }
+
+    //do shortcode Family user
+    public function showfamilyuser()
+    {
+        ob_start();
+        $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
+        Upavadi_Pages::instance()->familyuser($personId);
+        return ob_get_clean();
+    }
+
+    //do shortcode Family user form
+    public function showfamilyform()
+    {
+        ob_start();
+        $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
+        Upavadi_Pages::instance()->familyForm($personId);
+        return ob_get_clean();
+    }
+
+    public function searchPerson($searchFirstName, $searchLastName)
+    {
+        $wheres = array();
+        if ($searchFirstName) {
+            $wheres[] = "firstname LIKE '%{$searchFirstName}%'";
+        }
+        if ($searchLastName) {
+            $wheres[] = "lastname LIKE '{$searchLastName}%'";
         }
 
-        //do shortcode Death anniversaries
-        public function showdanniversaries()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->danniversaries();
-            return ob_get_clean();
+        $rows = array();
+        $where = null;
+        if (count($wheres)) {
+            $where = 'WHERE ' . implode(' AND ', $wheres);
         }
-
-        //do shortcode Marriage anniversaries plus one
-        public function showmanniversariesplusone()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->manniversariesplusone();
-            return ob_get_clean();
-        }
-
-        public function showmanniversariesplustwo()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->manniversariesplustwo();
-            return ob_get_clean();
-        }
-
-        public function showmanniversariesplusthree()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->manniversariesplusthree();
-            return ob_get_clean();
-        }
-
-        //do shortcode Death anniversaries plus one
-        public function showdanniversariesplusone()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->danniversariesplusone();
-            return ob_get_clean();
-        }
-
-        public function showdanniversariesplustwo()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->danniversariesplustwo();
-            return ob_get_clean();
-        }
-
-        public function showdanniversariesplusthree()
-        {
-            ob_start();
-            Upavadi_Pages::instance()->danniversariesplusthree();
-            return ob_get_clean();
-        }
-
-        //do shortcode Family user
-        public function showfamilyuser()
-        {
-            ob_start();
-            $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
-            Upavadi_Pages::instance()->familyuser($personId);
-            return ob_get_clean();
-        }
-
-        //do shortcode Family user form
-        public function showfamilyform()
-        {
-            ob_start();
-            $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
-            Upavadi_Pages::instance()->familyForm($personId);
-            return ob_get_clean();
-        }
-
-        public function searchPerson($searchFirstName, $searchLastName)
-        {
-            $wheres = array();
-            if ($searchFirstName) {
-                $wheres[] = "firstname LIKE '%{$searchFirstName}%'";
-            }
-            if ($searchLastName) {
-                $wheres[] = "lastname LIKE '{$searchLastName}%'";
-            }
-
-            $rows = array();
-            $where = null;
-            if (count($wheres)) {
-                $where = 'WHERE ' . implode(' AND ', $wheres);
-            }
-            $sql = <<<SQL
+        $sql = <<<SQL
 SELECT *
 FROM {$this->tables['people_table']}
 {$where}
@@ -843,24 +843,23 @@ ORDER BY firstname, lastname
 LIMIT 100
 SQL;
 
-            $result = $this->query($sql);
+        $result = $this->query($sql);
 
-            while ($row = mysql_fetch_assoc($result)) {
-                $rows[] = $row;
-            }
-            return $rows;
+        while ($row = mysql_fetch_assoc($result)) {
+            $rows[] = $row;
         }
-
-        public function getTngUserName($userId)
-        {
-            $tngUserId = get_metadata('user', $userId, 'tng_user_id', true);
-            $query = "SELECT username FROM {$this->tables['users_table']} WHERE userID='{$tngUserId}'";
-            $result = $this->query($query);
-            $row = mysql_fetch_assoc($result);
-            if ($row) {
-                return $row['username'];
-            }
-        }
-
+        return $rows;
     }
-    
+
+    public function getTngUserName($userId)
+    {
+        $tngUserId = get_metadata('user', $userId, 'tng_user_id', true);
+        $query = "SELECT username FROM {$this->tables['users_table']} WHERE userID='{$tngUserId}'";
+        $result = $this->query($query);
+        $row = mysql_fetch_assoc($result);
+        if ($row) {
+            return $row['username'];
+        }
+    }
+
+}
