@@ -20,8 +20,13 @@ spl_autoload_register("upavadi_autoloader");
 $content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
 $content->addShortcode(new Upavadi_Shortcode_PersonNotes);
+$content->addShortcode(new Upavadi_Shortcode_FamilyUser);
+$content->addShortcode(new Upavadi_Shortcode_FamilyForm);
 $content->addShortcode(new Upavadi_Shortcode_AddFamilyForm);
 $content->addShortcode(new Upavadi_Shortcode_Birthdays());
+$content->addShortcode(new Upavadi_Shortcode_BirthdaysPlusOne());
+$content->addShortcode(new Upavadi_Shortcode_Danniversaries());
+$content->addShortcode(new Upavadi_Shortcode_Manniversaries());
 
 $familySearch = new Upavadi_Widget_FamilySearch;
 

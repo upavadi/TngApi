@@ -45,7 +45,7 @@ class Upavadi_TngContent
         add_shortcode('upavadi_getuser', array($this, 'showUser'));
         add_shortcode('upavadi_getuserfamily', array($this, 'showUserfamily'));
         add_shortcode('upavadi_getuserchildren', array($this, 'showUserchildren'));
-        add_shortcode('upavadi_pages_birthdays', array($this, 'showBirthdays'));
+        //add_shortcode('upavadi_pages_birthdays', array($this, 'showBirthdays'));
         add_shortcode('upavadi_pages_birthdaysplusone', array($this, 'showBirthdaysplusone'));
         add_shortcode('upavadi_pages_birthdaysplustwo', array($this, 'showBirthdaysplustwo'));
         add_shortcode('upavadi_pages_birthdaysplusthree', array($this, 'showBirthdaysplusthree'));
