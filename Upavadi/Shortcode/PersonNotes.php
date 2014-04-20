@@ -11,6 +11,6 @@ class Upavadi_Shortcode_PersonNotes extends Upavadi_Shortcode_AbstractShortcode
         $context = array(
             'personId' => $personId
         );
-        return $this->templates->render('family_notes', $context);
+        return $this->templates->render('family_notes.html', $context);
     }
 }
