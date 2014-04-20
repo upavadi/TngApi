@@ -79,8 +79,6 @@ class Upavadi_TngContent
 
     public function init()
     {
-        global $current_user;
-
         if ($this->db) {
             return $this;
         }
@@ -89,7 +87,8 @@ class Upavadi_TngContent
             return $this;
         }
 
-        get_currentuserinfo();
+        $current_user = wp_get_current_user();
+        // get_currentuserinfo();
 
 
         $dbHost = esc_attr(get_option('tng-api-db-host'));
