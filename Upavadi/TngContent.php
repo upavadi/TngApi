@@ -87,7 +87,6 @@ class Upavadi_TngContent
             return $this;
         }
 
-        $current_user = wp_get_current_user();
         // get_currentuserinfo();
 
 
@@ -101,7 +100,7 @@ class Upavadi_TngContent
         $this->db = $db;
         $this->initTables();
 
-        $tng_user_name = $this->getTngUserName($current_user->ID);
+        $tng_user_name = $this->getTngUserName();
         $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
         $result = mysql_query($query, $db) or die("Cannot execute query: $query");
         $row = mysql_fetch_assoc($result);
@@ -850,8 +849,11 @@ SQL;
         return $rows;
     }
 
-    public function getTngUserName($userId)
+    public function getTngUserName()
     {
+        $currentUser = wp_get_current_user();
+        print_r($currentUser);
+        return null;
         $tngUserId = get_metadata('user', $userId, 'tng_user_id', true);
         $query = "SELECT username FROM {$this->tables['users_table']} WHERE userID='{$tngUserId}'";
         $result = $this->query($query);
