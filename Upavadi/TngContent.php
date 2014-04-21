@@ -852,10 +852,8 @@ SQL;
     public function getTngUserName()
     {
         $currentUser = wp_get_current_user();
-        print_r($currentUser);
-        return null;
-        $tngUserId = get_metadata('user', $userId, 'tng_user_id', true);
-        $query = "SELECT username FROM {$this->tables['users_table']} WHERE userID='{$tngUserId}'";
+        $userName = $currentUser->login;
+        $query = "SELECT username FROM {$this->tables['users_table']} WHERE username='{$userName}'";
         $result = $this->query($query);
         $row = mysql_fetch_assoc($result);
         if ($row) {
