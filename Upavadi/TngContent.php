@@ -852,13 +852,14 @@ SQL;
     public function getTngUserName()
     {
         $currentUser = wp_get_current_user();
-        $userName = $currentUser->login;
+        $userName = $currentUser->user_login;
         $query = "SELECT username FROM {$this->tables['users_table']} WHERE username='{$userName}'";
         $result = $this->query($query);
         $row = mysql_fetch_assoc($result);
         if ($row) {
             return $row['username'];
         }
+        wp_die('User ' . $userName . ' not found in TNG'); 
     }
 
 }
