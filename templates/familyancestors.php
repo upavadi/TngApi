@@ -1,6 +1,7 @@
-<!-- FAMILY ANCESTORS-->
-			<?php
-				
+
+			<?php 
+			/* Work in progress for displaying family events for the user (Descendents of user and user's spouses only
+			*/	
 				$tngcontent = Upavadi_tngcontent::instance()->init();
 				
 								
