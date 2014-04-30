@@ -1,5 +1,17 @@
 <?php
-
+/*
+ * Plugin Name: tng api
+ * Description: This plugin allows access to the TNG database. It also adds functionality ....
+ *
+ * Plugin URI: https://github.com/bahulneel/upavadi-tng-api/
+ * Version: 2.0
+ *         
+ * Author: Neel Upadhyaya (& Mahesh Upadhyaya??)
+ * Author URI: http://www.upavadi.net/
+ * License: 
+ * 
+ *
+ */
 function upavadi_autoloader($class) {
     $parts = explode("_", $class);
     if ("Upavadi" !== $parts[0]) {
