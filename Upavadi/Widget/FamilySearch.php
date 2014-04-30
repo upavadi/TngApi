@@ -1,5 +1,7 @@
 <?php
-
+/***************************************************************
+Adds a sidebar widget to let users search TNG Database for names
+****************************************************************/
 class Upavadi_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
 {
 
