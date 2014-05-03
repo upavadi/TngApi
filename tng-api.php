@@ -1,9 +1,9 @@
 <?php
 /*
  * Plugin Name: tng api
- * Description: This plugin allows access to the TNG database. It also adds functionality ....
+ * Description: This plugin allows access to the TNG database. It also adds functionality of creating pages to display TNG data....
  *
- * Plugin URI: https://github.com/bahulneel/upavadi-tng-api/
+ * Plugin URI: https://github.com/upavadi/TngApi
  * Version: 2.0
  *         
  * Author: Neel Upadhyaya (& Mahesh Upadhyaya??)
