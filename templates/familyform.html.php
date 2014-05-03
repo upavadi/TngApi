@@ -568,7 +568,9 @@ function initChildren(order) {
 	function cloneRow()  { // create clone of empty child line for use during session
 		var rows=$('#children_' + order).find('tr.child');
 		var idx=rows.length;
-		clone=rows[idx-1].cloneNode(true);    
+		if (idx) {
+			clone=rows[idx-1].cloneNode(true);
+		}			
 	}
 	cloneRow();
 	$('.js-addChild-edit[data-id="' + order + '"]').click(addRow);
@@ -730,8 +732,25 @@ function initChildren(order) {
 		<?php	
 	
 		endforeach;
+		$index += 1;
 		?>
-	
+			<tr class="child">
+		<input type="hidden" name="child[<?php echo $order; ?>][<?php echo $index; ?>][id]" value="" size="12"/>
+		<td><input type="text" name="child[<?php echo $order; ?>][<?php echo $index; ?>][firstname]" value="" size="12"/></td>
+		<td><input type="text" name="child[<?php echo $order; ?>][<?php echo $index; ?>][surname]" value="" size="12"/></td>	
+		<td> <select name="child[<?php echo $order; ?>][<?php echo $index; ?>][sex]" size"3">
+		
+		<option value="M">M</option>
+		<option value="F">F</option>
+		
+		</select>
+		</td>
+		<td><input type="text" name="child[<?php echo $order; ?>][<?php echo $index; ?>][dateborn]" value="" size="10"/></td>
+		<td><input type="text" name="child[<?php echo $order; ?>][<?php echo $index; ?>][placeborn]" value="" size="10"/></td>
+		<td><input type="text" name="child[<?php echo $order; ?>][<?php echo $index; ?>][datedied]" value="" size="10"/></td>
+		<td><input type="text" name="child[<?php echo $order; ?>][<?php echo $index; ?>][placedied]" value="" size="10"/></td>
+		<td><input type="checkbox" name="child[<?php echo $order; ?>][<?php echo $index; ?>][living]" value="1" checked /></td>
+		</tr>
 	</table>	
 
 	</td></tr>
