@@ -878,8 +878,10 @@ SQL;
             $basePath = 'http://localhost/tng/';
             $url = $basePath . $uri;
 
+            
             $proxy = new Upavadi_TngProxy('gondal', '0cddfde984f24fac68f2d4ac468d3d6b', 'md5', 'C:wampwwwtng');
             $response = $proxy->load($url);
+            
             if (!is_string($response)) {
                 foreach ($response->getHeaderLines() as $header) {
                     header($header);
