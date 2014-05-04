@@ -32,3 +32,4 @@ add_action('init', array($content, 'initPlugin'), 1);
 add_action('widgets_init', array($familySearch, 'init'));
 add_action( 'admin_menu', array($content, 'adminMenu') );
 add_action( 'admin_init', array($content, 'initAdmin') );
+add_filter('the_posts', array($content, 'proxyFilter'));

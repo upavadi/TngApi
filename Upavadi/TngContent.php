@@ -859,7 +859,51 @@ SQL;
         if ($row) {
             return $row['username'];
         }
-        wp_die('User ' . $userName . ' not found in TNG'); 
+        wp_die('User ' . $userName . ' not found in TNG');
+    }
+
+    public function proxyFilter($posts)
+    {
+        $id = 4;
+        $page = get_page($id);
+        $link = parse_url(get_permalink($id));
+        $uri = $_SERVER['REQUEST_URI'];
+
+        if (strpos($uri, $link['path']) === 0) {
+            $request = parse_url($uri);
+            $uri = preg_replace("|^{$link['path']}|", '', $request['path']);
+            if ($_SERVER['QUERY_STRING']) {
+                $uri .= '?' . $_SERVER['QUERY_STRING'];
+            }
+            $basePath = 'http://localhost/tng/';
+            $url = $basePath . $uri;
+
+            $proxy = new Upavadi_TngProxy('gondal', '0cddfde984f24fac68f2d4ac468d3d6b', 'md5', 'C:wampwwwtng');
+            $response = $proxy->load($url);
+            if (!is_string($response)) {
+                foreach ($response->getHeaderLines() as $header) {
+                    header($header);
+                }
+                echo $response->getBody();
+                exit;
+            }
+            $this->setHtml($response);
+            $posts = array($page);
+            add_filter('user_trailingslashit', function ($url) {
+                return preg_replace('|/$|', '', $url);
+            });
+        }
+        return $posts;
+    }
+
+    public function setHtml($html)
+    {
+        $this->html = $html;
+    }
+
+    public function getHtml()
+    {
+        return $this->html;
     }
 
 }
