@@ -7,17 +7,27 @@ class Upavadi_Shortcode_Birthdays extends Upavadi_Shortcode_AbstractShortcode
     public function show()
     {
         $this->content->init();
-
+		$monthyear = filter_input(INPUT_GET, 'monthyear', FILTER_SANITIZE_SPECIAL_CHARS);
+						
+		if ($monthyear == "") {
         $month = date('m');
+		$year = date('Y');
+		} else {
+		$month = substr($monthyear, 3, 2);
+		$year = substr($monthyear, 6, 4);
+		}
+						
         $birthdays = $this->content->getBirthdays($month);
         $date = new DateTime();
-        $date->setDate(date('Y'), $month, 1);
-        
-        $context = array(
-            'month' => $month,
-            'birthdays' => $birthdays,
-            'date' => $date
+        $date->setDate($year, $month, 01);
+		       		
+		$context = array(
+            'year' => $year,
+			'month' => $month,
+            'date' => $date,
+			'birthdays' => $birthdays
         );
+		
         return $this->templates->render('birthdays.html', $context);
     }
 }

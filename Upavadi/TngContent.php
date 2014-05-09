@@ -41,7 +41,7 @@ class Upavadi_TngContent
         add_shortcode('upavadi_getuser', array($this, 'showUser'));
         add_shortcode('upavadi_getuserfamily', array($this, 'showUserfamily'));
         add_shortcode('upavadi_getuserchildren', array($this, 'showUserchildren'));
-        //add_shortcode('upavadi_pages_birthdays', array($this, 'showBirthdays'));
+        add_shortcode('upavadi_pages_birthdays', array($this, 'showBirthdays'));
         add_shortcode('upavadi_pages_birthdaysplusone', array($this, 'showBirthdaysplusone'));
         add_shortcode('upavadi_pages_birthdaysplustwo', array($this, 'showBirthdaysplustwo'));
         add_shortcode('upavadi_pages_birthdaysplusthree', array($this, 'showBirthdaysplusthree'));
@@ -474,14 +474,14 @@ SQL;
 
     public function getBirthdays($month)
     {
+	
         $sql = <<<SQL
 SELECT personid,
        firstname,
        lastname,
        birthdate,
        birthplace,
-       gedcom,
-       Year(Now()) - Year(birthdatetr) AS Age
+       gedcom
 FROM   {$this->tables['people_table']}
 WHERE  Month(birthdatetr) = {$month}
        AND living = 1
