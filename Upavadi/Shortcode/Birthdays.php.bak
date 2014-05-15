@@ -1,0 +1,33 @@
+<?php
+
+class Upavadi_Shortcode_Birthdays extends Upavadi_Shortcode_AbstractShortcode
+{
+    const SHORTCODE = 'upavadi_pages_birthdays';
+
+    public function show()
+    {
+        $this->content->init();
+		$monthyear = filter_input(INPUT_GET, 'monthyear', FILTER_SANITIZE_SPECIAL_CHARS);
+						
+		if ($monthyear == "") {
+        $month = date('m');
+		$year = date('Y');
+		} else {
+		$month = substr($monthyear, 3, 2);
+		$year = substr($monthyear, 6, 4);
+		}
+						
+        $birthdays = $this->content->getBirthdays($month);
+        $date = new DateTime();
+        $date->setDate($year, $month, 01);
+		       		
+		$context = array(
+            'year' => $year,
+			'month' => $month,
+            'birthdays' => $birthdays,
+            'date' => $date
+        );
+		//$context['results'] = $this->content->getBirthdays($month, $year);
+        return $this->templates->render('birthdays.html', $context);
+    }
+}
