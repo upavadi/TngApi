@@ -1,4 +1,28 @@
 <!-- FAMILY -->
+			
+	
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+
+
+<link rel="stylesheet" href="/wordpress/wp-content/plugins/tng-api/css/jquery-ui.css">
+<script src="/wordpress/wp-content/plugins/tng-api/js/jquery-1.10.2.js"></script>
+
+<script src="/wordpress/wp-content/plugins/tng-api/js/jquery-ui.js"></script>
+<link rel="stylesheet" href="/wordpress/wp-content/plugins/tng-api/css/upload-image.css" rel="stylesheet" type="text/css">
+<script src="/wordpress/wp-content/plugins/tng-api/js/jquery-1.10.2.js"></script>
+
+</head>
+<a name="Family"></a>
+<body>
+
+</body>
+
+			
+			
+			
 			<?php
 				
 				$tngcontent = Upavadi_TngContent::instance()->init();
@@ -54,7 +78,7 @@
 							</td>
 						</tr>
 						<tr>	
-							<td><input type="button" style="width:150px" value="Upload Profile Photo" onclick="window.location.href='/images'" />
+							<td><input type="button" style="width:150px" value="submit-profile-photo" onclick="location.href='#submit-profile-photo'"/>
 							</td>
 							<td>
 							<input type="button" style="width:150px" value="Genealogy Page" onclick="window.location.href='../genealogy/getperson.php?personID=<?php echo $person['personID']; ?>&tree=upavadi_1'" />
@@ -627,4 +651,110 @@
 	
 	
 	<?php endforeach; ?>
+	
+
+<div id="submit-profile-photo"></div>
+	<head>	
+		<script type="text/javascript" src="/wordpress/wp-content/plugins/tng-api/js/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="/wordpress/wp-content/plugins/tng-api/js/jquery.form.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() { 
+	var options = { 
+			target:   '#output',   // target element(s) to be updated with server response 
+			beforeSubmit:  beforeSubmit,  // pre-submit callback 
+			success:       afterSuccess,  // post-submit callback 
+			resetForm: true        // reset the form after successful submit 
+		}; 
+		
+	 $('#MyUploadForm').submit(function() { 
+			$(this).ajaxSubmit(options);  			
+			// always return false to prevent standard browser submit and page navigation 
+			return false; 
+		}); 
+}); 
+
+function afterSuccess()
+{
+	$('#submit-btn').show(); //hide submit button
+	$('#loading-img').hide(); //hide submit button
+
+}
+
+//function to check file size before uploading.
+function beforeSubmit(){
+    //check whether browser fully supports all File API
+   if (window.File && window.FileReader && window.FileList && window.Blob)
+	{
+		
+		if( !$('#imageInput').val()) //check empty input filed
+		{
+			$("#output").html("Are you kidding me?");
+			return false
+		}
+		
+		var fsize = $('#imageInput')[0].files[0].size; //get file size
+		var ftype = $('#imageInput')[0].files[0].type; // get file type
+		
+
+		//allow only valid image file types 
+		switch(ftype)
+        {
+            case 'image/png': case 'image/gif': case 'image/jpeg': case 'image/pjpeg':
+                break;
+            default:
+                $("#output").html("<b>"+ftype+"</b> Unsupported file type!");
+				return false
+        }
+		
+		//Allowed file size is less than 1 MB (1048576)
+		if(fsize>1048576) 
+		{
+			$("#output").html("<b>"+bytesToSize(fsize) +"</b> Too big Image file! <br />Please reduce the size of your photo using an image editor.");
+			return false
+		}
 				
+		$('#submit-btn').hide(); //hide submit button
+		$('#loading-img').show(); //hide submit button
+		$("#output").html("");  
+	}
+	else
+	{
+		//Output error to older unsupported browsers that doesn't support HTML5 File API
+		$("#output").html("Please upgrade your browser, because your current browser lacks some new features we need!");
+		return false;
+	}
+}
+
+//function to format bites bit.ly/19yoIPO
+function bytesToSize(bytes) {
+   var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+   if (bytes == 0) return '0 Bytes';
+   var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+   return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
+
+
+</script>
+
+</head>
+<body>
+<div id="upload-wrapper">
+<div align="center">
+<input type="button" id="done" value="Return" onclick="location.href='#Family'"/>
+<h3>Submit Profile Image for </br><?php echo $name; ?></h3>
+
+<b>Profile image submitted by <?php echo $currentuser; ?><b>
+<form action="../wordpress/wp-content/plugins/tng-api/templates/processupload_profile.php" method="post" enctype="multipart/form-data" id="MyUploadForm">
+<input name="ImageFile" id="imageInput" type="file" />
+
+<input type="hidden" name="User" value="<?php echo $currentuser; ?>" />
+<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
+
+<input type="submit"  id="submit-btn" value="Upload" />
+<img src="../wordpress/wp-content/plugins/tng-api/images/ajax-loader.gif" id="loading-img" style="display:none;" alt="Please Wait"/>
+</form>
+
+<div id="output"></div>
+</div>
+</div>
+</div>
