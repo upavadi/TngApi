@@ -108,8 +108,9 @@
 
 
 
-<!--------Jquery smart wizard --------->
+<!--------Jquery smart wizard ---------
 <script type="text/javascript" src="/wordpress/wp-content/plugins/tng-api/js/jquery-2.0.0.min.js"></script>
+--------->
 <link href="/wordpress/wp-content/plugins/tng-api/css/smart_wizard.css" rel="stylesheet" media="all" type="text/css">
 <script type="text/javascript" src="/wordpress/wp-content/plugins/tng-api/js/jquery.smartWizard.js"></script>
 
