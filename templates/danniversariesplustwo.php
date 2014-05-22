@@ -1,3 +1,6 @@
+
+
+
 <h2>Death Anniversaries for <?php echo date('F Y', strtotime('first day of +2 months')); ?></h2>
 Clicking on a name takes you to the Individual's Family Page</br> Clicking on VIEW will show your relationship to the individual (Blood relationships only)
 <table cellspacing="1" cellpadding="1" border="1">
