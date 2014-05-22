@@ -6,13 +6,15 @@
  * Plugin URI: https://github.com/upavadi/TngApi
  * Version: 2.0
  *         
- * Author: Neel Upadhyaya (& Mahesh Upadhyaya??)
+ * Author: Neel Upadhyaya & Mahesh Upadhyaya
  * Author URI: http://www.upavadi.net/
  * License: 
  * 
  *
  */
 require_once __DIR__ . '/vendor/autoload.php';
+$content = Upavadi_TngContent::instance();
+new TabsShortcodes();
 
 $content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
@@ -27,7 +29,7 @@ $content->addShortcode(new Upavadi_Shortcode_Danniversariesplusone());
 $content->addShortcode(new Upavadi_Shortcode_Manniversaries());
 $content->addShortcode(new Upavadi_Shortcode_Manniversariesplusone());
 $content->addShortcode(new Upavadi_Shortcode_TngProxy());
-
+$content->addShortcode(new Upavadi_Shortcode_TabsShortcode());
 $familySearch = new Upavadi_Widget_FamilySearch;
 
 add_action('init', array($content, 'initPlugin'), 1);
