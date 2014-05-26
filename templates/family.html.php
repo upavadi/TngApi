@@ -1,4 +1,4 @@
-<!-- FAMILY -->
+<!-- FAMILY PAGE -->
 			
 	
 <!doctype html>
@@ -12,7 +12,7 @@
 
 <script src="/wordpress/wp-content/plugins/tng-api/js/jquery-ui.js"></script>
 <link rel="stylesheet" href="/wordpress/wp-content/plugins/tng-api/css/upload-image.css" rel="stylesheet" type="text/css">
-<script src="/wordpress/wp-content/plugins/tng-api/js/jquery-1.10.2.js"></script>
+
 
 </head>
 <a name="Family"></a>
@@ -32,7 +32,10 @@
 				$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
 				$currentperson = $tngcontent->getPerson($currentperson);
 				$currentuser = ($currentperson['firstname']. $currentperson['lastname']);
-				
+				// user for upload photo
+				$current_user = wp_get_current_user();
+				$User = $current_user->user_firstname;
+				$UserID = $User->ID;
 					
 				//get person details
 				$person = $tngcontent->getPerson($personId);
@@ -738,21 +741,26 @@ function bytesToSize(bytes) {
 
 </head>
 <body>
-<div id="upload-wrapper">
+<div id="upload-wrapper" style="width: 60%">
 <div align="center">
-<input type="button" id="done" value="Return" onclick="location.href='#Family'"/>
+<input type="button" id="return-btn" value="Return" onclick="location.href='#Family'"/>
 <h3>Submit Profile Image for </br><?php echo $name; ?></h3>
 
-<b>Profile image submitted by <?php echo $currentuser; ?><b>
-<form action="../wordpress/wp-content/plugins/tng-api/templates/processupload_profile.php" method="post" enctype="multipart/form-data" id="MyUploadForm">
-<input name="ImageFile" id="imageInput" type="file" />
+<b>Profile image submitted by <?php echo $User; ?><b>
+<form class="upload-wrapper upload-wrapper-aligned"action="../wordpress/wp-content/plugins/tng-api/templates/processupload.php" method="post" enctype="multipart/form-data" id="MyUploadForm">
+<fieldset>
+<div class="upload-control-group">
+            <label for="Image">Select Image</label>
+            <input name="ImageFile" id="imageInput" type="file" placeholder="no file selected">
+			<br/>Maximum size 5Gb
+</div>
 
-<input type="hidden" name="User" value="<?php echo $currentuser; ?>" />
-<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
 
-<input type="submit"  id="submit-btn" value="Upload" />
+<input type="submit"  id="submit-btn" value="Upload Photo" />
 <img src="../wordpress/wp-content/plugins/tng-api/images/ajax-loader.gif" id="loading-img" style="display:none;" alt="Please Wait"/>
-</form>
+<br />
+</div>
+<fieldset></form>
 
 <div id="output"></div>
 </div>

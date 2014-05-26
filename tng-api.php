@@ -30,6 +30,7 @@ $content->addShortcode(new Upavadi_Shortcode_Manniversaries());
 $content->addShortcode(new Upavadi_Shortcode_Manniversariesplusone());
 $content->addShortcode(new Upavadi_Shortcode_TngProxy());
 $content->addShortcode(new Upavadi_Shortcode_TabsShortcode());
+$content->addShortcode(new Upavadi_Shortcode_SubmitImage());
 $familySearch = new Upavadi_Widget_FamilySearch;
 
 add_action('init', array($content, 'initPlugin'), 1);

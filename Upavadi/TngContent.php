@@ -958,6 +958,7 @@ add_option('tabs_shortcodes_notice', 1, '', 'no');
 static function register_script() {
 
 $min = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
+
 wp_register_script('tabs-shortcodes-script', plugins_url('tabs' . $min . '.js', __FILE__), array(), '1.1', true);
 
 }
