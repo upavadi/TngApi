@@ -9,7 +9,9 @@
  * Author: Neel Upadhyaya & Mahesh Upadhyaya
  * Author URI: http://www.upavadi.net/
  * License: 
- * 
+ *
+ * URL to the plugin Directory 	
+ * <?php echo plugins_url('subdirectory/file', dirname(__FILE__)); ?>
  *
  */
 require_once __DIR__ . '/vendor/autoload.php';

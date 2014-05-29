@@ -911,7 +911,7 @@ SQL;
 }
 
 
-
+//Tabs Shortcodes 
 if (!class_exists('TabsShortcodes')) :
 
 class TabsShortcodes {
@@ -958,9 +958,10 @@ add_option('tabs_shortcodes_notice', 1, '', 'no');
 static function register_script() {
 
 $min = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
-
-wp_register_script('tabs-shortcodes-script', plugins_url('tabs' . $min . '.js', __FILE__), array(), '1.1', true);
-
+//line below calls tabs.mi'.js in current directory.
+//wp_register_script('tabs-shortcodes-script', plugins_url('tabs' . $min . '.js', __FILE__), array(), '1.1', true);
+//For now load tab.js in js directory
+wp_register_script('tabs-shortcodes-script', plugins_url('js/tabs.min.js', dirname(__FILE__)));
 }
 
 # Prints the minified tabs JavaScript file in the footer

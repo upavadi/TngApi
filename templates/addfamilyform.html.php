@@ -113,10 +113,11 @@
 
 
 <!--------Jquery smart wizard ---------
-<script type="text/javascript" src="/wordpress/wp-content/plugins/tng-api/js/jquery-2.0.0.min.js"></script>
+<script type="text/javascript" src="<?php echo plugins_url('js/jquery-2.0.0.min.js', dirname(__FILE__)); ?>"></script>
 --------->
-<link href="/wordpress/wp-content/plugins/tng-api/css/smart_wizard.css" rel="stylesheet" media="all" type="text/css">
-<script type="text/javascript" src="/wordpress/wp-content/plugins/tng-api/js/jquery.smartWizard.js"></script>
+
+<link type="text/css" href="<?php echo plugins_url('css/smart_wizard.css', dirname(__FILE__)); ?>" rel="stylesheet" media="all" type="text/css">
+<script type="text/javascript" src="<?php echo plugins_url('js/jquery.smartWizard.js', dirname(__FILE__)); ?>"></script>
 
 <script type="text/javascript">
   $(document).ready(function() {
@@ -131,10 +132,10 @@
    });  
 </script>
 <style type="text/css" media="all">
-@import "/wordpress/wp-content/plugins/tng-api/css/smart_wizard.css";
+@import "<?php echo plugins_url('css/smart_wizard.css', dirname(__FILE__)); ?>";
 </style> 
 
-<form id="add-family-form" action = "../wordpress/wp-content/plugins/tng-api/templates/processfamily-add.php" method = "POST">
+<form id="add-family-form" action = "<?php echo plugins_url('templates/processfamily-add.php', dirname(__FILE__)); ?>" method = "POST">
 <input type="hidden" name="User" value="<?php echo $currentuser; ?>" />
 <input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
 <div id="wizard-add" class="swMain">

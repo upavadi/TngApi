@@ -1,11 +1,13 @@
 <html>
 <head>
 <!---- Jquery date picker strat -->
-<link type="text/css" href="/wordpress/wp-content/plugins/tng-api/css/jquery-datepicker.css" rel="stylesheet" />
 
-<script src="/wordpress/wp-content/plugins/tng-api/js/jquery-1.10.2.js" type="text/javascript"></script>
-<script src="/wordpress/wp-content/plugins/tng-api/js/jquery-datepicker.min.js" type="text/javascript"></script>
-<script src="/wordpress/wp-content/plugins/tng-api/js/jquery-datepicker.custom.js" type="text/javascript"></script>
+
+<link type="text/css" href="<?php echo plugins_url('css/jquery-datepicker.css', dirname(__FILE__)); ?>" rel="stylesheet" />
+<script src="<?php echo plugins_url('js/jquery-1.10.2.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
+<script src="<?php echo plugins_url('js/jquery-datepicker.min.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
+<!-- <script src="<?php echo plugins_url('js/jquery-datepicker.custom.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
+--> 
 <script type="text/javascript">
 $(function() {
     $('.date-picker').datepicker( {

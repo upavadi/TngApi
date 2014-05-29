@@ -43,7 +43,7 @@
 				
 				
  				
-	<form id="edit-family-form" action = "../wordpress/wp-content/plugins/tng-api/templates/processfamily-notes.php" method = "POST">
+	<form id="edit-family-form" action = "<?php echo plugins_url('templates/processfamily-notes.php', dirname(__FILE__)); ?>" method = "POST">
 	<input type="hidden" name="User" value="<?php echo $currentuser; ?>" />
 	<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
 	<input type="hidden" name="person Name" value="<?php echo $name; ?>" />
