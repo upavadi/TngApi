@@ -11,8 +11,7 @@ if(isset($_POST))
 	$ThumbPrefix			= "thumb_"; //Normal thumb Prefix
 	$DestinationDirectory	= '../templates/uploads/'; //specify upload directory ends with / (slash)
 	$Quality 				= 90; //jpeg quality
-	##########################################
-	
+		
 	//check if this is an ajax request
 	if (!isset($_SERVER['HTTP_X_REQUESTED_WITH'])){
 			
@@ -88,19 +87,19 @@ if(isset($_POST))
 		echo '<table width="80%" border="0" cellpadding="4" cellspacing="0">';
 		echo '<tr> Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this. </td></tr>';
 		
+		echo '<td align="center"><img src="../wordpress/wp-content/plugins/tng-api/templates/uploads/'.$ThumbPrefix.$NewImageName.'" alt="Thumbnail"></td>';
+		echo '</tr>
 		
-		echo '<tr><td align="center"><img src="../wordpress/wp-content/plugins/tng-api/templates/uploads/'.$NewImageName.'" alt="Thumbnail"></td>';
-		echo '</tr><tr>';
-		
-			
+		<tr>';
+		echo '<td align="center"><img src="../wordpress/wp-content/plugins/tng-api/templates/uploads/'.$NewImageName.'" alt="Resized Image"></td>';
 		echo '</tr>';
 		echo '</table>';
 
-		
-		// Insert info into database table plus add userID, PersonID, IsDefault!
+		/*
+		// Insert info into database table!
 		mysql_query("INSERT INTO myImageTable (ImageName, ThumbName, ImgPath)
 		VALUES ($DestRandImageName, $thumb_DestRandImageName, 'uploads/')");
-		
+		*/
 
 	}else{
 		die('Resize Error'); //output error

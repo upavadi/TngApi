@@ -1,4 +1,8 @@
 <?php
+
+//$uploadsdirectory = content_url('/uploads/', dirname(__FILE__)); 
+//$temp = content_url(); 
+//$uploadsdirectory = '../templates/uploads/';
 if(isset($_POST))
 {
 	############ Edit settings ##############
@@ -82,13 +86,13 @@ if(isset($_POST))
 		*/
 		
 		echo '<table width="80%" border="0" cellpadding="4" cellspacing="0">';
-		echo '<tr>';
+		echo '<tr> Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this. </td></tr>';
 		
-		echo '<td align="center"><img src="../wordpress/wp-content/plugins/tng-api/templates/uploads/'.$ThumbPrefix.$NewImageName.'" alt="Thumbnail"></td>';
-		echo '</tr>
-		**/
-		<tr>';
-		echo '<td align="center"><img src="../wordpress/wp-content/plugins/tng-api/templates/uploads/'.$NewImageName.'" alt="Resized Image"></td>';
+		
+		echo '<tr><td align="center"><img src="../wordpress/wp-content/plugins/tng-api/templates/uploads/'.$NewImageName.'" alt="Thumbnail"></td>';
+		echo '</tr><tr>';
+		
+			
 		echo '</tr>';
 		echo '</table>';
 

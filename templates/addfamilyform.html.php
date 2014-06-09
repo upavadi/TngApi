@@ -1,5 +1,6 @@
 <!-- Submit changes via emmail -->			
-	<?php
+
+<?php
 				
 				$tngcontent = Upavadi_tngcontent::instance()->init();
 				
@@ -116,7 +117,6 @@
 <script type="text/javascript" src="<?php echo plugins_url('js/jquery-2.0.0.min.js', dirname(__FILE__)); ?>"></script>
 --------->
 
-<link type="text/css" href="<?php echo plugins_url('css/smart_wizard.css', dirname(__FILE__)); ?>" rel="stylesheet" media="all" type="text/css">
 <script type="text/javascript" src="<?php echo plugins_url('js/jquery.smartWizard.js', dirname(__FILE__)); ?>"></script>
 
 <script type="text/javascript">
@@ -132,7 +132,7 @@
    });  
 </script>
 <style type="text/css" media="all">
-@import "<?php echo plugins_url('css/smart_wizard.css', dirname(__FILE__)); ?>";
+
 </style> 
 
 <form id="add-family-form" action = "<?php echo plugins_url('templates/processfamily-add.php', dirname(__FILE__)); ?>" method = "POST">

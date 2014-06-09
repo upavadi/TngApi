@@ -1,4 +1,5 @@
-<!-- Su<!--UPDATE FAMILY -->
+<!--UPDATE FAMILY -->
+			
 			<?php
 				
 				$tngcontent = Upavadi_tngcontent::instance()->init();
@@ -12,7 +13,7 @@
 			
 				<a href="?personId=<?php echo $person['personID']; ?>"><span style="color:#D77600; font-size:14pt">			
 				<?php echo "Welcome ". $currentuser; ?></span>
-				</a>
+				</a><br>
 	
 				<?php
 //get person details
@@ -33,7 +34,7 @@
 				
 // title for page	
 				?>
-				<br/><span float="left" style= "font-type:bold; font-size:12pt">			
+				<span float="left" style= "font-type:bold; font-size:12pt">			
 				<?php echo "Update Details for the Family of ". $person_name. $person_surname; ?></span>
 				
 				<?php
@@ -111,7 +112,6 @@
 <!--------Jquery smart wizard --------- 
 <script type="text/javascript" src="<?php echo plugins_url('js/jquery-2.0.0.min.js', dirname(__FILE__)); ?>"></script>
 --------->
-<link href="<?php echo plugins_url('css/smart_wizard.css', dirname(__FILE__)); ?>" rel="stylesheet" media="all" type="text/css">
 <script type="text/javascript" src="<?php echo plugins_url('js/jquery.smartWizard.js', dirname(__FILE__)); ?>"></script>
 
 <script type="text/javascript">
@@ -127,7 +127,6 @@
    });  
 </script>
 <style type="text/css" media="all">
-@import "<?php echo plugins_url('css/smart_wizard.css', dirname(__FILE__)); ?>";
 </style>
 <form id="edit-family-form" action = "<?php echo plugins_url('templates/processfamily-update.php', dirname(__FILE__)); ?>" method = "POST">
 <input type="hidden" name="User" value="<?php echo $currentuser; ?>" />
@@ -137,7 +136,7 @@
     <li><a href="#step-1">
           <label class="stepNumber">1</label>
           <span class="stepDesc">
-			Person Data<br />
+			Person<br />
              <small>Update </small>
           </span>
       </a></li>
@@ -563,55 +562,7 @@
       <h2 class="StepTitle">Update Details of Children </h2>   
        <!-- step content --> 
 
-<script>
-function initChildren(order) {
-	var clone;
-	function cloneRow()  { // create clone of empty child line for use during session
-		var rows=$('#children_' + order).find('tr.child');
-		var idx=rows.length;
-		if (idx) {
-			clone=rows[idx-1].cloneNode(true);
-		}			
-	}
-	cloneRow();
-	$('.js-addChild-edit[data-id="' + order + '"]').click(addRow);
-	function addRow(evt) {
-		evt.stopPropagation();
-		evt.preventDefault();
-		var newclone = clone.cloneNode(true);
-		var rows=$('#children_' + order).find('tr.child');
-		var idx=rows.length;
-		if( idx > 0 ) { 
-			var field=rows.eq(idx-1).find('input').first();
-			var firstname=field[0].value;
-			if( !firstname ) {
-				alert("Please fill in the new row before adding more");
-				return;
-			}
-		}
-		var inputs=newclone.getElementsByTagName('input'), inp, i=0;
-		while(inp=inputs[i++]) {
-			inp.name=inp.name.replace(/\]\[\d\]/g, '][' + idx + ']');
-			inp.value = null;
-		}
-		var selects=newclone.getElementsByTagName('select'), sel, i=0;
-		while(sel=selects[i++]) {
-			sel.name=sel.name.replace(/\]\[\d\]/g, '][' + idx + ']');
-			sel.selectedItem = 0;
-		}
-	var tbo=document.getElementById('children_' + order).getElementsByTagName('tbody')[0];
-	tbo.appendChild(newclone);
-	}
-	function deleteLastRow() {
-		var tbo=document.getElementById('children_' + order).getElementsByTagName('tbody')[0];
-		var rows = tbo.getElementsByTagName('tr');
-		tbo.removeChild(rows[rows.length-1] );    
-		if(rows.length < 1) {
-			addRow();
-		}
-	}
-}
-</script>
+
 <?php
 			// Family
 			foreach ($families as $family):
@@ -767,3 +718,52 @@ initChildren(<?php echo $order; ?>);
 </div>
 </form>
 <div style="clear:both"></div>
+<script>
+function initChildren(order) {
+	var clone;
+	function cloneRow()  { // create clone of empty child line for use during session
+		var rows=$('#children_' + order).find('tr.child');
+		var idx=rows.length;
+		if (idx) {
+			clone=rows[idx-1].cloneNode(true);
+		}			
+	}
+	cloneRow();
+	$('.js-addChild-edit[data-id="' + order + '"]').click(addRow);
+	function addRow(evt) {
+		evt.stopPropagation();
+		evt.preventDefault();
+		var newclone = clone.cloneNode(true);
+		var rows=$('#children_' + order).find('tr.child');
+		var idx=rows.length;
+		if( idx > 0 ) { 
+			var field=rows.eq(idx-1).find('input').first();
+			var firstname=field[0].value;
+			if( !firstname ) {
+				alert("Please fill in the new row before adding more");
+				return;
+			}
+		}
+		var inputs=newclone.getElementsByTagName('input'), inp, i=0;
+		while(inp=inputs[i++]) {
+			inp.name=inp.name.replace(/\]\[\d\]/g, '][' + idx + ']');
+			inp.value = null;
+		}
+		var selects=newclone.getElementsByTagName('select'), sel, i=0;
+		while(sel=selects[i++]) {
+			sel.name=sel.name.replace(/\]\[\d\]/g, '][' + idx + ']');
+			sel.selectedItem = 0;
+		}
+	var tbo=document.getElementById('children_' + order).getElementsByTagName('tbody')[0];
+	tbo.appendChild(newclone);
+	}
+	function deleteLastRow() {
+		var tbo=document.getElementById('children_' + order).getElementsByTagName('tbody')[0];
+		var rows = tbo.getElementsByTagName('tr');
+		tbo.removeChild(rows[rows.length-1] );    
+		if(rows.length < 1) {
+			addRow();
+		}
+	}
+}
+</script>

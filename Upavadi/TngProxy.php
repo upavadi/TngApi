@@ -16,8 +16,35 @@ class Upavadi_TngProxy
         $this->suffix = $suffix;
     }
 
-    public function load($path)
+    public function login()
     {
+        $path = "http://localhost/tng/processlogin.php";
+        $options = array(
+            "cookies" => array(
+                "tnguser" . '_' . $this->suffix => $this->userName,
+                "tngpass" . '_' . $this->suffix => $this->passwordHash,
+                "tngpasstype" . '_' . $this->suffix => $this->passwordType,
+                "tngloggedin" . '_' . $this->suffix => 1,
+                "PHPSESSID" => $_SESSION['upavadi_tng_session_id']
+            )
+        );
+        $form = array(
+            'tngusername' => $this->userName,
+            'tngpassword' => $this->passwordHash,
+            'encrypted' => 'encrypted'
+        );
+        $client = new Guzzle\Http\Client();
+        $request = $client->post($path, null, $form, $options);
+        ini_set('xdebug.max_nesting_level', 200);
+        $response = $request->send();
+    }
+    
+    public function load($path, $method = 'get', $post = null)
+    {
+        if (!isset($_SESSION['upavadi_tng_session_id'])) {
+            $_SESSION['upavadi_tng_session_id'] = md5(uniqid("tngapi"));
+            $this->login();
+        }
         $client = new Guzzle\Http\Client();
         $options = array(
             "cookies" => array(
@@ -25,17 +52,38 @@ class Upavadi_TngProxy
                 "tngpass" . '_' . $this->suffix => $this->passwordHash,
                 "tngpasstype" . '_' . $this->suffix => $this->passwordType,
                 "tngloggedin" . '_' . $this->suffix => 1,
-                "PHPSESSID" => uniqid("tngapi")
-            )
+                "PHPSESSID" => $_SESSION['upavadi_tng_session_id']
+            ),
+            'allow_redirects' => false
         );
-        $request = $client->get($path, null, $options);
+        $headers = array(
+            'referer' => $_SERVER['HTTP_REFERER']
+        );
 
+        $method = strtoupper($method);
+        switch ($method) {
+            case 'GET':
+                $request = $client->get($path, $headers, $options);
+                break;
+            case 'POST':
+                $request = $client->post($path, $headers, $post, $options);
+                break;
+        }
         //ini_set('xdebug.max_nesting_level', 200);
         $response = $request->send();
+        //echo implode('<br>', $response->getHeaderLines());
+        
+        //echo $response->getBody(true); die;
 //        echo $path;
-//        echo $response->getEffectiveUrl();
+//        echo $response->getEffectiveUrl(); die;
 //        echo $response->getContentType(); die;
+        if ($response->getHeader('Location')) {
+            return $response;
+        }
         if (strpos($response->getContentType(), "text/html") !== 0) {
+            return $response;
+        }
+        if (preg_match('~/(ajx_|findpersonform.php)~', $path)) {
             return $response;
         }
         $doc = new DOMDocument();
@@ -96,10 +144,10 @@ class Upavadi_TngProxy
             }
             if ($node->nodeName === 'script') {
                 $src = $node->attributes->getNamedItem('src');
-                if ($src && preg_match('/jquery/', $src->nodeValue)) {
-                    unset($nodes[$index]);
-                    continue;
-                }
+                //if ($src && preg_match('/jquery/', $src->nodeValue)) {
+                //    unset($nodes[$index]);
+                //    continue;
+                //}
             }
             $content->appendChild($node);
             unset($nodes[$index]);
@@ -112,6 +160,9 @@ class Upavadi_TngProxy
 
         $body = str_replace("&#xD;", PHP_EOL, $content->C14N());
         $body = str_replace("&lt; slot", "< slot", $body);
+        $body = str_replace(") &gt; 3", ") > 3", $body);
+        $body = str_replace("&lt;img", "<img", $body);
+        $body = str_replace("/&gt;", "/>", $body);
         return $body;
     }
 

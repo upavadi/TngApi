@@ -1,4 +1,5 @@
-<!-- FAMILY -->
+<!-- FAMILY Notes -->
+		
 			<?php
 				
 				$tngcontent = Upavadi_tngcontent::instance()->init();
@@ -82,21 +83,21 @@
 		<p>
 			<span style="font-size:14pt"><b>
 			<?php echo $note_generalID;?></b></span></a></br>
-			<textarea name="note_general" rows="3" cols="100">
+			<textarea style="width:100%" name="note_general" rows="3" cols="100">
 			<?php echo $note_general; ?>
 			</textarea>
 		</p>
 		<p>
 			<span style="font-size:14pt"><b>
 			<?php echo $note_nameID;?></b></span></a></br>
-			<textarea name="note_name" rows="3" cols="100">
+			<textarea  style="width:100%" name="note_name" rows="3" cols="100">
 			<?php echo $note_name; ?>
 			</textarea>
 		</p>
 		<p>
 			<span style="font-size:14pt"><b>
 			<?php echo $note_birthID;?></b></span></a></br>
-			<textarea name="note_birth" rows="3" cols="100">
+			<textarea style="width:100%"  name="note_birth" rows="3" cols="100">
 			<?php echo $note_birth; ?>
 			</textarea>
 		</p>

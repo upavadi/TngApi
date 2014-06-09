@@ -1,0 +1,69 @@
+/**
+ * Tab Me
+ *
+ * Simple CSS stylesheet for Tab Me Tabs
+ *
+ * @since 0.5
+ */
+.tab-me-wrapper {
+	background: none repeat scroll 0 0 #E0E0F8;
+    border-radius: 3px;
+    margin: 0 0 1.5em;
+    padding: 3px;
+}
+
+.tab-me-tab-content {
+	background-color:#ffffff;
+	box-sizing: border-box;
+	padding:10px; 	
+	width: 100%;
+}
+
+.tab-me-content-wrapper{
+	clear:both;
+	border: 1px solid #ffff;
+}
+
+ul.tab-me-tabs {
+	margin-bottom: -1px; 
+	position: relative;
+	z-index: 50;
+	padding: 0px;
+}
+ul.tab-me-tabs a:hover {
+	background: #f5f5f5; 
+}
+
+ul.tab-me-tabs li{
+	display: block;
+	background: none;
+	float:left;
+}
+
+ul.tab-me-tabs li a{
+	list-style:none;
+	display: block;
+	padding: 10px;
+	color: #333333;
+	font-family: 'Futura Light', Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	background: #e0e0f8;
+	text-decoration: none;
+	border-top-left-radius: 6px;
+	border-top-right-radius: 6px; 
+}
+
+ul.tab-me-tabs li.active a{
+
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #ccc;
+	margin-bottom: -1px;
+	border-bottom: 1px solid #fff;
+	background: #fff;
+}
+
+ul.tab-me-tabs li.active{
+	border-top: 1px solid #cccc;
+	 
+}
+

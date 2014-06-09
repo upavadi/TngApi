@@ -1,9 +1,7 @@
 <html>
 <head>
 <!---- Jquery date picker strat -->
-
-
-<link type="text/css" href="<?php echo plugins_url('css/jquery-datepicker.css', dirname(__FILE__)); ?>" rel="stylesheet" />
+<link rel="stylesheet" href="<?php echo plugins_url('css/jquery-ui-1.10.4.custom.css', dirname(__FILE__)); ?>" rel="stylesheet" type="text/css">
 <script src="<?php echo plugins_url('js/jquery-1.10.2.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
 <script src="<?php echo plugins_url('js/jquery-datepicker.min.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
 <!-- <script src="<?php echo plugins_url('js/jquery-datepicker.custom.js', dirname(__FILE__)); ?>" type="text/javascript"></script>

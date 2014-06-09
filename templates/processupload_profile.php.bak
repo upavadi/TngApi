@@ -1,8 +1,4 @@
 <?php
-
-//$uploadsdirectory = content_url('/uploads/', dirname(__FILE__)); 
-//$temp = content_url(); 
-//$uploadsdirectory = '../templates/uploads/';
 if(isset($_POST))
 {
 	############ Edit settings ##############

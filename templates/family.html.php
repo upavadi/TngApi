@@ -6,11 +6,6 @@
 <head>
 <meta charset="utf-8">
 
-<link type="text/css" href="<?php echo plugins_url('css/jquery-ui.css', dirname(__FILE__)); ?>" rel="stylesheet" />
-<link rel="stylesheet" href="<?php echo plugins_url('css/upload-image.css', dirname(__FILE__)); ?>" rel="stylesheet" type="text/css">
-
-<script src="<?php echo plugins_url('js/jquery-1.10.2.js', dirname(__FILE__)); ?>"></script>
-<script src="<?php echo plugins_url('js/jquery-ui.js', dirname(__FILE__)); ?>"></script>
 
 
 </head>
@@ -658,7 +653,8 @@
 <div id="submit-profile-photo"></div>
 	<head>
 <!-- DO NOT MOVE the 2 files to top!! -->	
-<script type="text/javascript" src="<?php echo plugins_url('js/jquery-1.10.2.min.js', dirname(__FILE__)); ?>"></script>		<script type="text/javascript" src="<?php echo plugins_url('js/jquery.form.min.js', dirname(__FILE__)); ?>"></script>
+<script type="text/javascript" src="<?php echo plugins_url('js/jquery-1.10.2.min.js', dirname(__FILE__)); ?>"></script>
+<script type="text/javascript" src="<?php echo plugins_url('js/jquery.form.min.js', dirname(__FILE__)); ?>"></script>
 <script type="text/javascript">
 $(document).ready(function() { 
 	var options = { 
@@ -746,7 +742,7 @@ function bytesToSize(bytes) {
 <h3>Submit Profile Image for </br><?php echo $name; ?></h3>
 
 <b>Profile image submitted by <?php echo $User; ?><b>
-<form class="upload-wrapper upload-wrapper-aligned"action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
+<form class="upload-wrapper upload-wrapper-aligned"action="<?php echo plugins_url('templates/processupload_profile.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
 <fieldset>
 <div class="upload-control-group">
             <label for="Image">Select Image</label>
@@ -762,6 +758,5 @@ function bytesToSize(bytes) {
 <fieldset></form>
 
 <div id="output"></div>
-</div>
 </div>
 </div>

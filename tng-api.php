@@ -15,8 +15,9 @@
  *
  */
 require_once __DIR__ . '/vendor/autoload.php';
+include_once __DIR__. '/tabs.php';
+
 $content = Upavadi_TngContent::instance();
-new TabsShortcodes();
 
 $content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
@@ -31,7 +32,6 @@ $content->addShortcode(new Upavadi_Shortcode_Danniversariesplusone());
 $content->addShortcode(new Upavadi_Shortcode_Manniversaries());
 $content->addShortcode(new Upavadi_Shortcode_Manniversariesplusone());
 $content->addShortcode(new Upavadi_Shortcode_TngProxy());
-$content->addShortcode(new Upavadi_Shortcode_TabsShortcode());
 $content->addShortcode(new Upavadi_Shortcode_SubmitImage());
 $familySearch = new Upavadi_Widget_FamilySearch;
 

@@ -95,15 +95,15 @@ class Upavadi_TngContent
         $dbPassword = esc_attr(get_option('tng-api-db-password'));
         $dbName = esc_attr(get_option('tng-api-db-database'));
 
-        $db = mysql_connect($dbHost, $dbUser, $dbPassword);
-        mysql_select_db($dbName, $db);
+        $db = mysqli_connect($dbHost, $dbUser, $dbPassword);
+        mysqli_select_db($db, $dbName);
         $this->db = $db;
         $this->initTables();
 
         $tng_user_name = $this->getTngUserName();
         $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
-        $result = mysql_query($query, $db) or die("Cannot execute query: $query");
-        $row = mysql_fetch_assoc($result);
+        $result = mysqli_query($db, $query) or die("Cannot execute query: $query");
+        $row = $result->fetch_assoc();
 
         $this->currentPerson = $row['personID'];
         return $this;
@@ -111,7 +111,7 @@ class Upavadi_TngContent
 
     protected function query($sql)
     {
-        $result = mysql_query($sql, $this->db) or die("Cannot execute query: $sql");
+        $result = mysqli_query($this->db, $sql) or die("Cannot execute query: $sql");
         return $result;
     }
 
@@ -210,7 +210,7 @@ FROM {$this->tables['people_table']}
 WHERE personID = '{$personId}'
 SQL;
         $result = $this->query($sql);
-        $row = mysql_fetch_assoc($result);
+        $row = $result->fetch_assoc();
 
         return $row;
     }
@@ -228,7 +228,7 @@ FROM {$this->tables['families_table']}
 WHERE husband = '{$personId}' or wife = '{$personId}'
 SQL;
         $result = $this->query($sql);
-        $row = mysql_fetch_assoc($result);
+        $row = $result->fetch_assoc();
 
         return $row;
     }
@@ -246,7 +246,7 @@ FROM {$this->tables['events_table']}
 where persfamID = '{$personId}' AND eventtypeID = "10"
 SQL;
         $result = $this->query($sql);
-        $row = mysql_fetch_assoc($result);
+        $row = $result->fetch_assoc();
 
         return $row;
     }
@@ -260,7 +260,7 @@ WHERE familyID = '{$familyId}'
 SQL;
 
         $result = $this->query($sql);
-        $row = mysql_fetch_assoc($result);
+        $row = $result->fetch_assoc();
 
         return $row;
     }
@@ -282,7 +282,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -302,7 +302,7 @@ JOIN {$this->tables['media_table']} USING (mediaID)
 where personID = '{$personId}' AND defphoto = "1"
 SQL;
         $result = $this->query($sql);
-        $row = mysql_fetch_assoc($result);
+        $row = $result->fetch_assoc();
 
         return $row;
     }
@@ -327,7 +327,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -350,7 +350,7 @@ SQL;
 
         $rows = array();
 
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
 
@@ -376,7 +376,7 @@ SQL;
         $result = $this->query($sql);
         $rows = array();
 
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         if ($sortBy) {
@@ -416,7 +416,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -441,7 +441,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -466,7 +466,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -491,7 +491,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -516,7 +516,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -546,7 +546,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -571,7 +571,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -604,7 +604,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -637,7 +637,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -670,7 +670,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -703,7 +703,7 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -843,7 +843,7 @@ SQL;
 
         $result = $this->query($sql);
 
-        while ($row = mysql_fetch_assoc($result)) {
+        while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
         return $rows;
@@ -851,13 +851,18 @@ SQL;
 
     public function getTngUserName()
     {
+        $user = $this->getTngUser();
+        return $user['username'];
+    }
+    public function getTngUser()
+    {
         $currentUser = wp_get_current_user();
         $userName = $currentUser->user_login;
-        $query = "SELECT username FROM {$this->tables['users_table']} WHERE username='{$userName}'";
+        $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$userName}'";
         $result = $this->query($query);
-        $row = mysql_fetch_assoc($result);
+        $row = $result->fetch_assoc();
         if ($row) {
-            return $row['username'];
+            return $row;
         }
         wp_die('User ' . $userName . ' not found in TNG');
     }
@@ -866,7 +871,8 @@ SQL;
     {
         $id = 4;
         $page = get_page($id);
-        $link = parse_url(get_permalink($id));
+        $baseLink = get_permalink($id);
+        $link = parse_url($baseLink);
         $uri = $_SERVER['REQUEST_URI'];
 
         if (strpos($uri, $link['path']) === 0) {
@@ -877,21 +883,37 @@ SQL;
             }
             $basePath = 'http://localhost/tng/';
             $url = $basePath . $uri;
-
             
-            $proxy = new Upavadi_TngProxy('gondal', '0cddfde984f24fac68f2d4ac468d3d6b', 'md5', 'C:wampwwwtng');
-            $response = $proxy->load($url);
+            $this->init();
+            $user = $this->getTngUser();
+            $proxy = new Upavadi_TngProxy(
+                $user['username'],
+                $user['password'],
+                $user['password_type'],
+                'C:wampwwwtng' // 'vawwwwvhostsupavadinethttpdocstng'
+            );
+            $response = $proxy->load(
+                $url,
+                $_SERVER['REQUEST_METHOD'],
+                $_POST
+            );
             
             if (!is_string($response)) {
                 foreach ($response->getHeaderLines() as $header) {
+                    if (preg_match('/^Transfer-Encoding/', $header)) {
+                        continue;
+                    }
                     header($header);
                 }
-                echo $response->getBody();
+                echo $response->getBody(true);
                 exit;
             }
             $this->setHtml($response);
             $posts = array($page);
-            add_filter('user_trailingslashit', function ($url) {
+            add_filter('user_trailingslashit', function ($url) use ($baseLink) {
+                if (preg_match("~$url$~", $baseLink)) {
+                    return $url;
+                }
                 return preg_replace('|/$|', '', $url);
             });
         }
@@ -910,130 +932,3 @@ SQL;
 
 }
 
-
-//Tabs Shortcodes 
-if (!class_exists('TabsShortcodes')) :
-
-class TabsShortcodes {
-
-static $add_script;
-static $tab_titles;
-//private static $instance = null;
-
-
- 
-
- 
- function __construct() {
-
-$basename = plugin_basename(__FILE__);
-
-# Load text domain
-load_plugin_textdomain('tabs_shortcodes', false, dirname($basename) . '/languages/');
-
-# Register JavaScript
-add_action('wp_enqueue_scripts', array(__CLASS__, 'register_script'));
-
-# Add shortcodes
-add_shortcode('tabs', array(__CLASS__, 'tabs_shortcode'));
-add_shortcode('tab', array(__CLASS__, 'tab_shortcode'));
-
-# Print script in wp_footer
-add_action('wp_footer', array(__CLASS__, 'print_script'));
-
-}
-
-# Installation function
-static function install() {
-
-# Add notice option
-add_option('tabs_shortcodes_notice', 1, '', 'no');
-
-}
-
-
-
-
-# Registers the minified tabs JavaScript file
-static function register_script() {
-
-$min = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
-//line below calls tabs.mi'.js in current directory.
-//wp_register_script('tabs-shortcodes-script', plugins_url('tabs' . $min . '.js', __FILE__), array(), '1.1', true);
-//For now load tab.js in js directory
-wp_register_script('tabs-shortcodes-script', plugins_url('js/tabs.min.js', dirname(__FILE__)));
-}
-
-# Prints the minified tabs JavaScript file in the footer
-static function print_script() {
-
-# Check to see if shortcodes are used on page
-if (!self::$add_script) return;
-
-wp_enqueue_script('tabs-shortcodes-script');
-
-}
-
-# Tabs wrapper shortcode
-static function tabs_shortcode($atts, $content = null) {
-
-# The shortcode is used on the page, so we'll need to load the JavaScript
-self::$add_script = true;
-
-# Create empty titles array
-self::$tab_titles = array();
-
-extract(shortcode_atts(array(), $atts, 'tabs'));
-
-# Get all individual tabs content
-$tab_content = do_shortcode($content);
-
-# Start the tab navigation
-$out = '<ul id="tabs" class="tabs">';
-
-# Loop through tab titles
-foreach (self::$tab_titles as $key => $title) {
-$id = $key + 1;
-$out .= sprintf('<li><a href="#%s"%s>%s</a></li>',
-'tab-' . $id,
-$id == 1 ? ' class="active"' : '',
-$title
-);
-}
-
-# Close the tab navigation container and add tab content
-$out .= '</ul>';
-$out .= $tab_content;
-
-return $out;
-
-}
-
-# Tab item shortcode
-static function tab_shortcode($atts, $content = null) {
-
-extract(shortcode_atts(array(
-'title' => ''
-), $atts, 'tab'));
-
-# Add the title to the titles array
-array_push(self::$tab_titles, $title);
-
-$id = count(self::$tab_titles);
-
-return sprintf('<section id="%s" class="tab%s">%s</section>',
-'tab-' . $id,
-$id == 1 ? ' active' : '',
-do_shortcode($content)
-);
-
-}
-
-
-
-}
-
-
-endif;
-
-?>
