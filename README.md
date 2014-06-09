@@ -48,8 +48,27 @@ Next edit to the proxy page you created earlier and add the `[upavadi_tng_proxy]
 ## Shortcodes
 We've provided a number of useful shortcodes for to play with.  You can find them all in the shortcodes directory.
 
- - `[short_code_1]` - description 1
- - `[short_code_2]` - description 2
+ - `[upavadi_pages_familysearch]` - Name Search Widget. Selection redirect to 'Family' page
+ - Following 4 shortcodes are used in family page. To use existing hyperlinks, this page must be called 'family'
+ - `[upavadi_pages__familyuser]` - Family page of the user
+ - `[upavadi_pages__familyform]` - Update details of Individual
+ - `[upavadi_pages__addfamilyform]` - Add Details of Individual
+ - `[upavadi_pages__personnotes]` - Add Notes for Individual
 
+ - Above 4 shortcodes may be used on a single page using the TAB shortcode
+ - '[tabs]'[tab title="Family"]''[upavadi_pages_familyuser]''[/tab]'
+ - '[tab title="Update Family"]''[upavadi_pages_familyform]''[/tab]'
+ - '[tab title="Add Family"]''[upavadi_pages_addfamilyform]''[/tab]'
+ - '[[tab title="Update Person Notes"]''[upavadi_pages_personnotes]''[/tab]'
+ - '[/tabs]'
+
+ - `[upavadi_pages__birthdays]` - Birthdays
+ - `[upavadi_pages__manniversaries]` - Marriage Anniversaries
+ - `[upavadi_pages__danniversaries]` - Death Anniversaries Report
+ -  Above reports use Individual hyperlinks to the 'Family' page
+ 
+ -  `[upavadi_pages__tng_proxy]` - TNG Index page redirect
+ -  `[upavadi_pages__submitumage]` - Upload photos. This shortcode saves the image but does not store image data at present.        Work In Progress. 
+ 
 ## Patches & contributions
 This is very much a work in progress so please feel free to fork and submit pull requests.
