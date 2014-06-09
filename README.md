@@ -38,15 +38,15 @@ This plugin assumes that:
 You will also need the connection settings for your TNG DB handy.
 
 ### Setup
-After installing the pluging you can find the settings page in the settings menu named `TngApi`, here you'll need:
- - To the location of your TNG installtion as it is on disk (i.e. `/path/to/tng`)
+After installing the plugin you can find the settings page in the settings menu named `TngApi`, here you'll need to specify:
+ - The location of your TNG installtion as it is on disk (i.e. `/path/to/tng`)
  - Your DB connection settings.
  - The page ID of the page you wish to use as a proxy
 
-Next go to the proxy page you create earlier and add the `[upavadi_tng_proxy]` shortcode to the content.
+Next edit to the proxy page you created earlier and add the `[upavadi_tng_proxy]` shortcode to the content.
 
 ## Shortcodes
-We've provided a number of useful shortcodes to play with you can find them all in the shortcodes directory.
+We've provided a number of useful shortcodes for to play with.  You can find them all in the shortcodes directory.
 
  - `[short_code_1]` - description 1
  - `[short_code_2]` - description 2
