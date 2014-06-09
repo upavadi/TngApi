@@ -20,7 +20,8 @@ class Upavadi_TngProxy
 
     public function login()
     {
-        $path = "http://localhost/tng/processlogin.php";
+        $tngDir = basename(get_option('tng-api-tng-path'));
+        $path = "http://localhost/" . $tngDir . "/processlogin.php";
         $options = array(
             "cookies" => array(
                 "tnguser" . '_' . $this->suffix => $this->userName,
@@ -29,16 +30,24 @@ class Upavadi_TngProxy
                 "tngloggedin" . '_' . $this->suffix => 1,
                 "PHPSESSID" => $_SESSION['upavadi_tng_session_id']
             )
+            
         );
         $form = array(
             'tngusername' => $this->userName,
             'tngpassword' => $this->passwordHash,
             'encrypted' => 'encrypted'
         );
+        $headers = array(
+            'Referer' => $_SERVER['HTTP_REFERER'],
+        );
         $client = new Guzzle\Http\Client();
-        $request = $client->post($path, null, $form, $options);
-        ini_set('xdebug.max_nesting_level', 200);
-        $response = $request->send();
+        $request = $client->post($path, $headers, $form, $options);
+        $request->setHost($_SERVER['HTTP_HOST']);
+        try {
+            $response = $request->send();
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
     }
 
     public function load($path, $method = 'get', $post = null)
@@ -58,8 +67,9 @@ class Upavadi_TngProxy
             ),
             'allow_redirects' => false
         );
+        
         $headers = array(
-            'referer' => $_SERVER['HTTP_REFERER']
+            'Referer' => $_SERVER['HTTP_REFERER']
         );
 
         $method = strtoupper($method);
@@ -71,6 +81,7 @@ class Upavadi_TngProxy
                 $request = $client->post($path, $headers, $post, $options);
                 break;
         }
+        $request->setHost($_SERVER['HTTP_HOST']);
         //ini_set('xdebug.max_nesting_level', 200);
         $response = $request->send();
         //echo implode('<br>', $response->getHeaderLines());

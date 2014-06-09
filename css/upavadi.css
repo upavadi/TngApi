@@ -1,95 +1,95 @@
 /* Styles for Family and profile page */
 .form-table {
-	background-color: #FFFFFF;
-	width: 100%;
-	margin-bottom: .5em;
-	padding-top: -25px; clear: right;
-	border: 1px solid silver !important;
+    background-color: #FFFFFF;
+    width: 100%;
+    margin-bottom: .5em;
+    padding-top: -25px; clear: right;
+    border: 1px solid silver !important;
 }
 
 .form-table input {
-	margin-top: 2px;
-	margin-right: 2px;
+    margin-top: 2px;
+    margin-right: 2px;
 
-	float: left; display: inline;
-	width: 250px;
+    float: left; display: inline;
+    width: 250px;
 }
 
 .form-table .description {
-	text-transform: none;
-	clear: left; float: left;
-	text-align: left;
-	margin: 0; padding: 0;
-	font-style: italic; font-size: 90%;
-	
+    text-transform: none;
+    clear: left; float: left;
+    text-align: left;
+    margin: 0; padding: 0;
+    font-style: italic; font-size: 90%;
+
 }
 
 .form-table .required {
-	font-weight: bold;
-	color: #800;
+    font-weight: bold;
+    color: #800;
 }
 
 .form-table .required2 {
-	text-transform: none;
-	text-align: left;
-	font-weight: bold;
-	font-style: italic;
-	color: #800;
+    text-transform: none;
+    text-align: left;
+    font-weight: bold;
+    font-style: italic;
+    color: #800;
 }
 
 .tdfront {
-	padding: 8px 10px;
-	line-height: 15px;
-	width: 65%;
-	background-color: #FFFFFF;
+    padding: 8px 10px;
+    line-height: 15px;
+    width: 65%;
+    background-color: #FFFFFF;
     border-bottom: 1px solid #bbbbbb;
-	border-right: 1px solid #bbbbbb;
-	//font-size:10px;
-	white-space: nowrap;
+    border-right: 1px solid #bbbbbb;
+    //font-size:10px;
+    white-space: nowrap;
 }
-	
+
 .born-highlight {
-	background-color: #E0E0F7;
+    background-color: #E0E0F7;
 }
 
 .tdback {
-	//margin-bottom: 9px;
-	padding: 8px 10px;
-	line-height: 15px;
-	width: 15%;
-	background-color: #CACACA;
-	color: #005689;
-    border-bottom:: 1px solid #ffffff;
-	border-right:: 1px solid #ffffff;
-	//font-size: large;
+    //margin-bottom: 9px;
+    padding: 8px 10px;
+    line-height: 15px;
+    width: 15%;
+    background-color: #CACACA;
+    color: #005689;
+    border-bottom: 1px solid #ffffff;
+    border-right: 1px solid #ffffff;
+    //font-size: large;
 }
 .theader {
-	background-color: #EDEDED;
+    background-color: #EDEDED;
     border-bottom: 1px #ffffff;
-	border-right: 1px #ffffff;
-	font-size: 12px;
-	width: auto;
-	border: 1px solid silver;
-	
+    border-right: 1px #ffffff;
+    font-size: 12px;
+    width: auto;
+    border: 1px solid silver;
+
 }
 
 .entry-content table {
-	border-bottom: 0;
+    border-bottom: 0;
 }
 
 .entry-content a:visited,
 .comment-content a:visited {
-	color: #104e8b;
+    color: #104e8b;
 }
 
 .entry-content .form-table td {
-	border-top: 1px solid #ededed;
+    border-top: 1px solid #ededed;
 }
 
 .entry-content td,
 .comment-content td {
-	border-top: 0;
-	padding: 6px 10px 6px 5px;
+    border-top: 0;
+    padding: 6px 10px 6px 5px;
 }
 
 /*! jQuery UI - v1.10.4 - 2014-06-08
@@ -100,59 +100,59 @@
 /* Layout helpers
 ----------------------------------*/
 .ui-helper-hidden {
-	display: none;
+    display: none;
 }
 .ui-helper-hidden-accessible {
-	border: 0;
-	clip: rect(0 0 0 0);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	width: 1px;
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
 }
 .ui-helper-reset {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	outline: 0;
-	line-height: 1.3;
-	text-decoration: none;
-	font-size: 100%;
-	list-style: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    line-height: 1.3;
+    text-decoration: none;
+    font-size: 100%;
+    list-style: none;
 }
 .ui-helper-clearfix:before,
 .ui-helper-clearfix:after {
-	content: "";
-	display: table;
-	border-collapse: collapse;
+    content: "";
+    display: table;
+    border-collapse: collapse;
 }
 .ui-helper-clearfix:after {
-	clear: both;
+    clear: both;
 }
 .ui-helper-clearfix {
-	min-height: 0; /* support: IE7 */
+    min-height: 0; /* support: IE7 */
 }
 .ui-helper-zfix {
-	width: 100%;
-	height: 100%;
-	top: 0;
-	left: 0;
-	position: absolute;
-	opacity: 0;
-	filter:Alpha(Opacity=0);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    opacity: 0;
+    filter:Alpha(Opacity=0);
 }
 
 .ui-front {
-	z-index: 100;
+    z-index: 100;
 }
 
 
 /* Interaction Cues
 ----------------------------------*/
 .ui-state-disabled {
-	cursor: default !important;
+    cursor: default !important;
 }
 
 
@@ -161,10 +161,10 @@
 
 /* states and images */
 .ui-icon {
-	display: block;
-	text-indent: -99999px;
-	overflow: hidden;
-	background-repeat: no-repeat;
+    display: block;
+    text-indent: -99999px;
+    overflow: hidden;
+    background-repeat: no-repeat;
 }
 
 
@@ -173,176 +173,176 @@
 
 /* Overlays */
 .ui-widget-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
 }
 .ui-datepicker {
-	width: 17.5em;
-	padding: .2em .2em 0;
-	display: none;
+    width: 17.5em;
+    padding: .2em .2em 0;
+    display: none;
 }
 .ui-datepicker .ui-datepicker-header {
-	position: relative;
-	padding: .2em 0;
+    position: relative;
+    padding: .2em 0;
 }
 .ui-datepicker .ui-datepicker-prev,
 .ui-datepicker .ui-datepicker-next {
-	position: absolute;
-	top: 2px;
-	width: 1.8em;
-	height: 1.8em;
+    position: absolute;
+    top: 2px;
+    width: 1.8em;
+    height: 1.8em;
 }
 .ui-datepicker .ui-datepicker-prev-hover,
 .ui-datepicker .ui-datepicker-next-hover {
-	top: 1px;
+    top: 1px;
 }
 .ui-datepicker .ui-datepicker-prev {
-	left: 2px;
+    left: 2px;
 }
 .ui-datepicker .ui-datepicker-next {
-	right: 2px;
+    right: 2px;
 }
 .ui-datepicker .ui-datepicker-prev-hover {
-	left: 1px;
+    left: 1px;
 }
 .ui-datepicker .ui-datepicker-next-hover {
-	right: 1px;
+    right: 1px;
 }
 .ui-datepicker .ui-datepicker-prev span,
 .ui-datepicker .ui-datepicker-next span {
-	display: block;
-	position: absolute;
-	left: 50%;
-	margin-left: -8px;
-	top: 50%;
-	margin-top: -8px;
+    display: block;
+    position: absolute;
+    left: 50%;
+    margin-left: -8px;
+    top: 50%;
+    margin-top: -8px;
 }
 .ui-datepicker .ui-datepicker-title {
-	margin: 0 2.3em;
-	line-height: 1.8em;
-	text-align: center;
+    margin: 0 2.3em;
+    line-height: 1.8em;
+    text-align: center;
 }
 .ui-datepicker .ui-datepicker-title select {
-	font-size: 1em;
-	margin: 1px 0;
+    font-size: 1em;
+    margin: 1px 0;
 }
 .ui-datepicker select.ui-datepicker-month,
 .ui-datepicker select.ui-datepicker-year {
-	width: 49%;
+    width: 49%;
 }
 .ui-datepicker table {
-	width: 100%;
-	font-size: .9em;
-	border-collapse: collapse;
-	margin: 0 0 .4em;
+    width: 100%;
+    font-size: .9em;
+    border-collapse: collapse;
+    margin: 0 0 .4em;
 }
 .ui-datepicker th {
-	padding: .7em .3em;
-	text-align: center;
-	font-weight: bold;
-	border: 0;
+    padding: .7em .3em;
+    text-align: center;
+    font-weight: bold;
+    border: 0;
 }
 .ui-datepicker td {
-	border: 0;
-	padding: 1px;
+    border: 0;
+    padding: 1px;
 }
 .ui-datepicker td span,
 .ui-datepicker td a {
-	display: block;
-	padding: .2em;
-	text-align: right;
-	text-decoration: none;
+    display: block;
+    padding: .2em;
+    text-align: right;
+    text-decoration: none;
 }
 .ui-datepicker .ui-datepicker-buttonpane {
-	background-image: none;
-	margin: .7em 0 0 0;
-	padding: 0 .2em;
-	border-left: 0;
-	border-right: 0;
-	border-bottom: 0;
+    background-image: none;
+    margin: .7em 0 0 0;
+    padding: 0 .2em;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
 }
 .ui-datepicker .ui-datepicker-buttonpane button {
-	float: right;
-	margin: .5em .2em .4em;
-	cursor: pointer;
-	padding: .2em .6em .3em .6em;
-	width: auto;
-	overflow: visible;
+    float: right;
+    margin: .5em .2em .4em;
+    cursor: pointer;
+    padding: .2em .6em .3em .6em;
+    width: auto;
+    overflow: visible;
 }
 .ui-datepicker .ui-datepicker-buttonpane button.ui-datepicker-current {
-	float: left;
+    float: left;
 }
 
 /* with multiple calendars */
 .ui-datepicker.ui-datepicker-multi {
-	width: auto;
+    width: auto;
 }
 .ui-datepicker-multi .ui-datepicker-group {
-	float: left;
+    float: left;
 }
 .ui-datepicker-multi .ui-datepicker-group table {
-	width: 95%;
-	margin: 0 auto .4em;
+    width: 95%;
+    margin: 0 auto .4em;
 }
 .ui-datepicker-multi-2 .ui-datepicker-group {
-	width: 50%;
+    width: 50%;
 }
 .ui-datepicker-multi-3 .ui-datepicker-group {
-	width: 33.3%;
+    width: 33.3%;
 }
 .ui-datepicker-multi-4 .ui-datepicker-group {
-	width: 25%;
+    width: 25%;
 }
 .ui-datepicker-multi .ui-datepicker-group-last .ui-datepicker-header,
 .ui-datepicker-multi .ui-datepicker-group-middle .ui-datepicker-header {
-	border-left-width: 0;
+    border-left-width: 0;
 }
 .ui-datepicker-multi .ui-datepicker-buttonpane {
-	clear: left;
+    clear: left;
 }
 .ui-datepicker-row-break {
-	clear: both;
-	width: 100%;
-	font-size: 0;
+    clear: both;
+    width: 100%;
+    font-size: 0;
 }
 
 /* RTL support */
 .ui-datepicker-rtl {
-	direction: rtl;
+    direction: rtl;
 }
 .ui-datepicker-rtl .ui-datepicker-prev {
-	right: 2px;
-	left: auto;
+    right: 2px;
+    left: auto;
 }
 .ui-datepicker-rtl .ui-datepicker-next {
-	left: 2px;
-	right: auto;
+    left: 2px;
+    right: auto;
 }
 .ui-datepicker-rtl .ui-datepicker-prev:hover {
-	right: 1px;
-	left: auto;
+    right: 1px;
+    left: auto;
 }
 .ui-datepicker-rtl .ui-datepicker-next:hover {
-	left: 1px;
-	right: auto;
+    left: 1px;
+    right: auto;
 }
 .ui-datepicker-rtl .ui-datepicker-buttonpane {
-	clear: right;
+    clear: right;
 }
 .ui-datepicker-rtl .ui-datepicker-buttonpane button {
-	float: left;
+    float: left;
 }
 .ui-datepicker-rtl .ui-datepicker-buttonpane button.ui-datepicker-current,
 .ui-datepicker-rtl .ui-datepicker-group {
-	float: right;
+    float: right;
 }
 .ui-datepicker-rtl .ui-datepicker-group-last .ui-datepicker-header,
 .ui-datepicker-rtl .ui-datepicker-group-middle .ui-datepicker-header {
-	border-right-width: 0;
-	border-left-width: 1px;
+    border-right-width: 0;
+    border-left-width: 1px;
 }
 
 
@@ -355,320 +355,320 @@
   http://tech-laboratory.blogspot.com
 */
 .swMain {
-  position:relative;
-  display:block;
-  margin:0;
-  padding:0;
-  border: 0 solid #CCC;
-  overflow:none;
-  float:left;
-  width:99%;
+    position:relative;
+    display:block;
+    margin:0;
+    padding:0;
+    border: 0 solid #CCC;
+    overflow:none;
+    float:left;
+    width:99%;
 }
 .swMain .stepContainer {
-  display:block;
-  position: relative;
-  margin: 0;
-  padding:0;    
-  border: 0 solid #CCC;
-  overflow-x: hidden;
-  overflow-y: auto;
-  clear:both;
-  height:500px;
+    display:block;
+    position: relative;
+    margin: 0;
+    padding:0;    
+    border: 0 solid #CCC;
+    overflow-x: hidden;
+    overflow-y: auto;
+    clear:both;
+    height:500px;
 }
 
 .swMain .stepContainer div.content {
-  display:block;
-  position: absolute;  
-  float:left;
-  margin: 0;
-  padding:5px;    
-  border: 1px solid #CCC; 
-  font: normal 12px Verdana, Arial, Helvetica, sans-serif; 
-  color:#5A5655;   
-  background-color:#F8F8F8;  
-  height: 500px; 
-  text-align:left;
-  overflow:visible;    
-  z-index:88; 
-  -webkit-border-radius: 5px;
-  -moz-border-radius  : 5px;
-  width:99%;
-  clear:both;
+    display:block;
+    position: absolute;  
+    float:left;
+    margin: 0;
+    padding:5px;    
+    border: 1px solid #CCC; 
+    font: normal 12px Verdana, Arial, Helvetica, sans-serif; 
+    color:#5A5655;   
+    background-color:#F8F8F8;  
+    height: 500px; 
+    text-align:left;
+    overflow:visible;    
+    z-index:88; 
+    -webkit-border-radius: 5px;
+    -moz-border-radius  : 5px;
+    width:99%;
+    clear:both;
 }
 
 .swMain div.actionBar {
-  display:block;
-  position: relative; 
-  clear:both;
-  margin:             3px 0 0 0;   
-  border:             1px solid #CCC;
-  padding:            0;    
-  color:              #5A5655;   
-  background-color:   #F8F8F8;
-  height:40px;
-  text-align:left;
-  overflow:auto;    
-  z-index:88; 
+    display:block;
+    position: relative; 
+    clear:both;
+    margin:             3px 0 0 0;   
+    border:             1px solid #CCC;
+    padding:            0;    
+    color:              #5A5655;   
+    background-color:   #F8F8F8;
+    height:40px;
+    text-align:left;
+    overflow:auto;    
+    z-index:88; 
 
-  -webkit-border-radius: 5px;
-  -moz-border-radius  : 5px;
-  left:0;
+    -webkit-border-radius: 5px;
+    -moz-border-radius  : 5px;
+    left:0;
 }
 
 .swMain .stepContainer .StepTitle {
-  display:block;
-  position: relative;
-  margin:0;   
-  border:1px solid #E0E0E0;
-  padding:5px;   
-  font: bold 16px Verdana, Arial, Helvetica, sans-serif; 
-  color:#5A5655;   
-  background-color:#E0E0E0;
-  clear:both;
-  text-align:left; 
-  z-index:88;
-  -webkit-border-radius: 5px;
-  -moz-border-radius  : 5px;    
+    display:block;
+    position: relative;
+    margin:0;   
+    border:1px solid #E0E0E0;
+    padding:5px;   
+    font: bold 16px Verdana, Arial, Helvetica, sans-serif; 
+    color:#5A5655;   
+    background-color:#E0E0E0;
+    clear:both;
+    text-align:left; 
+    z-index:88;
+    -webkit-border-radius: 5px;
+    -moz-border-radius  : 5px;    
 }
 .swMain ul.anchor {
-  position: relative;
-  display:block;
-  float:left;
-  list-style: none;
-  padding: 0;
-  margin: 10px 0;      
-  clear: both;
-  border: 0 solid #CCCCCC;
-  background: transparent; /*#EEEEEE */
+    position: relative;
+    display:block;
+    float:left;
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;      
+    clear: both;
+    border: 0 solid #CCCCCC;
+    background: transparent; /*#EEEEEE */
 }
 .swMain ul.anchor li{ 
-  position: relative; 
-  display:block;
-  margin: 0;
-  padding: 0 3px;
-  border: 0 solid #E0E0E0;
-  float: left;
+    position: relative; 
+    display:block;
+    margin: 0;
+    padding: 0 3px;
+    border: 0 solid #E0E0E0;
+    float: left;
 }
 /* Anchor Element Style */
 .swMain ul.anchor li a {
-  display:block;
-  position:relative;
-  float:left;
-  margin: 5px 0 0 0;
-  padding:3px;
-  height:60px;
-  width:190px;
-  text-decoration: none;
-  outline-style:none;
-  -moz-border-radius  : 5px;
-  -webkit-border-radius: 5px;
-  z-index:99;
+    display:block;
+    position:relative;
+    float:left;
+    margin: 5px 0 0 0;
+    padding:3px;
+    height:60px;
+    width:190px;
+    text-decoration: none;
+    outline-style:none;
+    -moz-border-radius  : 5px;
+    -webkit-border-radius: 5px;
+    z-index:99;
 }
 .swMain ul.anchor li a .stepNumber{
-  position:relative;
-  float:left;
-  width:30px;
-  text-align: center;
-  padding: 0 5px 5px;
-  font: bold 45px Verdana, Arial, Helvetica, sans-serif;
+    position:relative;
+    float:left;
+    width:30px;
+    text-align: center;
+    padding: 0 5px 5px;
+    font: bold 45px Verdana, Arial, Helvetica, sans-serif;
 }
 
 .swMain ul.anchor li a .stepDesc{
-  position:relative;
-  display:block;
-  float:left;
-  text-align: left;
-  padding:5px;
+    position:relative;
+    display:block;
+    float:left;
+    text-align: left;
+    padding:5px;
 
-  font: bold 20px Verdana, Arial, Helvetica, sans-serif;
+    font: bold 20px Verdana, Arial, Helvetica, sans-serif;
 }
 .swMain ul.anchor li a .stepDesc small{
-  font: normal 12px Verdana, Arial, Helvetica, sans-serif;
-  color: #c0c0c0;
+    font: normal 12px Verdana, Arial, Helvetica, sans-serif;
+    color: #c0c0c0;
 }
 
 
 .swMain ul.anchor li a.selected{
-  color:#F8F8F8;
-  background: #005681;  /* 005681 */
-  border: 1px solid #005681;
-  cursor:text;
-  -moz-box-shadow: 5px 5px 8px #888;
-  -webkit-box-shadow: 5px 5px 8px #888;
-  box-shadow: 5px 5px 8px #888;
+    color:#F8F8F8;
+    background: #005681;  /* 005681 */
+    border: 1px solid #005681;
+    cursor:text;
+    -moz-box-shadow: 5px 5px 8px #888;
+    -webkit-box-shadow: 5px 5px 8px #888;
+    box-shadow: 5px 5px 8px #888;
 }
 
 .swMain ul.anchor li a.selected:hover {
-  color:#F8F8F8;  
-  background: #005681;  
+    color:#F8F8F8;  
+    background: #005681;  
 }
 
 .swMain ul.anchor li a.done { 
-  position:relative;
-  color:#5a5655;  
-  background: #E0E0F7;  
-  border: 1px solid #E0E0F7;   
-  z-index:99;
+    position:relative;
+    color:#5a5655;  
+    background: #E0E0F7;  
+    border: 1px solid #E0E0F7;   
+    z-index:99;
 }
 .swMain ul.anchor li a.done:hover {
-  color:#5A5655;  
-  background: #E0E0F7; 
-  border: 1px solid #5A5655;   
+    color:#5A5655;  
+    background: #E0E0F7; 
+    border: 1px solid #5A5655;   
 }
 .swMain ul.anchor li a.disabled {
-  color:#CCCCCC;  
-  background: #F8F8F8;
-  border: 1px solid #CCC;  
-  cursor:text;   
+    color:#CCCCCC;  
+    background: #F8F8F8;
+    border: 1px solid #CCC;  
+    cursor:text;   
 }
 .swMain ul.anchor li a.disabled:hover {
-  color:#CCCCCC;  
-  background: #F8F8F8;     
+    color:#CCCCCC;  
+    background: #F8F8F8;     
 }
 
 .swMain ul.anchor li a.error {
-  color:#6c6c6c !important;  
-  background: #f08f75 !important;
-  border: 1px solid #fb3500 !important;      
+    color:#6c6c6c !important;  
+    background: #f08f75 !important;
+    border: 1px solid #fb3500 !important;      
 }
 .swMain ul.anchor li a.error:hover {
-  color:#000 !important;       
+    color:#000 !important;       
 }
 
 .swMain .buttonNext {
-  display:block;
-  float:right;
-  margin:5px 3px 0 3px;
-  padding:5px;
-  text-decoration: none;
-  text-align: center;
-  font: bold 13px Verdana, Arial, Helvetica, sans-serif;
-  width:100px;
-  color:#FFFFFF !important;
-  outline-style:none;
-  background-color:   #5A5655;
-  border: 1px solid #5A5655;
-  -moz-border-radius  : 5px; 
-  -webkit-border-radius: 5px;    
+    display:block;
+    float:right;
+    margin:5px 3px 0 3px;
+    padding:5px;
+    text-decoration: none;
+    text-align: center;
+    font: bold 13px Verdana, Arial, Helvetica, sans-serif;
+    width:100px;
+    color:#FFFFFF !important;
+    outline-style:none;
+    background-color:   #5A5655;
+    border: 1px solid #5A5655;
+    -moz-border-radius  : 5px; 
+    -webkit-border-radius: 5px;    
 }
 .swMain .buttonDisabled {
-  color:#F8F8F8  !important;
-  background-color: #CCCCCC !important;
-  border: 1px solid #CCCCCC  !important;
-  cursor:text;    
+    color:#F8F8F8  !important;
+    background-color: #CCCCCC !important;
+    border: 1px solid #CCCCCC  !important;
+    cursor:text;    
 }
 .swMain .buttonPrevious {
-  display:block;
-  float:right;
-  margin:5px 3px 0 3px;
-  padding:5px;
-  text-decoration: none;
-  text-align: center;
-  font: bold 13px Verdana, Arial, Helvetica, sans-serif;
-  width:100px;
-  color:#FFFFFF !important;
-  outline-style:none;
-  background-color:   #5A5655;
-  border: 1px solid #5A5655;
-  -moz-border-radius  : 5px; 
-  -webkit-border-radius: 5px;    
+    display:block;
+    float:right;
+    margin:5px 3px 0 3px;
+    padding:5px;
+    text-decoration: none;
+    text-align: center;
+    font: bold 13px Verdana, Arial, Helvetica, sans-serif;
+    width:100px;
+    color:#FFFFFF !important;
+    outline-style:none;
+    background-color:   #5A5655;
+    border: 1px solid #5A5655;
+    -moz-border-radius  : 5px; 
+    -webkit-border-radius: 5px;    
 }
 .swMain .buttonFinish {
-  display:block;
-  float:right;
-  margin:5px 10px 0 3px;
-  padding:5px;
-  text-decoration: none;
-  text-align: center;
-  font: bold 13px Verdana, Arial, Helvetica, sans-serif;
-  width:100px;
-  color:#FFFFFF !important;
-  outline-style:none;
-  background-color:   #5A5655;
-  border: 1px solid #5A5655;
-  -moz-border-radius  : 5px; 
-  -webkit-border-radius: 5px;    
+    display:block;
+    float:right;
+    margin:5px 10px 0 3px;
+    padding:5px;
+    text-decoration: none;
+    text-align: center;
+    font: bold 13px Verdana, Arial, Helvetica, sans-serif;
+    width:100px;
+    color:#FFFFFF !important;
+    outline-style:none;
+    background-color:   #5A5655;
+    border: 1px solid #5A5655;
+    -moz-border-radius  : 5px; 
+    -webkit-border-radius: 5px;    
 }
 
 /* Form Styles */
 
 .txtBox {
-  border:1px solid #CCCCCC;
-  color:#5A5655;
-  font:13px Verdana,Arial,Helvetica,sans-serif;
-  padding:2px;
-  width:430px;
+    border:1px solid #CCCCCC;
+    color:#5A5655;
+    font:13px Verdana,Arial,Helvetica,sans-serif;
+    padding:2px;
+    width:430px;
 }
 .txtBox:focus {
-  border:1px solid #005681;
+    border:1px solid #005681;
 }
 
 .swMain .loader {
-  position:relative;  
-  display:none;
-  float:left;  
-  margin: 2px 0 0 2px;
-  padding:8px 10px 8px 40px;
-  border: 1px solid #FFD700; 
-  font: bold 13px Verdana, Arial, Helvetica, sans-serif; 
-  color:#5A5655;       
-  background: #FFF url(../images/loader.gif) no-repeat 5px;  
-  -moz-border-radius  : 5px;
-  -webkit-border-radius: 5px;
-  z-index:998;
+    position:relative;  
+    display:none;
+    float:left;  
+    margin: 2px 0 0 2px;
+    padding:8px 10px 8px 40px;
+    border: 1px solid #FFD700; 
+    font: bold 13px Verdana, Arial, Helvetica, sans-serif; 
+    color:#5A5655;       
+    background: #FFF url(../images/loader.gif) no-repeat 5px;  
+    -moz-border-radius  : 5px;
+    -webkit-border-radius: 5px;
+    z-index:998;
 }
 .swMain .msgBox {
-  position:relative;  
-  display:none;
-  float:left;
-  margin: 4px 0 0 5px;
-  padding:5px;
-  border: 1px solid #FFD700; 
-  background-color: #FFFFDD;  
-  font: normal 12px Verdana, Arial, Helvetica, sans-serif; 
-  color:#5A5655;         
-  -moz-border-radius  : 5px;
-  -webkit-border-radius: 5px;
-  z-index:999;
-  min-width:200px;  
+    position:relative;  
+    display:none;
+    float:left;
+    margin: 4px 0 0 5px;
+    padding:5px;
+    border: 1px solid #FFD700; 
+    background-color: #FFFFDD;  
+    font: normal 12px Verdana, Arial, Helvetica, sans-serif; 
+    color:#5A5655;         
+    -moz-border-radius  : 5px;
+    -webkit-border-radius: 5px;
+    z-index:999;
+    min-width:200px;  
 }
 .swMain .msgBox .content {
-  font: normal 12px Verdana,Arial,Helvetica,sans-serif;
-  padding: 0;
-  float:left;
+    font: normal 12px Verdana,Arial,Helvetica,sans-serif;
+    padding: 0;
+    float:left;
 }
 .swMain .msgBox .close {
-  border: 1px solid #CCC;
-  border-radius: 3px;
-  color: #CCC;
-  display: block;
-  float: right;
-  margin: 0 0 0 5px;
-  outline-style: none;
-  padding: 0 2px 0 2px;
-  position: relative;
-  text-align: center;
-  text-decoration: none;
+    border: 1px solid #CCC;
+    border-radius: 3px;
+    color: #CCC;
+    display: block;
+    float: right;
+    margin: 0 0 0 5px;
+    outline-style: none;
+    padding: 0 2px 0 2px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
 }
 .swMain .msgBox .close:hover{
-  color: #005681;
-  border: 1px solid #005681;  
+    color: #005681;
+    border: 1px solid #005681;  
 }
 /** pload Image ****/
 
 #upload-wrapper {
-	//width: 90%;
-	margin-right: auto;
-	margin-left: auto;
-	margin-top: 20px;
-	background: #F5F5F5;
-	padding: 50px;
-	font-family: Arial, Helvetica, sans-serif;
-	color:#666666;
-	font-size: 14px;
-	border-radius: 10px;
-	box-shadow: 1px 1px 3px #AAA;
-	
+    //width: 90%;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 20px;
+    background: #F5F5F5;
+    padding: 50px;
+    font-family: Arial, Helvetica, sans-serif;
+    color:#666666;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px #AAA;
+
 }
 .upload-wrapper input[type="text"],
 .upload-wrapper input[type="file"],
@@ -678,7 +678,7 @@
     display: inline-block;
     border: 1px solid #ccc;
     font-size: 0.8em;
-	width: 30%;
+    width: 30%;
     box-shadow: inset 0 1px 3px #ddd;
     border-radius: 4px;
     -webkit-transition: 0.3s linear border;
@@ -700,8 +700,8 @@
     border-color: #129FEA;
 }
 
-.upload-wrapper input[type="file"]:focus,
- {
+.upload-wrapper input[type="file"]:focus
+{
     outline: thin dotted #333;
     outline: 1px auto #129FEA;
 }
@@ -732,8 +732,8 @@
 .upload-wrapper select:focus:invalid:focus {
     border-color: #e9322d;
 }
-.upload-wrapper input[type="file"]:focus:invalid:focus,
- {
+.upload-wrapper input[type="file"]:focus:invalid:focus
+{
     outline-color: #e9322d;
 }
 .upload-wrapper select {
@@ -767,8 +767,8 @@
 
 .upload-wrapper-aligned input,
 .upload-wrapper-aligned textarea,
-.upload-wrapper-aligned select,
- {
+.upload-wrapper-aligned select
+{
     display: inline-block;
     *display: inline;
     *zoom: 1;
@@ -799,13 +799,13 @@
 }
 #submit-btn {
 
-	text-align: right;
+    text-align: right;
     display: inline-block;
     margin:1em 1em 0 0;
 }
 #return-btn {
 
-	text-align: right;
+    text-align: right;
     display: inline-block;
     margin:1em 1em 0 0;
 }

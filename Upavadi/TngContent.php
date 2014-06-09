@@ -38,26 +38,6 @@ class Upavadi_TngContent
 
     public function initPlugin()
     {
-        add_shortcode('upavadi_getuser', array($this, 'showUser'));
-        add_shortcode('upavadi_getuserfamily', array($this, 'showUserfamily'));
-        add_shortcode('upavadi_getuserchildren', array($this, 'showUserchildren'));
-        add_shortcode('upavadi_pages_birthdays', array($this, 'showBirthdays'));
-        add_shortcode('upavadi_pages_birthdaysplusone', array($this, 'showBirthdaysplusone'));
-        add_shortcode('upavadi_pages_birthdaysplustwo', array($this, 'showBirthdaysplustwo'));
-        add_shortcode('upavadi_pages_birthdaysplusthree', array($this, 'showBirthdaysplusthree'));
-        add_shortcode('upavadi_pages_birthdaysplustwo', array($this, 'showBirthdaysplustwo'));
-        add_shortcode('upavadi_pages_birthdaysplusthree', array($this, 'showBirthdaysplusthree'));
-        add_shortcode('upavadi_pages_manniversaries', array($this, 'showmanniversaries'));
-        add_shortcode('upavadi_pages_manniversariesplusone', array($this, 'showmanniversariesplusone'));
-        add_shortcode('upavadi_pages_manniversariesplustwo', array($this, 'showmanniversariesplustwo'));
-        add_shortcode('upavadi_pages_manniversariesplusthree', array($this, 'showmanniversariesplusthree'));
-        add_shortcode('upavadi_pages_danniversaries', array($this, 'showdanniversaries'));
-        add_shortcode('upavadi_pages_danniversariesplusone', array($this, 'showdanniversariesplusone'));
-        add_shortcode('upavadi_pages_danniversariesplustwo', array($this, 'showdanniversariesplustwo'));
-        add_shortcode('upavadi_pages_danniversariesplusthree', array($this, 'showdanniversariesplusthree'));
-        add_shortcode('upavadi_pages_familyuser', array($this, 'showfamilyuser'));
-        add_shortcode('upavadi_pages_familyform', array($this, 'showfamilyform'));
-
         $templates = new Upavadi_Templates();
         foreach ($this->shortcodes as $shortcode) {
             $shortcode->init($this, $templates);
@@ -874,14 +854,15 @@ SQL;
         $baseLink = get_permalink($id);
         $link = parse_url($baseLink);
         $uri = $_SERVER['REQUEST_URI'];
-
+        $tngDir = basename(get_option('tng-api-tng-path'));
+        
         if (strpos($uri, $link['path']) === 0) {
             $request = parse_url($uri);
             $uri = preg_replace("|^{$link['path']}|", '', $request['path']);
             if ($_SERVER['QUERY_STRING']) {
                 $uri .= '?' . $_SERVER['QUERY_STRING'];
             }
-            $basePath = 'http://localhost/tng/';
+            $basePath = 'http://localhost/' . $tngDir . '/';
             $url = $basePath . $uri;
             
             $this->init();
@@ -890,12 +871,12 @@ SQL;
                 $user['username'],
                 $user['password'],
                 $user['password_type'],
-                'C:wampwwwtng', // 'vawwwwvhostsupavadinethttpdocstng',
+                str_replace(DIRECTORY_SEPARATOR, '', get_option('tng-api-tng-path')),
                 function ($url) {
                     if (preg_match('~^(http|/)~', $url)) {
                         return $url;
                     }
-                    return preg_replace('~//~', '/', '/tng/' . $url);
+                    return preg_replace('~//~', '/', '/' . $tngDir . '/' . $url);
                 }
             );
             $response = $proxy->load(
