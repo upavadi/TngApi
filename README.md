@@ -22,6 +22,12 @@ To get better query performance add an indexes to to following fields:
 ## Installation
 
 ### Preparation
+This plugin uses some 3rd party libraries, to get them we use the [composer](https://getcomposer.org).
+Before you begin please run the following command in then source directory:
+```sh
+php composer.phar install
+```
+
 This plugin assumes that:
  - Your TNG installation is in the directory below the base of your site (i.e. something like `http://mytngsite.com/tng`).
  - You have created an empty page to act as the proxy for the TNG site.
