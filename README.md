@@ -23,7 +23,7 @@ To get better query performance add an indexes to to following fields:
 
 ### Preparation
 This plugin uses some 3rd party libraries, to get them we use the [composer](https://getcomposer.org).
-Before you begin please run the following command in then source directory:
+Before you begin please run the following command in the tng-api directory source directory:
 ```sh
 php composer.phar install
 ```
