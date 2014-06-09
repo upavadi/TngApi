@@ -7,13 +7,15 @@ class Upavadi_TngProxy
     private $passwordHash;
     private $userName;
     private $suffix;
+    private $rewriter;
 
-    public function __construct($userName, $passwordHash, $passwordType, $suffix)
+    public function __construct($userName, $passwordHash, $passwordType, $suffix, $rewriter)
     {
         $this->userName = $userName;
         $this->passwordHash = $passwordHash;
         $this->passwordType = $passwordType;
         $this->suffix = $suffix;
+        $this->rewriter = $rewriter;
     }
 
     public function login()
@@ -38,7 +40,7 @@ class Upavadi_TngProxy
         ini_set('xdebug.max_nesting_level', 200);
         $response = $request->send();
     }
-    
+
     public function load($path, $method = 'get', $post = null)
     {
         if (!isset($_SESSION['upavadi_tng_session_id'])) {
@@ -72,7 +74,6 @@ class Upavadi_TngProxy
         //ini_set('xdebug.max_nesting_level', 200);
         $response = $request->send();
         //echo implode('<br>', $response->getHeaderLines());
-        
         //echo $response->getBody(true); die;
 //        echo $path;
 //        echo $response->getEffectiveUrl(); die;
@@ -100,8 +101,13 @@ class Upavadi_TngProxy
         $doc->appendChild($content);
 
         $styleNodes = array();
+        $rewriter = $this->rewriter;
         foreach (array($styles, $links) as $elements) {
             foreach ($elements as $element) {
+                $src = $element->attributes->getNamedItem('href');
+                if ($src) {
+                    $src->nodeValue = $rewriter($src->nodeValue);
+                }
                 $styleNodes[] = $element;
             }
         }
@@ -112,7 +118,20 @@ class Upavadi_TngProxy
 
         $tables = $doc->getElementsByTagName('table');
         $scripts = $doc->getElementsByTagName('script');
-
+        $imgs = $doc->getElementsByTagName('img');
+        
+        foreach ($imgs as $img) {
+            $src = $img->attributes->getNamedItem('src');
+            if ($src) {
+                if (preg_match('~^(http|/)~', $src->nodeValue)) {
+                    continue;
+                }
+                if (preg_match('~&~', $src->nodeValue)) {
+                    continue;
+                }
+                $src->nodeValue = $rewriter($src->nodeValue);
+            }
+        }
         $nodes = array();
         foreach ($scripts as $node) {
             $code = $node->nodeValue;
@@ -122,6 +141,12 @@ class Upavadi_TngProxy
                 $ct = $node->ownerDocument->createCDATASection("\n" . $code . "\n//");
                 $node->appendChild($cm);
                 $node->appendChild($ct);
+            }
+            $src = $node->attributes->getNamedItem('src');
+            if ($src) {
+                if (!preg_match('~^(http|/)~', $src->nodeValue)) {
+                    $src->nodeValue = $rewriter($src->nodeValue);
+                }               
             }
             $nodes[] = $node;
         }

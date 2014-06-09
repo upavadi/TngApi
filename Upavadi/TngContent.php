@@ -890,7 +890,13 @@ SQL;
                 $user['username'],
                 $user['password'],
                 $user['password_type'],
-                'C:wampwwwtng' // 'vawwwwvhostsupavadinethttpdocstng'
+                'C:wampwwwtng', // 'vawwwwvhostsupavadinethttpdocstng',
+                function ($url) {
+                    if (preg_match('~^(http|/)~', $url)) {
+                        return $url;
+                    }
+                    return preg_replace('~//~', '/', '/tng/' . $url);
+                }
             );
             $response = $proxy->load(
                 $url,
