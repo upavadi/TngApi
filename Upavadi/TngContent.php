@@ -97,6 +97,7 @@ class Upavadi_TngContent
 
     public function initAdmin()
     {
+        register_setting('tng-api-options', 'tng-api-tng-page-id');
         register_setting('tng-api-options', 'tng-api-tng-path');
         register_setting('tng-api-options', 'tng-api-db-host');
         register_setting('tng-api-options', 'tng-api-db-user');
@@ -106,6 +107,12 @@ class Upavadi_TngContent
         add_settings_section('tng', 'TNG', function() {
             echo "Help goes here";
         }, 'tng-api');
+        
+        add_settings_field('tng-page-id', 'TNG Proxy Page', function () {
+            $tngPage = esc_attr(get_option('tng-api-tng-page-id'));
+            echo "<input type='text' name='tng-api-tng-page-id' value='$tngPage' />";
+        }, 'tng-api', 'tng');
+        
         add_settings_field('tng-path', 'TNG Path', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
             echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
@@ -849,7 +856,10 @@ SQL;
 
     public function proxyFilter($posts)
     {
-        $id = 4;
+        $id = esc_attr(get_option('tng-api-tng-page-id'));;
+        if (!$id) {
+            return $posts;
+        }
         $page = get_page($id);
         $baseLink = get_permalink($id);
         $link = parse_url($baseLink);
@@ -872,7 +882,7 @@ SQL;
                 $user['password'],
                 $user['password_type'],
                 str_replace(DIRECTORY_SEPARATOR, '', get_option('tng-api-tng-path')),
-                function ($url) {
+                function ($url) use ($tngDir) {
                     if (preg_match('~^(http|/)~', $url)) {
                         return $url;
                     }
