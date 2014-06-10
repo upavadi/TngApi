@@ -56,11 +56,11 @@ We've provided a number of useful shortcodes for to play with.  You can find the
  - `[upavadi_pages__personnotes]` - Add Notes for Individual
 
  - Above 4 shortcodes may be used on a single page using the TAB shortcode
- - '[tabs]'[tab title="Family"]''[upavadi_pages_familyuser]''[/tab]'
- - '[tab title="Update Family"]''[upavadi_pages_familyform]''[/tab]'
- - '[tab title="Add Family"]''[upavadi_pages_addfamilyform]''[/tab]'
- - '[[tab title="Update Person Notes"]''[upavadi_pages_personnotes]''[/tab]'
- - '[/tabs]'
+ - `[tabs]'[tab title="Family"]``[upavadi_pages_familyuser]``[/tab]`
+ - `[tab title="Update Family"]``[upavadi_pages_familyform]``[/tab]`
+ - `[tab title="Add Family"]``[upavadi_pages_addfamilyform]``[/tab]`
+ - `[[tab title="Update Person Notes"]``[upavadi_pages_personnotes]``[/tab]`
+ - `[/tabs]`
 
  - `[upavadi_pages__birthdays]` - Birthdays
  - `[upavadi_pages__manniversaries]` - Marriage Anniversaries
