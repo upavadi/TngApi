@@ -68,7 +68,7 @@ We've provided a number of useful shortcodes for to play with.  You can find the
  -  Above reports use Individual hyperlinks to the 'Family' page
  
  -  `[upavadi_pages__tng_proxy]` - TNG Index page redirect
- -  `[upavadi_pages__submitumage]` - Upload photos. This shortcode saves the image but does not store image data at present.        Work In Progress. 
+ -  `[upavadi_pages__submitimage]` - Upload photos. This shortcode saves the image but does not store image data at present.        Work In Progress. 
  
 ## Patches & contributions
 This is very much a work in progress so please feel free to fork and submit pull requests.
