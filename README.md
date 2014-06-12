@@ -48,7 +48,7 @@ Next edit to the proxy page you created earlier and add the `[upavadi_tng_proxy]
 ## Shortcodes
 We've provided a number of useful shortcodes for to play with.  You can find them all in the shortcodes directory.
 
- - `[upavadi_pages_familysearch]` - Name-Search Widget. To be able to use this widget, create page named 'search' and place shortcode in the page.
+ - `[upavadi_pages_familysearch]` - Name-Search Widget. To be able to use this widget, create page named 'search' and place shortcode in the page. Familyserch results are displayed in 'search' page.
  - Following 4 shortcodes are used in family page. To use existing hyperlinks, this page must be called 'family'
  - `[upavadi_pages__familyuser]` - Family page of the user
  - `[upavadi_pages__familyform]` - Update details of Individual
