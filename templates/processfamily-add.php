@@ -1,14 +1,16 @@
 <?php
+require_once '../../../../wp-load.php';
 header('Location: /thank-you');
 //this the original
 $date = date('c');
+$email = esc_attr(get_option('tng-api-email'));
 $msg = <<<MSG
 New Person Added ({$date}):
 
 MSG;
 $msg .= print_r($_REQUEST, true);
 //echo "<pre>{$msg}</pre>";
-mail('mahesh@upavadi.net', 'New data', $msg);
+mail($email, 'New data', $msg);
 ?>
 <html>
 <head>

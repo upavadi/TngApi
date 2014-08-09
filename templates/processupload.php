@@ -4,6 +4,7 @@ require_once '../../../../wp-load.php';
 require_once '../autoload.php';
 $content = Upavadi_TngContent::instance();
 $content->init();
+$email = esc_attr(get_option('tng-api-email'));
 $collection = esc_attr(get_option('tng-api-tng-photo-upload'));;
 
 $tables = $content->getTngTables();
@@ -125,6 +126,18 @@ SQL;
         $personId = $content->getCurrentPersonId();
         $sql = "INSERT into {$tables['medialinks_table']} (linktype, personID, mediaID) VALUES ('I', '{$personId}', {$mediaID})";
         $content->query($sql);
+        
+        $date = date('c');
+$msg = <<<MSG
+New Image uploaded on {$date}:
+
+{$username}
+{$title}
+{$desc}
+
+MSG;
+        //echo "<pre>{$msg}</pre>";
+        mail($email, 'New photo', $msg);
     } else {
         die('Resize Error'); //output error
     }

@@ -120,6 +120,7 @@ class Upavadi_TngContent
 
     public function initAdmin()
     {
+        register_setting('tng-api-options', 'tng-api-email');
         register_setting('tng-api-options', 'tng-api-tng-page-id');
         register_setting('tng-api-options', 'tng-api-tng-path');
         register_setting('tng-api-options', 'tng-api-tng-photo-upload');
@@ -128,6 +129,14 @@ class Upavadi_TngContent
         register_setting('tng-api-options', 'tng-api-db-password');
         register_setting('tng-api-options', 'tng-api-db-database');
 
+        add_settings_section('general', 'General', function() {
+        }, 'tng-api');
+        
+        add_settings_field('tng-email', 'Notification Email Address', function () {
+            $tngEmail = esc_attr(get_option('tng-api-email'));
+            echo "<input type='text' name='tng-api-email' value='$tngEmail' />";
+        }, 'tng-api', 'general');
+        
         add_settings_section('tng', 'TNG', function() {
             echo "In order for the plug in work we need to know where the original TNG source files live";
         }, 'tng-api');
