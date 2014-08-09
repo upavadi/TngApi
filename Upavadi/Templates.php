@@ -4,9 +4,13 @@ class Upavadi_Templates
 {
     protected $templates;
 
-    public function __construct()
+    public function __construct($path = null)
     {
-        $this->templates = dirname(dirname(__FILE__)) . '/templates/';
+        if ($path) {
+            $this->templates = $path;
+        } else {
+            $this->templates = dirname(dirname(__FILE__)) . '/templates/';
+        }
     }
 
     public function render($template, array $context)

@@ -16,7 +16,6 @@ class Upavadi_TngContent
 
     protected function __construct()
     {
-        
     }
 
     public static function instance()
@@ -156,7 +155,7 @@ class Upavadi_TngContent
         </form>
         <?php
     }
-
+    
     public function showUser()
     {
         $user = $this->getPerson();

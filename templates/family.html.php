@@ -19,7 +19,7 @@
 			
 			<?php
 				
-				$tngcontent = Upavadi_TngContent::instance()->init();
+				$tngcontent = Upavadi_TngContent::instance();
 				
 								
 				 //get and hold current user
