@@ -105,20 +105,15 @@ class Upavadi_TngContent
         register_setting('tng-api-options', 'tng-api-db-database');
 
         add_settings_section('tng', 'TNG', function() {
-            echo "Help goes here";
+            echo "In order for the plug in work we need to know where the original TNG source files live";
         }, 'tng-api');
-        
-        add_settings_field('tng-page-id', 'TNG Proxy Page', function () {
-            $tngPage = esc_attr(get_option('tng-api-tng-page-id'));
-            echo "<input type='text' name='tng-api-tng-page-id' value='$tngPage' />";
-        }, 'tng-api', 'tng');
         
         add_settings_field('tng-path', 'TNG Path', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
             echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
         }, 'tng-api', 'tng');
         add_settings_section('db', 'Database', function() {
-            echo "Help goes here";
+            echo "We also need to know where the TNG database lives";
         }, 'tng-api');
         add_settings_field('db-host', 'Hostname', function () {
             $dbHost = esc_attr(get_option('tng-api-db-host'));
@@ -853,79 +848,4 @@ SQL;
         }
         wp_die('User ' . $userName . ' not found in TNG');
     }
-
-    public function proxyFilter($posts)
-    {
-        $id = esc_attr(get_option('tng-api-tng-page-id'));;
-        if (!$id) {
-            return $posts;
-        }
-        $page = get_page($id);
-        $baseLink = get_permalink($id);
-        $link = parse_url($baseLink);
-        $uri = $_SERVER['REQUEST_URI'];
-        $tngDir = basename(get_option('tng-api-tng-path'));
-        
-        if (strpos($uri, $link['path']) === 0) {
-            $request = parse_url($uri);
-            $uri = preg_replace("|^{$link['path']}|", '', $request['path']);
-            if ($_SERVER['QUERY_STRING']) {
-                $uri .= '?' . $_SERVER['QUERY_STRING'];
-            }
-            $basePath = 'http://localhost/' . $tngDir . '/';
-            $url = $basePath . $uri;
-            
-            $this->init();
-            $user = $this->getTngUser();
-            $proxy = new Upavadi_TngProxy(
-                $user['username'],
-                $user['password'],
-                $user['password_type'],
-                str_replace(DIRECTORY_SEPARATOR, '', get_option('tng-api-tng-path')),
-                function ($url) use ($tngDir) {
-                    if (preg_match('~^(http|/)~', $url)) {
-                        return $url;
-                    }
-                    return preg_replace('~//~', '/', '/' . $tngDir . '/' . $url);
-                }
-            );
-            $response = $proxy->load(
-                $url,
-                $_SERVER['REQUEST_METHOD'],
-                $_POST
-            );
-            
-            if (!is_string($response)) {
-                foreach ($response->getHeaderLines() as $header) {
-                    if (preg_match('/^Transfer-Encoding/', $header)) {
-                        continue;
-                    }
-                    header($header);
-                }
-                echo $response->getBody(true);
-                exit;
-            }
-            $this->setHtml($response);
-            $posts = array($page);
-            add_filter('user_trailingslashit', function ($url) use ($baseLink) {
-                if (preg_match("~$url$~", $baseLink)) {
-                    return $url;
-                }
-                return preg_replace('|/$|', '', $url);
-            });
-        }
-        return $posts;
-    }
-
-    public function setHtml($html)
-    {
-        $this->html = $html;
-    }
-
-    public function getHtml()
-    {
-        return $this->html;
-    }
-
 }
-

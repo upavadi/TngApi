@@ -318,13 +318,12 @@
 				if ($mother_name !== '')
 				{
 				$motherRow = $tngcontent->getgotra($mother['personID']);
-				$mother_gotra = $motherRow['info'];		
+				$mother_gotra = $motherRow['info'];	
+				
 				} else {
 				$mother_gotra = "Unknown";
 				}
-				if ($mother_name == '')
-				{ $mother_gotra = "";
-				}
+				
 				//Mother - get death date and place
 				
 				if ($mother_name !== '')
