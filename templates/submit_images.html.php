@@ -70,7 +70,7 @@ function beforeSubmit(){
         }
 		
 		//Allowed file size is less than 1 MB (1048576)
-		if(fsize>1048576) 
+		if(fsize>(5 * 1024 * 1024) 
 		{
 			$("#output").html("<b>"+bytesToSize(fsize) +"</b> Too big Image file! <br />Please reduce the size of your photo using an image editor.");
 			return false
@@ -124,8 +124,7 @@ Select image to upload by clicking on Browse Button. There is a limit of 5Mb for
 </div>
 <div class="upload-control-group">
             <label for="Notes" class="textarea">Additional Notes</label> 
-               <textarea rows="4" cols="50" name="Notes" >
-			   Tell Me More...</textarea> Notes about the event - If group photograph, people in the photograh
+               <textarea rows="4" cols="50" name="Notes" placeholder="Tell Me More..."></textarea> Notes about the event - If group photograph, people in the photograh
 </div>
 <p>
 <input type="submit"  id="submit-btn" value="Upload Photo" style="position: absolute; left: 228px;"/><br />

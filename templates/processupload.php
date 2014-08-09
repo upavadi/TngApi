@@ -140,6 +140,9 @@ function resizeImage($CurWidth, $CurHeight, $MaxSize, $DestFolder, $SrcImage, $Q
 
     //Construct a proportional size of new image
     $ImageScale = min($MaxSize / $CurWidth, $MaxSize / $CurHeight);
+    if ($ImageScale > 1) {
+        $ImageScale = 1;
+    }
     $NewWidth = ceil($ImageScale * $CurWidth);
     $NewHeight = ceil($ImageScale * $CurHeight);
     $NewCanves = imagecreatetruecolor($NewWidth, $NewHeight);

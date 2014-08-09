@@ -646,84 +646,84 @@ foreach ($allnotes as $PersonNote):
 <script type="text/javascript" src="<?php echo plugins_url('js/jquery-1.10.2.min.js', dirname(__FILE__)); ?>"></script>
 <script type="text/javascript" src="<?php echo plugins_url('js/jquery.form.min.js', dirname(__FILE__)); ?>"></script>
 <script type="text/javascript">
-                                $(document).ready(function() {
-                                    var options = {
-                                        target: '#output', // target element(s) to be updated with server response 
-                                        beforeSubmit: beforeSubmit, // pre-submit callback 
-                                        success: afterSuccess, // post-submit callback 
-                                        resetForm: true        // reset the form after successful submit 
-                                    };
+$(document).ready(function() {
+    var options = {
+        target: '#output', // target element(s) to be updated with server response 
+        beforeSubmit: beforeSubmit, // pre-submit callback 
+        success: afterSuccess, // post-submit callback 
+        resetForm: true        // reset the form after successful submit 
+    };
 
-                                    $('#MyUploadForm').submit(function() {
-                                        $(this).ajaxSubmit(options);
-                                        // always return false to prevent standard browser submit and page navigation 
-                                        return false;
-                                    });
-                                });
+    $('#MyUploadForm').submit(function() {
+        $(this).ajaxSubmit(options);
+        // always return false to prevent standard browser submit and page navigation 
+        return false;
+    });
+});
 
-                                function afterSuccess()
-                                {
-                                    $('#submit-btn').show(); //hide submit button
-                                    $('#loading-img').hide(); //hide submit button
+function afterSuccess()
+{
+    $('#submit-btn').show(); //hide submit button
+    $('#loading-img').hide(); //hide submit button
 
-                                }
+}
 
-                                //function to check file size before uploading.
-                                function beforeSubmit() {
-                                    //check whether browser fully supports all File API
-                                    if (window.File && window.FileReader && window.FileList && window.Blob)
-                                    {
+//function to check file size before uploading.
+function beforeSubmit() {
+    //check whether browser fully supports all File API
+    if (window.File && window.FileReader && window.FileList && window.Blob)
+    {
 
-                                        if (!$('#imageInput').val()) //check empty input filed
-                                        {
-                                            $("#output").html("Please Select an Image to upload");
-                                            return false
-                                        }
+        if (!$('#imageInput').val()) //check empty input filed
+        {
+            $("#output").html("Please Select an Image to upload");
+            return false
+        }
 
-                                        var fsize = $('#imageInput')[0].files[0].size; //get file size
-                                        var ftype = $('#imageInput')[0].files[0].type; // get file type
+        var fsize = $('#imageInput')[0].files[0].size; //get file size
+        var ftype = $('#imageInput')[0].files[0].type; // get file type
 
 
-                                        //allow only valid image file types 
-                                        switch (ftype)
-                                        {
-                                            case 'image/png':
-                                            case 'image/gif':
-                                            case 'image/jpeg':
-                                            case 'image/pjpeg':
-                                                break;
-                                            default:
-                                                $("#output").html("<b>" + ftype + "</b> Unsupported file type!");
-                                                return false
-                                        }
+        //allow only valid image file types 
+        switch (ftype)
+        {
+            case 'image/png':
+            case 'image/gif':
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                break;
+            default:
+                $("#output").html("<b>" + ftype + "</b> Unsupported file type!");
+                return false
+        }
 
-                                        //Allowed file size is less than 1 MB (1048576)
-                                        if (fsize > 1048576)
-                                        {
-                                            $("#output").html("<b>" + bytesToSize(fsize) + "</b> Too big Image file! <br />Please reduce the size of your photo using an image editor.");
-                                            return false
-                                        }
+        //Allowed file size is less than 1 MB (1048576)
+        if (fsize > (5 * 1024 * 1024))
+        {
+            $("#output").html("<b>" + bytesToSize(fsize) + "</b> Too big Image file! <br />Please reduce the size of your photo using an image editor.");
+            return false
+        }
 
-                                        $('#submit-btn').hide(); //hide submit button
-                                        $('#loading-img').show(); //hide submit button
-                                        $("#output").html("");
-                                    }
-                                    else
-                                    {
-                                        //Output error to older unsupported browsers that doesn't support HTML5 File API
-                                        $("#output").html("Please upgrade your browser, because your current browser lacks some new features we need!");
-                                        return false;
-                                    }
-                                }
+        $('#submit-btn').hide(); //hide submit button
+        $('#loading-img').show(); //hide submit button
+        $("#output").html("");
+    }
+    else
+    {
+        //Output error to older unsupported browsers that doesn't support HTML5 File API
+        $("#output").html("Please upgrade your browser, because your current browser lacks some new features we need!");
+        return false;
+    }
+}
 
-                                //function to format bites bit.ly/19yoIPO
-                                function bytesToSize(bytes) {
-                                    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-                                    if (bytes == 0)
-                                        return '0 Bytes';
-                                    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-                                    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-                                }
+//function to format bites bit.ly/19yoIPO
+function bytesToSize(bytes) {
+    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes == 0)
+        return '0 Bytes';
+    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
+}
 
 
 </script>
@@ -740,14 +740,14 @@ if (!$uploadPersonId) {
         <h3>Submit Profile Image for </br><?php echo $name; ?></h3>
 
         <b>Profile image submitted by <?php echo $User; ?></b>
-        <form class="upload-wrapper upload-wrapper-aligned"action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
+        <form class="upload-wrapper upload-wrapper-aligned" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
             <input type="hidden" name="title" value="<?php echo $uploadPersonId; ?>" />
             <input type="hidden" name="Desc" value="Submit Profile Image for </br><?php echo $name; ?>" />
             <fieldset>
                 <div class="upload-control-group">
                     <label for="Image">Select Image</label>
                     <input name="ImageFile" id="imageInput" type="file" placeholder="no file selected">
-                    <br/>Maximum size 5Gb
+                    <br/>Maximum size 5Mb
                 </div>
 
                 <p>
