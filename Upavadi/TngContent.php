@@ -13,6 +13,7 @@ class Upavadi_TngContent
      * @var Upavadi_Shortcode_AbstractShortcode[]
      */
     protected $shortcodes = array();
+    protected $domain;
 
     protected function __construct()
     {
@@ -43,9 +44,19 @@ class Upavadi_TngContent
         }
     }
 
+    public function getTngPath()
+    {
+        return esc_attr(get_option('tng-api-tng-path'));
+    }
+    
+    public function getTngTables()
+    {
+        return $this->tables;
+    }
+    
     public function initTables()
     {
-        $tngPath = esc_attr(get_option('tng-api-tng-path'));
+        $tngPath = $this->getTngPath();
         $configPath = $tngPath . DIRECTORY_SEPARATOR . "config.php";
         include $configPath;
         $vars = get_defined_vars();
@@ -53,9 +64,22 @@ class Upavadi_TngContent
             if (preg_match('/_table$/', $name)) {
                 $this->tables[$name] = $value;
             }
+            if (preg_match('/tngdomain$/', $name)) {
+                $this->domain = $value;
+            }
         }
     }
 
+    public function getDomain()
+    {
+        return $this->domain;
+    }
+    
+    public function getDbLink()
+    {
+        return $this->db;
+    }
+    
     public function init()
     {
         if ($this->db) {
@@ -88,7 +112,7 @@ class Upavadi_TngContent
         return $this;
     }
 
-    protected function query($sql)
+    public function query($sql)
     {
         $result = mysqli_query($this->db, $sql) or die("Cannot execute query: $sql");
         return $result;
@@ -98,6 +122,7 @@ class Upavadi_TngContent
     {
         register_setting('tng-api-options', 'tng-api-tng-page-id');
         register_setting('tng-api-options', 'tng-api-tng-path');
+        register_setting('tng-api-options', 'tng-api-tng-photo-upload');
         register_setting('tng-api-options', 'tng-api-db-host');
         register_setting('tng-api-options', 'tng-api-db-user');
         register_setting('tng-api-options', 'tng-api-db-password');
@@ -110,6 +135,10 @@ class Upavadi_TngContent
         add_settings_field('tng-path', 'TNG Path', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
             echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
+        }, 'tng-api', 'tng');
+        add_settings_field('tng-photo-upload', 'Photo Upload mediatypeID', function () {
+            $tngPath = esc_attr(get_option('tng-api-tng-photo-upload'));
+            echo "<input type='text' name='tng-api-tng-photo-upload' value='$tngPath' />";
         }, 'tng-api', 'tng');
         add_settings_section('db', 'Database', function() {
             echo "We also need to know where the TNG database lives";

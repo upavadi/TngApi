@@ -1,2 +1,2 @@
-HOWTO Use custom code
+HOW TO Use custom code
 =====================
