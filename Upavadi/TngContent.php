@@ -17,6 +17,7 @@ class Upavadi_TngContent
 
     protected function __construct()
     {
+        
     }
 
     public static function instance()
@@ -48,12 +49,12 @@ class Upavadi_TngContent
     {
         return esc_attr(get_option('tng-api-tng-path'));
     }
-    
+
     public function getTngTables()
     {
         return $this->tables;
     }
-    
+
     public function initTables()
     {
         $tngPath = $this->getTngPath();
@@ -74,12 +75,12 @@ class Upavadi_TngContent
     {
         return $this->domain;
     }
-    
+
     public function getDbLink()
     {
         return $this->db;
     }
-    
+
     public function init()
     {
         if ($this->db) {
@@ -130,17 +131,18 @@ class Upavadi_TngContent
         register_setting('tng-api-options', 'tng-api-db-database');
 
         add_settings_section('general', 'General', function() {
+            
         }, 'tng-api');
-        
+
         add_settings_field('tng-email', 'Notification Email Address', function () {
             $tngEmail = esc_attr(get_option('tng-api-email'));
             echo "<input type='text' name='tng-api-email' value='$tngEmail' />";
         }, 'tng-api', 'general');
-        
+
         add_settings_section('tng', 'TNG', function() {
             echo "In order for the plug in work we need to know where the original TNG source files live";
         }, 'tng-api');
-        
+
         add_settings_field('tng-path', 'TNG Path', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
             echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
@@ -193,7 +195,7 @@ class Upavadi_TngContent
         </form>
         <?php
     }
-    
+
     public function showUser()
     {
         $user = $this->getPerson();
@@ -352,6 +354,24 @@ SQL;
         return $rows;
     }
 
+    public function getProfileMedia($personId = null)
+    {
+        //get default media
+        $defaultmedia = $this->getdefaultmedia($personId);
+        //$mediaID = "../tng/photos/". $defaultmedia['thumbpath'];
+
+        if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "M") {
+            $mediaID = "/img/male.jpg";
+        }
+        if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "F") {
+            $mediaID = "/img/female.jpg";
+        }
+        if ($defaultmedia['thumbpath'] !== null) {
+            $mediaID = "/photos/" . $defaultmedia['thumbpath'];
+        }
+        return $this->getDomain() . $mediaID;
+    }
+
     public function getChildren($familyId = null)
     {
 
@@ -416,31 +436,6 @@ SQL;
         return 0;
     }
 
-    public function getBirthdaysPlusOne($month)
-    {
-        $sql = <<<SQL
-SELECT personid,
-       firstname,
-       lastname,
-       birthdate,
-       birthplace,
-       gedcom,
-       Year(Now()) - Year(birthdatetr) AS Age
-FROM   {$this->tables['people_table']}
-WHERE  Month(birthdatetr) = MONTH(ADDDATE(now(), INTERVAL 1 month))
-       AND living = 1
-ORDER  BY Day(birthdatetr),
-          lastname
-SQL;
-        $result = $this->query($sql);
-
-        $rows = array();
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
     public function getBirthdaysPlusTwo($month)
     {
         $sql = <<<SQL
@@ -493,7 +488,7 @@ SQL;
 
     public function getBirthdays($month)
     {
-	
+
         $sql = <<<SQL
 SELECT personid,
        firstname,
@@ -662,86 +657,11 @@ SQL;
         return $rows;
     }
 
-    public function getmanniversariesplustwo($month)
-    {
-        $sql = <<<SQL
-SELECT h.gedcom,
-	   h.personid AS personid1,
-       h.firstname AS firstname1,
-       h.lastname AS lastname1,
-       w.personid AS personid2,
-       w.firstname AS firstname2,
-       w.lastname AS lastname2,
-	   f.familyID,
-       f.marrdate,
-       f.marrplace,
-       Year(Now()) - Year(marrdatetr) AS Years
-FROM   {$this->tables['families_table']} as f
-    LEFT JOIN {$this->tables['people_table']} AS h
-              ON f.husband = h.personid
-       LEFT JOIN {$this->tables['people_table']} AS w
-              ON f.wife = w.personid
-WHERE  Month(f.marrdatetr) = MONTH(ADDDATE(now(), INTERVAL 2 month))
-       
-ORDER  BY Day(f.marrdatetr)
-          
-SQL;
-        $result = $this->query($sql);
-
-        $rows = array();
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
-    public function getmanniversariesplusthree($month)
-    {
-        $sql = <<<SQL
-SELECT h.gedcom,
-	   h.personid AS personid1,
-       h.firstname AS firstname1,
-       h.lastname AS lastname1,
-       w.personid AS personid2,
-       w.firstname AS firstname2,
-       w.lastname AS lastname2,
-	   f.familyID,
-       f.marrdate,
-       f.marrplace,
-       Year(Now()) - Year(marrdatetr) AS Years
-FROM   {$this->tables['families_table']} as f
-    LEFT JOIN {$this->tables['people_table']} AS h
-              ON f.husband = h.personid
-       LEFT JOIN {$this->tables['people_table']} AS w
-              ON f.wife = w.personid
-WHERE  Month(f.marrdatetr) = MONTH(ADDDATE(now(), INTERVAL 3 month))
-       
-ORDER  BY Day(f.marrdatetr)
-          
-SQL;
-        $result = $this->query($sql);
-
-        $rows = array();
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
     //do shortcode birthdays
     public function showBirthdays()
     {
         ob_start();
         Upavadi_Pages::instance()->birthdays();
-        return ob_get_clean();
-    }
-
-    //do shortcode birthdays Next month
-
-    public function showBirthdaysplusone()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->birthdaysplusone();
         return ob_get_clean();
     }
 
@@ -797,27 +717,7 @@ SQL;
         return ob_get_clean();
     }
 
-    //do shortcode Death anniversaries plus one
-    public function showdanniversariesplusone()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->danniversariesplusone();
-        return ob_get_clean();
-    }
-
-    public function showdanniversariesplustwo()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->danniversariesplustwo();
-        return ob_get_clean();
-    }
-
-    public function showdanniversariesplusthree()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->danniversariesplusthree();
-        return ob_get_clean();
-    }
+ 
 
     //do shortcode Family user
     public function showfamilyuser()
@@ -873,6 +773,7 @@ SQL;
         $user = $this->getTngUser();
         return $user['username'];
     }
+
     public function getTngUser()
     {
         $currentUser = wp_get_current_user();
@@ -885,4 +786,5 @@ SQL;
         }
         wp_die('User ' . $userName . ' not found in TNG');
     }
+
 }

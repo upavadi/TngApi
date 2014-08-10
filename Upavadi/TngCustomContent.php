@@ -2,6 +2,7 @@
 
 class Upavadi_TngCustomContent
 {
+
     /**
      * @var Upavadi_TngContent 
      */
@@ -19,12 +20,17 @@ class Upavadi_TngCustomContent
     {
         $templatePath = $this->dir . '/templates/';
         $templates = new Upavadi_Templates($templatePath);
-        
+
         foreach ($this->shortCodes as $shortCodeName) {
             $shortCodeClass = "TngApiCustom_Shortcode_" . $shortCodeName;
             $shortCode = new $shortCodeClass;
             $shortCode->init($this->content, $templates, $this);
         }
+    }
+
+    public function query($sql)
+    {
+        return $this->content->query($sql);
     }
 
 }
