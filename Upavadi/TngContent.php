@@ -196,24 +196,8 @@ class Upavadi_TngContent
         <?php
     }
 
-    public function showUser()
-    {
-        $user = $this->getPerson();
-        return print_r($user, true);
-    }
-
-    public function showUserfamily()
-    {
-        $user = $this->getFamily();
-        return print_r($user, true);
-    }
-
-    public function showUserchildren()
-    {
-        $user = $this->getChildren();
-        return print_r($user, true);
-    }
-
+  
+    
     public function getCurrentPersonId()
     {
         return $this->currentPerson;
@@ -436,56 +420,6 @@ SQL;
         return 0;
     }
 
-    public function getBirthdaysPlusTwo($month)
-    {
-        $sql = <<<SQL
-SELECT personid,
-       firstname,
-       lastname,
-       birthdate,
-       birthplace,
-       gedcom,
-       Year(Now()) - Year(birthdatetr) AS Age
-FROM   {$this->tables['people_table']}
-WHERE  Month(birthdatetr) = MONTH(ADDDATE(now(), INTERVAL 2 month))
-       AND living = 1
-ORDER  BY Day(birthdatetr),
-          lastname
-SQL;
-        $result = $this->query($sql);
-
-        $rows = array();
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
-    public function getBirthdaysPlusThree($month)
-    {
-        $sql = <<<SQL
-SELECT personid,
-       firstname,
-       lastname,
-       birthdate,
-       birthplace,
-       gedcom,
-       Year(Now()) - Year(birthdatetr) AS Age
-FROM   {$this->tables['people_table']}
-WHERE  Month(birthdatetr) = MONTH(ADDDATE(now(), INTERVAL 3 month))
-       AND living = 1
-ORDER  BY Day(birthdatetr),
-          lastname
-SQL;
-        $result = $this->query($sql);
-
-        $rows = array();
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
     public function getBirthdays($month)
     {
 
@@ -624,118 +558,6 @@ SQL;
         return $rows;
     }
 
-    public function getMarriageAnniversariesPlusOne($month)
-    {
-        $sql = <<<SQL
-SELECT h.gedcom,
-	   h.personid AS personid1,
-       h.firstname AS firstname1,
-       h.lastname AS lastname1,
-       w.personid AS personid2,
-       w.firstname AS firstname2,
-       w.lastname AS lastname2,
-	   f.familyID,
-       f.marrdate,
-       f.marrplace,
-       Year(Now()) - Year(marrdatetr) AS Years
-FROM   {$this->tables['families_table']} as f
-    LEFT JOIN {$this->tables['people_table']} AS h
-              ON f.husband = h.personid
-       LEFT JOIN {$this->tables['people_table']} AS w
-              ON f.wife = w.personid
-WHERE  Month(f.marrdatetr) = MONTH(ADDDATE(now(), INTERVAL 1 month))
-       
-ORDER  BY Day(f.marrdatetr)
-          
-SQL;
-        $result = $this->query($sql);
-
-        $rows = array();
-        while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        return $rows;
-    }
-
-    //do shortcode birthdays
-    public function showBirthdays()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->birthdays();
-        return ob_get_clean();
-    }
-
-    public function showBirthdaysplustwo()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->birthdaysplustwo();
-        return ob_get_clean();
-    }
-
-    public function showBirthdaysplusthree()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->birthdaysplusthree();
-        return ob_get_clean();
-    }
-
-//do shortcode Marriage anniversaries
-    public function showmanniversaries()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->manniversaries();
-        return ob_get_clean();
-    }
-
-    //do shortcode Death anniversaries
-    public function showdanniversaries()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->danniversaries();
-        return ob_get_clean();
-    }
-
-    //do shortcode Marriage anniversaries plus one
-    public function showmanniversariesplusone()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->manniversariesplusone();
-        return ob_get_clean();
-    }
-
-    public function showmanniversariesplustwo()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->manniversariesplustwo();
-        return ob_get_clean();
-    }
-
-    public function showmanniversariesplusthree()
-    {
-        ob_start();
-        Upavadi_Pages::instance()->manniversariesplusthree();
-        return ob_get_clean();
-    }
-
- 
-
-    //do shortcode Family user
-    public function showfamilyuser()
-    {
-        ob_start();
-        $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
-        Upavadi_Pages::instance()->familyuser($personId);
-        return ob_get_clean();
-    }
-
-    //do shortcode Family user form
-    public function showfamilyform()
-    {
-        ob_start();
-        $personId = filter_input(INPUT_GET, 'personId', FILTER_SANITIZE_SPECIAL_CHARS);
-        Upavadi_Pages::instance()->familyForm($personId);
-        return ob_get_clean();
-    }
 
     public function searchPerson($searchFirstName, $searchLastName)
     {
