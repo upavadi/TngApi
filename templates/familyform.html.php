@@ -30,6 +30,11 @@
 //get Person gotra
 				$personRow = $tngcontent->getgotra($person['personID']);
 				$person_gotra = $personRow['info'];
+				
+//get Description of Event type
+				$EventRow = $tngcontent->getEventDisplay($event['display']);	
+				$EventDisplay = $EventRow['display'];
+	
 
 				
 // title for page	
@@ -172,7 +177,7 @@
 		<tr>
 			<td valign="bottom" class="tdback"><?php echo "Name"; ?></td>
 			<td class="tdfront"><span style="color:#777777">(Name - 2nd name or Father's Name)<br/></span><input type="text" name="name" value="<?php echo $person_name;?>" size="30"/></td>
-			<td valign="bottom" class="tdback"><?php echo "Gotra"; ?></td>
+			<td valign="bottom" class="tdback"><?php echo $EventDisplay; ?></td>
 			<td valign="bottom" class="tdfront"><input type="text" gotra="persongotra" value="<?php echo $person_gotra;?>" /></td></tr>
 
 			<tr>	
@@ -373,7 +378,7 @@
 		
 			<td valign="bottom" class="tdback">Father</td>
 			<td class="tdfront"><span style="color:#777777">(Name - 2nd name or Father's Name)<br/></span><input type="text" name="fathername" value="<?php echo $father_firstname;?>"></td>
-			<td valign="bottom" class="tdback"><?php echo "Gotra"; ?></td>
+			<td valign="bottom" class="tdback"><?php echo $EventDisplay; ?></td>
 			<td valign="bottom" class="tdfront"><input type="text" name="fatherGotra" value="<?php echo $father_gotra;?>" /></td></tr>
 		<tr>	
 			<td class="tdback"></td>
@@ -396,7 +401,7 @@
 		
 		<td valign="bottom" class="tdback">Mother</td>
 			<td class="tdfront"><span style="color:#777777">(Name - 2nd name or Father's Name)<br/></span><input type="text" name="mothername" value="<?php echo $mother_firstname;?>" size="30"/></td>
-			<td valign="bottom" class="tdback"><?php echo "Gotra"; ?></td>
+			<td valign="bottom" class="tdback"><?php echo $EventDisplay; ?></td>
 			<td valign="bottom" class="tdfront"><input type="text" name="motherGotra" value="<?php echo $mother_gotra;?>" /></td></tr>
 		<tr>	
 			<td class="tdback"></td>
@@ -516,7 +521,7 @@
 		<tr>
 			<td class="tdback"><?php echo "Spouse ". $order; ?></td>
 			<td class="tdfront"><span style="color:#777777">(Spouse Name-2nd name or Father's Name)<br/></span><input type="text" name="spousename" value="<?php echo $spouse['firstname'];?>"></td>
-			<td valign="bottom" class="tdback"><?php echo "Gotra"; ?></td>
+			<td valign="bottom" class="tdback"><?php echo $EventDisplay; ?></td>
 			<td valign="bottom" class="tdfront"><input type="text" name="spouseGotra" value="<?php echo $spousegotra;?>" /></td>
 		<tr>	
 			<td class="tdback"></td>

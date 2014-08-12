@@ -127,8 +127,11 @@
 
 //get gotra
     $personRow = $tngcontent->getGotra($person['personID']);
-    $gotra = $personRow['info'];
-
+	$gotra = $personRow['info'];
+//get Description of Event type
+	$EventRow = $tngcontent->getEventDisplay($event['display']);	
+	$EventDisplay = $EventRow['display'];
+	
 
 //get familyuser
     if ($person['sex'] == 'M') {
@@ -158,7 +161,7 @@
                 <td class="tdback"><?php echo "Name"; ?></td>
                 <td class="tdfront"><?php echo $name; ?></td>
 
-                <td class="tdback"><?php echo "Gotra"; ?></td>
+                <td class="tdback"><?php echo $EventDisplay; ?></td>
                 <td class="tdfront"><?php echo $gotra; ?></td></tr>
             <tr>	
                 <td class="tdback"><?php echo "Born"; ?></td>

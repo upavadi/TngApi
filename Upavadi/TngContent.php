@@ -237,7 +237,7 @@ SQL;
 
         return $row;
     }
-
+/* Special event type 10 is called here*/
     public function getGotra($personId = null)
     {
 
@@ -246,9 +246,25 @@ SQL;
         }
 
         $sql = <<<SQL
-		SELECT *
+		
+SELECT *
 FROM {$this->tables['events_table']}
 where persfamID = '{$personId}' AND eventtypeID = "10"
+SQL;
+        $result = $this->query($sql);
+        $row = $result->fetch_assoc();
+
+        return $row;
+    }
+/* Special event type 10 is called here*/	
+	public function getEventDisplay()
+    {
+
+        $sql = <<<SQL
+		
+SELECT *
+FROM {$this->tables['eventtypes_table']}
+where eventtypeID = "10"
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();

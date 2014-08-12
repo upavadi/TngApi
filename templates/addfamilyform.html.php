@@ -30,7 +30,11 @@
 //get Person gotra
 				$personRow = $tngcontent->getgotra($person['personID']);
 				$person_gotra = $personRow['info'];
-
+				$EventDisplay = $personRow['display'];
+//get Description of Event type
+				$EventRow = $tngcontent->getEventDisplay($event['display']);	
+				$EventDisplay = $EventRow['display'];
+				echo $EventDisplay;
 				
 // title for page	
 				?>
@@ -210,12 +214,12 @@
 		</tr>
 		
 		<tr>
-		<td class="tdback"><br/>Gender<br/>Gotra</br>Living</td>
+		<td class="tdback"><br/>Gender<br/><?php echo $EventDisplay; ?></br>Living</td>
 		<td valign="bottom" class="tdfront"><span style="color:#777777">Gender<br/></span><select name="spousesex">
 		<option value="M">Male</option>
 		<option value="F">Female</option>
 		</select>
-		<td valign="bottom" class="tdfront"><span style="color:#777777">Gotra<br/></span><input type="text" name="spousegotra" value="" size="20"/></td>
+		<td valign="bottom" class="tdfront"><span style="color:#777777"><?php echo $EventDisplay; ?><br/></span><input type="text" name="spousegotra" value="" size="20"/></td>
 			
 		<td valign="bottom" class="tdfront"><span style="color:#777777">Living / Deceased<br/></span>
 		<select name="spouseliving" >
