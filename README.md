@@ -1,4 +1,4 @@
-TngApi & Wordpress Plugin (alpha)
+TngApi Plugin for Wordpress (Version 1.3)
 =================================
 
 ## License
@@ -6,12 +6,13 @@ The code is licenced under the [MIT licence](http://opensource.org/licenses/MIT)
 
 ## Introduction
 This plugin has two main features:
- - To provide a simpler integration of the TNG site within wordpress.
+ - To provide a simple access to the TNG database from within Wordpress.
  - To provide a convenient collection of shortcode and functions for integrating TNG data into your site.
 
-This plugin is not:
- - A replacement for any registration process (you'll still need a plugin for that)
- - Complete
+This plugin does not:
+ - Provide any registration process 
+ - Display TNG pages within Wordpress
+ - You'll still need other plugins for that.
 
 ## Performace
 To get better query performance add an indexes to to following fields:
