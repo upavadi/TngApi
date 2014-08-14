@@ -33,9 +33,9 @@ After installing the plugin you can find the settings page in the settings menu 
 - Notification Email address 
 
 - The location of your TNG installtion as it is on disk (i.e. `/path/to/tng`)
-- - Photo Upload mediatypeID - Before you enter this, refer to the section on Image Upload below
+- Photo Upload mediatypeID - Before you enter this, refer to the section on Image Upload below
 
- - Your DB connection settings.
+- Your DB connection settings.
    - Host Name
    - User Name
    - Password
@@ -44,21 +44,24 @@ After installing the plugin you can find the settings page in the settings menu 
 ## Shortcodes
 We've provided a number of useful shortcodes for you to play with.  You can find them all in the shortcodes directory.
 
- - `[upavadi_pages_familysearch]` - Name-Search Widget. To be able to use this widget, create page named 'search' and place shortcode in the page. Familysearch results are displayed in this page.
+ - `[upavadi_pages_familysearch]` - Name-Search Widget. To be able to use this widget, create page named 'search' and place    shortcode in the page. Familysearch results are displayed in this page.
  - Following 4 shortcodes are used in family page. To use existing hyperlinks, this page must be called 'family'
    - `[upavadi_pages__familyuser]` - Family page of the user
    - `[upavadi_pages__familyform]` - Update details of Individual
    - `[upavadi_pages__addfamilyform]` - Add Details of Individual
    - `[upavadi_pages__personnotes]` - Add Notes for Individual
 
- - Above 4 shortcodes may be used on a single page using the TAB shortcode. Advantage of placing these shortcodes is that all 4 shortcodes are synchronized to the same personID.
+ - Above 4 shortcodes may be used on a single page using the TAB shortcode. 
   - `[tabs]'[tab title="Family"]``[upavadi_pages_familyuser]``[/tab]`
   - `[tab title="Update Family"]``[upavadi_pages_familyform]``[/tab]`
   - `[tab title="Add Family"]``[upavadi_pages_addfamilyform]``[/tab]`
   - `[[tab title="Update Person Notes"]``[upavadi_pages_personnotes]``[/tab]`
   - `[/tabs]`
-
- - `[upavadi_pages__birthdays]` - Birthdays
+ - Advantage of placing these shortcodes is that all 4 shortcodes are synchronized to the same personID.
+ 
+ - There are 3 shortcodes for displaying events for the current month. Place these 3 shortcodes on one page, using `tabs` as 
+ - Each shortcode has Month and year selector. By placing these shortcodes in one page, month selection would apply to all 3 files.
+- `[upavadi_pages__birthdays]` - Birthdays
  - `[upavadi_pages__manniversaries]` - Marriage Anniversaries
  - `[upavadi_pages__danniversaries]` - Death Anniversaries Report
  -  Above reports use Individual hyperlinks to the 'Family' page
