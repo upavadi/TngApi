@@ -68,6 +68,7 @@ We've provided a number of useful shortcodes for you to play with.  You can find
   -  Above reports use Individual hyperlinks to the 'Family' page
  
 ## Upload User Images
+- Place shortcode `[upavadi_pages_submit-image]` in your Upload page .
 - User images are uploaded in to TNG/photos directory in to a collection specified by you. I have called the collection, uploads. To set this up,
   - Enter the name for the collection in settings >TngApi > Photo Upload mediaID.
   - In TNG admin, go to media and create a collection with same name.
@@ -75,8 +76,12 @@ We've provided a number of useful shortcodes for you to play with.  You can find
 - Go to TNG Admin > Media and select your upload collection. You can process the image there with the data submitted.
 - Tag the image with personID and replace the name of the collection ( say Photos ) to publish.
 - The image would have been given a random name. You will have to rename the image according to the convention you use.
-- 
- -  `[upavadi_pages_submit-image]` - Upload photos. This shortcode saves the image but does not store image data at present.        Work In Progress. 
- 
+
+ -  This shortcode saves the image but does not store image data at present.        Work In Progress. 
+
+## Upload a Profile Image
+- Profile image upload is icluded in the family page. Here the user does not need to enter any information. The profile image is saved with PersonID. An Email is generated to the Administrator on upload.
+
+
 ## Patches & contributions
-This is very much a work in progress so please feel free to fork and submit pull requests.
+This is very much a project that can evolve so please feel free to fork and submit pull requests.
