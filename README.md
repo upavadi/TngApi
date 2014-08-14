@@ -69,11 +69,12 @@ We've provided a number of useful shortcodes for you to play with.  You can find
  
 ## Upload User Images
 - Place shortcode `[upavadi_pages_submit-image]` in your Upload page .
-- User images are uploaded in to TNG/photos directory in to a collection specified by you. I have called the collection, uploads. To set this up,
+- User images are uploaded in to TNG/photos/ directory with the collection name specified by you. I have called my collection, uploads. 
+- To set this up,
   - Enter the name for the collection in settings >TngApi > Photo Upload mediaID.
   - In TNG admin, go to media and create a collection with same name.
 - Once an image is uploaded, an Email will be sent to the administrator with image details. 
-- Go to TNG Admin > Media and select your upload collection. You can process the image there with the data submitted.
+- Go to TNG Admin > Media and select your upload collection. Process the image there with the data submitted.
 - Tag the image with personID and replace the name of the collection ( say Photos ) to publish.
 - The image would have been given a random name. You will have to rename the image according to the convention you use.
 
