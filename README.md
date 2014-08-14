@@ -40,7 +40,11 @@ After installing the plugin you can find the settings page in the settings menu 
    - User Name
    - Password
    - Database Name
-   
+## Custom Shortcodes
+- A custom shortcode directory is included with a sample shortcode to help you create and store your custom shortcodes.
+- Copy ( or move ) the custom directory, tng-api-custom in to wp-content/plugins/
+- By placing the directory outside the plugin, custom shortcodes would not be overwritten on updates.
+- 
 ## Shortcodes
 We've provided a number of useful shortcodes for you to play with.  You can find them all in the shortcodes directory.
 
@@ -78,10 +82,8 @@ We've provided a number of useful shortcodes for you to play with.  You can find
 - Tag the image with personID and replace the name of the collection ( say Photos ) to publish.
 - The image would have been given a random name. You will have to rename the image according to the convention you use.
 
- -  This shortcode saves the image but does not store image data at present.        Work In Progress. 
-
 ## Upload a Profile Image
-- Profile image upload is icluded in the family page. Here the user does not need to enter any information. The profile image is saved with PersonID. An Email is generated to the Administrator on upload.
+- Profile image upload is included in the family page. Here the user does not need to enter any information. The profile image is saved with PersonID. An Email is generated to the Administrator on upload.
 
 
 ## Patches & contributions
