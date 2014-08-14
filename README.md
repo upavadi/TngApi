@@ -36,13 +36,13 @@ After installing the plugin you can find the settings page in the settings menu 
 - - Photo Upload mediatypeID - Before you enter this, refer to the section on Image Upload below
 
  - Your DB connection settings.
-   - Host Name 
- - The page ID of the page you wish to use as a proxy
-
-Next edit to the proxy page you created earlier and add the `[upavadi_tng_proxy]` shortcode to the content.
-
+   - Host Name
+   - User Name
+   - Password
+   - Database Name
+   
 ## Shortcodes
-We've provided a number of useful shortcodes for to play with.  You can find them all in the shortcodes directory.
+We've provided a number of useful shortcodes for you to play with.  You can find them all in the shortcodes directory.
 
  - `[upavadi_pages_familysearch]` - Name-Search Widget. To be able to use this widget, create page named 'search' and place shortcode in the page. Familysearch results are displayed in this page.
  - Following 4 shortcodes are used in family page. To use existing hyperlinks, this page must be called 'family'
@@ -51,12 +51,12 @@ We've provided a number of useful shortcodes for to play with.  You can find the
  - `[upavadi_pages__addfamilyform]` - Add Details of Individual
  - `[upavadi_pages__personnotes]` - Add Notes for Individual
 
- - Above 4 shortcodes may be used on a single page using the TAB shortcode
- - `[tabs]'[tab title="Family"]``[upavadi_pages_familyuser]``[/tab]`
- - `[tab title="Update Family"]``[upavadi_pages_familyform]``[/tab]`
- - `[tab title="Add Family"]``[upavadi_pages_addfamilyform]``[/tab]`
- - `[[tab title="Update Person Notes"]``[upavadi_pages_personnotes]``[/tab]`
- - `[/tabs]`
+ - Above 4 shortcodes may be used on a single page using the TAB shortcode. Advantage of placing these shortcodes is that all 4 shortcodes are synchronized to the same personID.
+  - `[tabs]'[tab title="Family"]``[upavadi_pages_familyuser]``[/tab]`
+  - `[tab title="Update Family"]``[upavadi_pages_familyform]``[/tab]`
+  - `[tab title="Add Family"]``[upavadi_pages_addfamilyform]``[/tab]`
+  - `[[tab title="Update Person Notes"]``[upavadi_pages_personnotes]``[/tab]`
+  - `[/tabs]`
 
  - `[upavadi_pages__birthdays]` - Birthdays
  - `[upavadi_pages__manniversaries]` - Marriage Anniversaries
