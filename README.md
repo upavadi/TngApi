@@ -46,10 +46,10 @@ We've provided a number of useful shortcodes for you to play with.  You can find
 
  - `[upavadi_pages_familysearch]` - Name-Search Widget. To be able to use this widget, create page named 'search' and place    shortcode in the page. Familysearch results are displayed in this page.
  - Following 4 shortcodes are used in family page. To use existing hyperlinks, this page must be called 'family'
-   - `[upavadi_pages__familyuser]` - Family page of the user
-   - `[upavadi_pages__familyform]` - Update details of Individual
-   - `[upavadi_pages__addfamilyform]` - Add Details of Individual
-   - `[upavadi_pages__personnotes]` - Add Notes for Individual
+   - `[upavadi_pages__familyuser]`  Family page of the user
+   - `[upavadi_pages__familyform]`  Update details of Individual
+   - `[upavadi_pages__addfamilyform]`  Add Details of Individual
+   - `[upavadi_pages__personnotes]`  Add Notes for Individual
 
  - Above 4 shortcodes may be used on a single page using the TAB shortcode. 
   - `[tabs]'[tab title="Family"]``[upavadi_pages_familyuser]``[/tab]`
