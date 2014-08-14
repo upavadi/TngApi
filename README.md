@@ -44,30 +44,39 @@ After installing the plugin you can find the settings page in the settings menu 
 ## Shortcodes
 We've provided a number of useful shortcodes for you to play with.  You can find them all in the shortcodes directory.
 
- - `[upavadi_pages_familysearch]` - Name-Search Widget. To be able to use this widget, create page named 'search' and place    shortcode in the page. Familysearch results are displayed in this page.
- - Following 4 shortcodes are used in family page. To use existing hyperlinks, this page must be called 'family'
+- `[upavadi_pages_familysearch]` - Name-Search Widget. To be able to use this widget, create page named 'search' and place    shortcode in the page. Familysearch results are displayed in this page.
+
+- Following 4 shortcodes are used in family page. To use existing hyperlinks, this page must be called 'family'
    - `[upavadi_pages__familyuser]`  Family page of the user
    - `[upavadi_pages__familyform]`  Update details of Individual
    - `[upavadi_pages__addfamilyform]`  Add Details of Individual
    - `[upavadi_pages__personnotes]`  Add Notes for Individual
 
- - Above 4 shortcodes may be used on a single page using the TAB shortcode. 
+- Above 4 shortcodes may be used on a single page using the TAB shortcode. 
   - `[tabs]'[tab title="Family"]``[upavadi_pages_familyuser]``[/tab]`
   - `[tab title="Update Family"]``[upavadi_pages_familyform]``[/tab]`
   - `[tab title="Add Family"]``[upavadi_pages_addfamilyform]``[/tab]`
   - `[[tab title="Update Person Notes"]``[upavadi_pages_personnotes]``[/tab]`
   - `[/tabs]`
- - Advantage of placing these shortcodes is that all 4 shortcodes are synchronized to the same personID.
+- Advantage of placing these shortcodes is that all 4 shortcodes are synchronized to the same personID.
  
- - There are 3 shortcodes for displaying events for the current month. Place these 3 shortcodes on one page, using `tabs` as 
- - Each shortcode has Month and year selector. By placing these shortcodes in one page, month selection would apply to all 3 files.
-- `[upavadi_pages__birthdays]` - Birthdays
- - `[upavadi_pages__manniversaries]` - Marriage Anniversaries
- - `[upavadi_pages__danniversaries]` - Death Anniversaries Report
- -  Above reports use Individual hyperlinks to the 'Family' page
+- There are 3 shortcodes for displaying events for the current month. Place these 3 shortcodes on one page, using `tabs`. 
+- Each shortcode has Month and year selector. By placing these shortcodes in one page, month selection would apply to all 3 files.
+  - `[upavadi_pages__birthdays]`      Birthdays
+  - `[upavadi_pages__manniversaries]` Marriage Anniversaries
+  - `[upavadi_pages__danniversaries]` Death Anniversaries Report
+  -  Above reports use Individual hyperlinks to the 'Family' page
  
- -  `[upavadi_pages__tng_proxy]` - TNG Index page redirect
- -  `[upavadi_pages__submitimage]` - Upload photos. This shortcode saves the image but does not store image data at present.        Work In Progress. 
+## Upload User Images
+- User images are uploaded in to TNG/photos directory in to a collection specified by you. I have called the collection, uploads. To set this up,
+  - Enter the name for the collection in settings >TngApi > Photo Upload mediaID.
+  - In TNG admin, go to media and create a collection with same name.
+- Once an image is uploaded, an Email will be sent to the administrator with image details. 
+- Go to TNG Admin > Media and select your upload collection. You can process the image there with the data submitted.
+- Tag the image with personID and replace the name of the collection ( say Photos ) to publish.
+- The image would have been given a random name. You will have to rename the image according to the convention you use.
+- 
+ -  `[upavadi_pages_submit-image]` - Upload photos. This shortcode saves the image but does not store image data at present.        Work In Progress. 
  
 ## Patches & contributions
 This is very much a work in progress so please feel free to fork and submit pull requests.
