@@ -42,9 +42,9 @@ After installing the plugin you can find the settings page in the settings menu 
    - Database Name
 ## Custom Shortcodes
 - A custom shortcode directory is included with a sample shortcode to help you create and store your custom shortcodes.
-- Copy ( or move ) the custom directory, tng-api-custom in to wp-content/plugins/
+- Copy ( or move ) the custom directory, tng-api-custom in to wp-content/plugins/.
 - By placing the directory outside the plugin, custom shortcodes would not be overwritten on updates.
-- 
+ 
 ## Shortcodes
 We've provided a number of useful shortcodes for you to play with.  You can find them all in the shortcodes directory.
 
