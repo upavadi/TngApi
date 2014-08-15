@@ -90,9 +90,9 @@ We've provided a number of useful shortcodes for you to play with.  You can find
 - I have defined a special event, Gotra, which is stored in TNG eventtypes table as eventtypeID=10
 - If you have defined an event with eventtypeID=10, then this will be displayed in last column of row 1
 - If you do not have eventtypeID=10, then this cell will be blank.
-- If you would like to display another eventtype or you do not want to display eventtypeID=10
+- If you would like to display another eventtype or you do not want to display your eventtypeID=10
   - open TngContent.php in wordpress editor.
-  - find function getGotra ( around line )
+  - find function getGotra ( around line 240 )
   - 
 ## Patches & contributions
 This is very much a project that can evolve so please feel free to fork and submit pull requests.
