@@ -85,6 +85,14 @@ We've provided a number of useful shortcodes for you to play with.  You can find
 ## Upload a Profile Image
 - Profile image upload is included in the family page. Here the user does not need to enter any information. The profile image is saved with PersonID. An Email is generated to the Administrator on upload.
 
-
+## Special Event in Family Page
+- I am using a custom TNG event in the family page. The event is displayed in last column of row 1.
+- I have defined a special event, Gotra, which is stored in TNG eventtypes table as eventtypeID=10
+- If you have defined an event with eventtypeID=10, then this will be displayed in last column of row 1
+- If you do not have eventtypeID=10, then this cell will be blank.
+- If you would like to display another eventtype or you do not want to display eventtypeID=10
+  - open TngContent.php in wordpress editor.
+  - find function getGotra ( around line )
+  - 
 ## Patches & contributions
 This is very much a project that can evolve so please feel free to fork and submit pull requests.
