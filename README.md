@@ -91,12 +91,12 @@ We've provided a number of useful shortcodes for you to play with.  You can find
 - If you have defined an event with eventtypeID=10, then this will be displayed in last column of row 1
 - If you do not have eventtypeID=10, then this cell will be blank.
 - If you would like to display another eventtype or you do not want to display your eventtypeID=10
-  - open TngContent.php in wordpress editor.
+  - open TngContent.php, in Upavadi folder, in wordpress editor.
   - find function getGotra ( around line 241 )
-  - Find line `where persfamID = '{$personId}' AND eventtypeID = "10"` (line 252) and change "10" to another eventtype.
-  - If you do nort require this, change "10" to ""
+  - Find line `where persfamID = '{$personId}' AND eventtypeID = "10"` (line 252) and change "10" to required eventtype.
+  - If you do nort require this, change "10" to " "
   - Do the same thing to the next function `getEventDisplay`
-  - Tne to change is `where eventtypeID = "10"` (line 267)
+  - The line to change is `where eventtypeID = "10"` (line 267)
 
 ## Patches & contributions
 This is very much a project that can evolve so please feel free to fork and submit pull requests.
