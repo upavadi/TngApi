@@ -25,6 +25,8 @@ To get better query performance add an indexes to to following fields:
 ### Preparation
 This plugin assumes that:
  - Your TNG installation is in the directory below the base of your site (i.e. something like `http://mytngsite.com/tng`).
+ - User has logged in to TNG and wordpress
+ - User names are same in Wordpress and TNG
 
 ### Setup
 You will need the connection settings for your TNG DB handy.
