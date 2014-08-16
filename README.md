@@ -88,7 +88,7 @@ We've provided a number of useful shortcodes for you to play with.  You can find
 - Profile image upload is included in the family page. Here the user does not need to enter any information. The profile image is saved with PersonID. An Email is generated to the Administrator on upload.
 
 ## Submitting Changes in Family Page
- - An email is sent to the administrator when user `Adds` or `Update` family data.
+ - An email is sent to the administrator with details of changes, when user `Adds` or `Update` family data. At the moment   there is no facility to update this data, directly.  
  - create page named `thank-you` with your message you would like to be displayed, in this page. 
  - A Thank You message is displayed once email is sent.
  
