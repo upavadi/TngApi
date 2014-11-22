@@ -38,7 +38,7 @@ class Upavadi_Update_FamilyUpdate
         $people = $this->addFields($people, $keys);
         $families = $this->addFields($families, $keys);
         $children = $this->addFields($children, $keys);
-        
+
         $this->db->query('START TRANSACTION');
         try {
             $this->insertRows($this->tables['people'], $people);
@@ -76,7 +76,7 @@ class Upavadi_Update_FamilyUpdate
 
     public function extractFamilyId($data)
     {
-        if (empty($data['personfamc']) && (empty($data['fathername']) || empty($data['mothername']))) {
+        if (empty($data['personfamc'])) {
             $famc = "NewParents";
         } else {
             $famc = $data['personfamc'];
@@ -125,8 +125,6 @@ class Upavadi_Update_FamilyUpdate
         $data['personsex'] = $data['sex'];
         $data['personliving'] = $data['living'];
         $data['personevent'] = $data['event'];
-        $data['fathername'] = null;
-        $data['mothername'] = null;
         return $data;
     }
 
@@ -155,6 +153,7 @@ class Upavadi_Update_FamilyUpdate
         $data['personId'] = $data['ID'];
         $data['firstname'] = $data['name'];
         $data['personsex'] = $data['sex'];
+        $data['personfamc'] = $data['famc'];
         $data['personliving'] = $data['living'];
         $data['personevent'] = $data['event'];
 
@@ -175,17 +174,16 @@ class Upavadi_Update_FamilyUpdate
     public function normaliseChild($data)
     {
         $data = $this->extractPersonData($data, 'child');
-
         $data['personId'] = $data['ID'];
         $data['personsex'] = $data['sex'];
         $data['personliving'] = $data['living'];
         $data['personevent'] = $data['event'];
+        $data['personfamc'] = $data['famc'];
         $data['B_day'] = $data['dateborn'];
         $data['B_Place'] = $data['placeborn'];
         $data['D_day'] = $data['datedied'];
         $data['D_Place'] = $data['placedied'];
         $data['cause_of_death'] = $data['cause'];
-
         return $data;
     }
 

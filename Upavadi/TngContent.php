@@ -309,6 +309,21 @@ SQL;
         return $row;
     }
 
+    
+    public function getChildFamily($personId, $familyId)
+    {
+        $sql = <<<SQL
+SELECT *
+FROM {$this->tables['children_table']}
+WHERE personID = '{$personId}' AND familyID = '{$familyId}'
+SQL;
+
+        $result = $this->query($sql);
+        $row = $result->fetch_assoc();
+
+        return $row;
+    }
+    
     public function getNotes($personId = null)
     {
         if (!$personId) {
@@ -665,6 +680,21 @@ SQL;
             return $row;
         }
         wp_die('User ' . $userName . ' not found in TNG');
+    }
+
+    /**
+     * @staticvar Upavadi_Repository_TngRepository $repo
+     * @return \Upavadi_Repository_TngRepository
+     */
+    public function getRepo()
+    {
+        static $repo;
+        if (!$repo) {
+            $this->init();
+            $repo = new Upavadi_Repository_TngRepository($this);
+        }
+        
+        return $repo;
     }
 
 }

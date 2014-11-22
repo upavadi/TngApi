@@ -33,11 +33,13 @@ $content->addShortcode(new Upavadi_Shortcode_SubmitImage());
 $content->addShortcode(new Upavadi_Shortcode_AdminFamilySheet());
 $content->addShortcode(new Upavadi_Shortcode_UserFamilySheet());
 $familySearch = new Upavadi_Widget_FamilySearch;
+$update = new Upavadi_Update_Admin($wpdb, $content);
 
 add_action('init', array($content, 'initPlugin'), 1);
 add_action('widgets_init', array($familySearch, 'init'));
 add_action( 'admin_menu', array($content, 'adminMenu') );
 add_action( 'admin_init', array($content, 'initAdmin') );
+add_action( 'admin_menu', array($update, 'initAdmin') );
 //add_filter('the_posts', array($content, 'proxyFilter'));
 /**********************************************/
 function create_tng_tables()
