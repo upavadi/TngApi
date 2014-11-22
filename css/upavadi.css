@@ -48,6 +48,26 @@
     white-space: nowrap;
 }
 
+.tdsheet1 {
+    padding: 8px 10px !important;
+	//padding-left: 10px;
+    line-height: 15px;
+    width: 40% !important;
+    background-color: #FFFFFF;
+    border-bottom: 1px solid #bbbbbb;
+    border-right: 1px solid #bbbbbb;
+	border-left: 1px solid #bbbbbb;
+	border-top: 1px solid #bbbbbb;
+    //font-size:10px;
+    white-space: nowrap;
+}
+.table-sheet1 {
+    width: 100%;
+    margin-bottom: .5em;
+    padding-top: -25px; clear: right;
+    border: 1px solid silver !important;
+}
+
 .born-highlight {
     background-color: #E0E0F7;
 }

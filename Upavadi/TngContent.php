@@ -1,8 +1,11 @@
 <?php
 
+$SpEvent = "10";
+
 class Upavadi_TngContent
 {
-
+//Define Special Event ID, if required
+	//private static $SpEvent = "10";
     private static $instance = null;
     protected $db;
     protected $currentPerson;
@@ -238,9 +241,9 @@ SQL;
         return $row;
     }
 /* Special event type 10 is called here*/
-    public function getGotra($personId = null)
+    public function getSpEvent($personId = null)
     {
-
+	
         if (!$personId) {
             $personId = $this->currentPerson;
         }
@@ -249,14 +252,14 @@ SQL;
 		
 SELECT *
 FROM {$this->tables['events_table']}
-where persfamID = '{$personId}' AND eventtypeID = "10"
+where persfamID = '{$personId}' AND eventtypeID = '10'
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
 
         return $row;
     }
-/* Special event type 10 is called here*/	
+/* Display for Special event type 10 is called here*/	
 	public function getEventDisplay()
     {
 
@@ -272,6 +275,26 @@ SQL;
         return $row;
     }
 
+// Special event type 0 for Cause of Death
+    public function getCause($personId = null)
+    {
+
+        if (!$personId) {
+            $personId = $this->currentPerson;
+        }
+
+        $sql = <<<SQL
+		
+SELECT *
+FROM {$this->tables['events_table']}
+where persfamID = '{$personId}' AND eventtypeID = "o" AND parenttag = "DEAT"
+SQL;
+        $result = $this->query($sql);
+        $row = $result->fetch_assoc();
+
+        return $row;
+    }
+	
     public function getFamilyById($familyId)
     {
         $sql = <<<SQL
@@ -396,6 +419,25 @@ SQL;
         return $rows;
     }
 
+ public function getChildrow($personId = null)
+    {
+        $sql = <<<SQL
+	SELECT *
+FROM {$this->tables['children_table']}
+WHERE personID = '{$personId}'
+ORDER BY ordernum
+SQL;
+        $result = $this->query($sql);
+
+        $rows = array();
+
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+
+        return $rows;
+    }
+	
     public function getFamilyUser($personId = null, $sortBy = null)
     {
 

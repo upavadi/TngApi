@@ -4,19 +4,11 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-
-
+    <meta charset="utf-8">
 
     </head>
     <a name="Family"></a>
-    <body>
-
-    </body>
-
-
-
-
+    
     <?php
     $tngcontent = Upavadi_TngContent::instance();
 
@@ -92,46 +84,61 @@
     </table>	
 
     <?php
-//get month of the events
+
+//Check person details
     $currentmonth = date("m");
+//person Birthdate & Place
+		if ($birthdatetr == '0000-00-00') {
+			$birthmonth = null;
+			$birthdate = "Date unknown";
+		} else {
+			$birthmonth = substr($birthdatetr, -5, 2);
+			$birthdate = $person['birthdate'];
+		}
+		if ($person['birthplace'] == null) {
+			$birthplace = "Unknown";
+		} else {
+			$birthplace = $person['birthplace'];
+		}
 
-    if ($birthdatetr == '0000-00-00') {
-        $birthmonth = null;
-        $birthdate = "Date unknown";
-    } else {
-        $birthmonth = substr($birthdatetr, -5, 2);
-    }
-    if ($person['birthplace'] == " ") {
-        $birthplace = "unknown";
-    } else {
-        $birthplace = $person['birthplace'];
-    }
+		If ($currentmonth == $birthmonth) {
+			$bornClass = 'born-highlight';
+		} else {
+			$bornClass = "";
+		}
+//get Cause of Death for person
+		$personRow = $tngcontent->getCause($person['personID']);
+		if ($personRow['eventtypeID'] == "0") {
+			$cause_of_death = ". Cause: ". $personRow['cause'];
+		} else {
+		$cause_of_death = "";
+		}
+		
+//person Death date & Place
+		if ($deathdatetr == "0000-00-00") {
+			$deathmonth = null;
+		} else {
+			$deathmonth = substr($deathdatetr, -5, 2);
+		}
+		if ($person['living'] == '0' AND $person['deathdatetr'] !== '0000-00-00') {
+			$deathdate = " died: " . $person['deathdate'];
+		} else {
+			$deathdate = " died: Date unknown";
+		}
+		if ($person['living'] == '1') {
+			$deathdate = "  (Living)";
+			$deathplace = "not applicable";
+		}
+		if ($person['living'] == '0' AND $person['deathplace'] == "") {
+			$deathplace = "Unknown";
+		}
 
-    If ($currentmonth == $birthmonth) {
-        $bornClass = 'born-highlight';
-    } else {
-        $bornClass = "";
-    }
-
-    if ($deathdatetr == "0000-00-00") {
-        $deathmonth = null;
-    } else {
-        $deathmonth = substr($deathdatetr, -5, 2);
-    }
-
-
-
-
-
-
-
-//get gotra
-    $personRow = $tngcontent->getGotra($person['personID']);
-	$gotra = $personRow['info'];
+//get Special Event
+    $personRow = $tngcontent->getSpEvent($person['personID']);
+	$spevent = $personRow['info'];
 //get Description of Event type
 	$EventRow = $tngcontent->getEventDisplay($event['display']);	
 	$EventDisplay = $EventRow['display'];
-	
 
 //get familyuser
     if ($person['sex'] == 'M') {
@@ -153,7 +160,8 @@
         $deathplace = "unknown";
     }
     $families = $tngcontent->getFamilyUser($person['personID'], $sortBy);
-    ?>		
+    
+	?>		
 
     <table class="form-table">
         <tbody>
@@ -162,7 +170,7 @@
                 <td class="tdfront"><?php echo $name; ?></td>
 
                 <td class="tdback"><?php echo $EventDisplay; ?></td>
-                <td class="tdfront"><?php echo $gotra; ?></td></tr>
+                <td class="tdfront"><?php echo $spevent; ?></td></tr>
             <tr>	
                 <td class="tdback"><?php echo "Born"; ?></td>
 
@@ -181,7 +189,7 @@
                 ?>
                 <td class="tdback"><?php echo "Died"; ?></td>
 
-                <td class="tdfront <?php echo $bornClass; ?>"><?php echo $deathdate; ?></td>
+                <td class="tdfront <?php echo $bornClass; ?>"><?php echo $deathdate. $cause_of_death; ?></td>
 
                 <td class="tdback"><?php echo "Place"; ?></td>
                 <td class="tdfront"><?php echo $deathplace; ?></td>
@@ -201,54 +209,79 @@
         <tbody>
             <tr>
                 <?php
-                if ($father['living'] == '0' AND $father['deathdatetr'] !== '0000-00-00') {
-                    $fatherdeathdate = " died: " . $father['deathdate'];
-                } else {
-                    $fatherdeathdate = " died: date unknown";
-                }
-                if ($father['living'] == '1') {
-                    $fatherdeathdate = "  (Living)";
-                }
-
-                if ($father['personID'] == '') {
-                    $fathername = "Unknown";
-                } else {
-                    $fathername = $father['firstname'] . $father['lastname'];
-                }
-
-                if ($father['birthdatetr'] == "0000-00-00") {
+ //set Father details       
+              
+                if ($father['birthdatetr'] == "0000-00-00" OR $person['famc'] == null) {
                     $fatherbirthmonth = null;
-                    $fatherbirthdate = "date unknown";
+                    $fatherbirthdate = "Date unknown";
                 } else {
                     $fatherbirthmonth = substr($father['birthdatetr'], -5, 2);
                     $fatherbirthdate = $father['birthdate'];
                 }
 
-                if ($father['birthplace'] = " ") {
-                    $fatherbirthplace = "unknown";
+                if ($father['birthplace'] == "" OR $person['famc'] == null) {
+                    $fatherbirthplace = "Place Unknown";
                 } else {
                     $fatherbirthplace = $father['birthplace'];
                 }
-
+		
                 If ($currentmonth == $fatherbirthmonth) {
                     $bornClass = 'born-highlight';
                 } else {
                     $bornClass = "";
                 }
 
-                if ($father['deathdatetr'] == "0000-00-00") {
+				if ($father['living'] == '0' AND $father['deathdatetr'] !== '0000-00-00') {
+                    $fatherdeathdate = " died: " . $father['deathdate'];
+                } else { if ($person['famc'] == null) { 
+					$fatherdeathdate = "Unknown";
+					}
+					else {
+                    $fatherdeathdate = " died: Date unknown";
+                }
+				}
+                
+				if ($father['deathdatetr'] == "0000-00-00") {
                     $fatherdeathmonth = null;
                 } else {
                     $fatherdeathmonth = substr($father['deathdatetr'], -5, 2);
                 }
 
-                if ($father['living'] == '1') {
+                if ($father['living'] == '0' AND $father['deathplace'] == '') {
+                    $fatherdeathplace = "Place Unknown";
+                } else {
+				$fatherdeathplace = $father['deathplace'];
+				}
+				
+				if ($father['living'] == '1') {
                     $fatherdeathdate = "  (Living)";
                 }
-                if ($father['living'] == '0' AND $father['deathplace'] == " ") {
-                    $fatherdeathplace = "unknown";
+
+                if ($father['personID'] !== null) {
+					$fathername = $father['firstname']. $father['lastname'];
+					} else {
+					$fathername = "Unknown";
+					}
+// Father - Special Event
+				if ($father['personID'] !== null)
+				{
+				$fatherRow = $tngcontent->getSpEvent($father['personID']);
+				$father_spevent = $fatherRow['info'];
+				} else {
+				$father_spevent = "Unknown";
+				}
+				if ($father['living'] == '1') {
+                    $fatherdeathdate = "  (Living)";
+					
                 }
-                ?>
+//get Cause of Death for Father
+				$fatherRow = $tngcontent->getCause($father['personID']);
+				if ($fatherRow['eventtypeID'] == "0") {
+					$father_cause_of_death = ". Cause: ". $fatherRow['cause'];
+				} else {
+				$father_cause_of_death = "";
+				} 
+                 ?>
                 <td class="tdback">Father</td>
                 <td class="tdfront" colspan="0">
 
@@ -263,7 +296,7 @@
                         ?>
                         <a href="?personId=<?php echo $father['personID']; ?>">
                             <?php echo $fathername; ?></a>,<?php echo $fatherdeathdate; ?>, </span><?php
-                        echo $fatherdeathplace;
+                        echo $fatherdeathplace. $father_cause_of_death;
                     } else {
 
                         echo $fathername;
@@ -280,49 +313,102 @@
             </tr>
             <tr>
                 <?php
-                if ($mother['personID'] == '') {
-                    $mothername = "Unknown";
-                } else {
-                    $mothername = $mother['firstname'] . $mother['lastname'];
-                }
-
-
-
-                if ($mother['birthdatetr'] == "0000-00-00") {
+//set Mother details
+ 
+                if ($mother['birthdatetr'] == "0000-00-00" OR $person['famc'] == null) {
                     $motherbirthmonth = null;
-                    $motherbirthdate = "date unknown";
+                    $motherbirthdate = "Date unknown";
                 } else {
                     $motherbirthmonth = substr($mother['birthdatetr'], -5, 2);
                     $motherbirthdate = $mother['birthdate'];
                 }
-                if ($mother['birthplace'] = " ") {
-                    $motherbirthplace = "unknown";
+
+                if ($mother['birthplace'] == "" OR $person['famc'] == null) {
+                    $motherbirthplace = "Place Unknown";
                 } else {
                     $motherbirthplace = $mother['birthplace'];
                 }
-
+	
                 If ($currentmonth == $motherbirthmonth) {
                     $bornClass = 'born-highlight';
                 } else {
                     $bornClass = "";
                 }
-
-                if ($mother['deathdatetr'] == "0000-00-00") {
+				
+				if ($mother['living'] == '0' AND $mother['deathdatetr'] !== '0000-00-00') {
+                    $motherdeathdate = " died: ". $mother['deathdate'];
+                } else { if ($person['famc'] == null) { 
+					$motherdeathdate = "Unknown";
+					}
+					else {
+                    $motherdeathdate = " died: Date unknown";
+                }
+				}
+                 if ($mother['deathdatetr'] == "0000-00-00") {
                     $motherdeathmonth = null;
                 } else {
                     $motherdeathmonth = substr($mother['deathdatetr'], -5, 2);
                 }
-                if ($mother['living'] == '0' AND $mother['deathdatetr'] !== '0000-00-00') {
-                    $motherdeathdate = (" died: " . $mother['deathdate']);
+
+                if ($mother['living'] == '0' AND $mother['deathplace'] == '') {
+                    $motherdeathplace = "Place Unknown";
                 } else {
-                    $motherdeathdate = " died: date unknown";
-                }
-                if ($mother['living'] == '1') {
+				$motherdeathplace = $mother['deathplace'];
+				}
+				
+				if ($mother['living'] == '1') {
                     $motherdeathdate = "  (Living)";
+					
                 }
-                if ($mother['living'] == '0' AND $mother['deathplace'] == " ") {
-                    $motherdeathplace = "unknown";
+				
+
+                if ($mother['firstname'] == null) {
+                    $motherfirstname = "Unknown";
+					} else {
+                    $motherfirstname = $mother['firstname'];
+				}
+				if ($mother['lastname'] == '') {
+                    $mothersurname = "Unknown";
+					} else {				
+					$mothersurname = $mother['lastname'];
+					
                 }
+				if ($mother['personID'] !== null) {
+					$mothername = $mother['firstname']. $mother['lastname'];
+					} else {
+					$mothername = "Unknown";
+					}
+				
+// Mother - Special Event
+				if ($mother['personID'] !== null)
+				{
+				$motherRow = $tngcontent->getSpEvent($mother['personID']);
+				$mother_spevent = $motherRow['info'];
+				} else {
+				$mother_spevent = "Unknown";
+				}
+ //get Cause of Death for Mother
+				$motherRow = $tngcontent->getCause($mother['personID']);
+				if ($motherRow['eventtypeID'] == "0") {
+					$mother_cause_of_death = ". Cause: ". $motherRow['cause'];
+				} else {
+				$mother_cause_of_death = "";
+				}
+				
+// Parents Marriage Data
+		         if ($parents['marrdatetr'] == "0000-00-00" OR $person['famc'] == null) {
+                    $parentsmarrmonth = null;
+                    $parentsmarrdate = "Marriage Date unknown";
+                } else {
+                    $parentsmarrmonth = substr($parents['marrdatetr'], -5, 2);
+                    $parentsmarrdate = "Married on ". $parents['marrdate'];
+                }
+
+                if ($parents['marrplace'] == "" OR $person['famc'] == null) {
+                    $parentsmarrplace = "Unknown";
+                } else {
+                    $parentsmarrplace = $parents['marrplace'];
+                }				
                 ?>	
                 <td class="tdback">Mother</td>
                 <td class="tdfront" colspan="0">
@@ -338,7 +424,7 @@
                         ?>
                         <a href="?personId=<?php echo $mother['personID']; ?>">
                             <?php echo $mothername; ?></a>,<?php echo $motherdeathdate; ?>, </span><?php
-                        echo $motherdeathplace;
+                        echo $motherdeathplace. $mother_cause_of_death;
                     } else {
 
                         echo $mothername;
@@ -364,9 +450,23 @@
                 }
                 ?>
                 <td class="tdfront <?php echo $bornClass; ?>"><?php echo $motherbirthdate; ?></td>
-            </tr>
+            </tr><tr>
+			<td class="tdback">Parents</td>
+			<?php
+                
+
+                if ($currentmonth == $parentsmarrmonth) {
+                    $bornClass = 'born-highlight';
+                } else {
+                    $bornClass = "";
+                }
+                ?>
+               <td class="tdfront <?php echo $bornClass; ?>"><?php echo $parentsmarrdate; ?></td>
+			<td class="tdback">Place</td><td class="tdfront"><?php echo $parentsmarrplace;?></td>
+			</tr>
         </tbody>
         <?php
+//Spouse(s)		
         foreach ($families as $family):
             $marrdatetr = $family['marrdatetr'];
             $marrdate = $family['marrdate'];
@@ -388,7 +488,11 @@
                     $spouse = $tngcontent->getPerson($family['wife']);
                 }
             }
-
+			 if ($family['marrdate'] == '') {
+                $spousemarrdate = "Date unknown";
+            } else {
+                $spousemarrdate = $family['marrdate'];
+            }
             if ($family['marrplace'] == '') {
                 $marrplace = "unknown";
             } else {
@@ -400,14 +504,26 @@
             } else {
                 $spousebirthdate = $spouse['birthdate'];
             }
+			if ($spouse['birthplace'] == "") {
+                    $spousebirthplace = "Unknown";
+                } else {
+                    $spousebirthplace = $spouse['birthplace'];
+                }
 
             if ($spouse['living'] == '0' AND $spouse['deathdatetr'] !== '0000-00-00') {
-                $deathdate = " died: " . $spouse['deathdate'];
+                $spousedeathdate = " died: " . $spouse['deathdate'];
             } else {
-                $deathdate = " died: date unknown";
+                $spousedeathdate = " died: date unknown";
             }
-            if ($spouse['living'] == '1') {
-                $deathdate = "  (Living)";
+            if ($spouse['living'] == '0' AND $spouse['deathplace'] == '') {
+                    $spousedeathplace = "Unknown";
+                } else {
+				$spousedeathplace = $spouse['deathplace'];
+				}
+							
+			if ($spouse['living'] == '1') {
+                $spousedeathdate = "  (Living)";
+				$spousedeathplace = " not applicable";
             }
 
             if ($spouse['personID'] == '') {
@@ -415,6 +531,28 @@
             } else {
                 $spousename = $spouse['firstname'] . $spouse['lastname'] . $deathdate;
             }
+// Spouse - Special Event
+				if ($EventDisplay !== null)
+				{
+					if ($spouse['personID'] !== null)
+					{
+					$spouseRow = $tngcontent->getSpEvent($spouse['personID']);
+						if ($spouseRow !== null)  {
+						$spouse_spevent = " (". $EventDisplay. ":". $spouseRow['info']. " )";
+						} else {
+					$spouse_spevent = " (". $EventDisplay. ":Unknown)";
+						}
+					}	
+				}
+				
+//get Cause of Death for Spouse
+				$spouseRow = $tngcontent->getCause($spouse['personID']);
+				if ($spouseRow['eventtypeID'] == "0") {
+					$spouse_cause_of_death = ". Cause: ". $spouseRow['cause'];
+				} else {
+				$spouse_cause_of_death = "";
+				}
+
             ?>
             <tr>
                 <td colspan="0"></td>
@@ -429,11 +567,11 @@
                         <?php
                         echo $spousename;
                     } else {
-                        $spousename = $spouse['firstname'] . $spouse['lastname'] . $deathdate;
+                        $spousename = $spouse['firstname'] . $spouse['lastname'];
                         ?>
                         <a href="?personId=<?php echo $spouse['personID']; ?>">
                             <?php
-                            echo $spousename;
+                            echo $spousename. $spouse_spevent;
                         }
                         ?>
                     </a>
@@ -476,92 +614,114 @@
                 <td class="tdback"><?php echo "Place"; ?></td>
                 <td class="tdfront"><?php echo $marrplace; ?></td>
 
+            </tr><tr>
+                <?php
+				$spousedeathmonth = substr($spouse['deathdatetr'], -5, 2);
+                If ($currentmonth == $spousedeathmonth) {
+                    $bornClass = 'born-highlight';
+                } else {
+                    $bornClass = "";
+                }
+                
+                ?>
+                <td class="tdback"><?php echo "Died"; ?></td>
+
+                <td class="tdfront <?php echo $bornClass; ?>"><?php echo $spousedeathdate. $spouse_cause_of_death; ?></td>
+
+                <td class="tdback"><?php echo "Place"; ?></td>
+                <td class="tdfront"><?php echo $spousedeathplace; ?></td>
             </tr>
             <tr>
+<!-- Children -->				
                 <td class="tdback">Children</td>
                 <td class="tdfront" colspan="3">
                     <ul>
-                        <?php
-                        $children = $tngcontent->getChildren($family['familyID']);
-                        foreach ($children as $child):
-                            $classes = array('child');
-                            $childPerson = $tngcontent->getPerson($child['personID']);
-                            $childName = $childPerson['firstname'] . $childPerson['lastname'];
-                            $childdeathdate = $childPerson['deathdate'];
 
-                            if ($child['haskids']) {
-                                $classes[] = 'haskids';
-                            }
-                            $class = join(' ', $classes);
-                            ?>
-                            <?php
-                            if ($childPerson['living'] == '0' AND $childPerson['deathdatetr'] !== '0000-00-00') {
-                                $childdeathdate = (" died: " . $childPerson['deathdate']);
-                            } else {
-                                $childdeathdate = " died: date unknown";
-                            }
-                            if ($childPerson['living'] == '1') {
-                                $childdeathdate = "  (Living)";
-                            }
-                            ?>
+				
+            <?php
+            $children = $tngcontent->getChildren($family['familyID']);
+				foreach ($children as $child):
+					$classes = array('child');
+					$childPerson = $tngcontent->getPerson($child['personID']);
+					$childName = $childPerson['firstname'] . $childPerson['lastname'];
+					$childdeathdate = $childPerson['deathdate'];
+
+					if ($child['haskids']) {
+						$classes[] = 'haskids';
+					}
+					$class = join(' ', $classes);
+
+					?>
+					<?php
+					if ($childPerson['living'] == '0' AND $childPerson['deathdatetr'] !== '0000-00-00') {
+						$childdeathdate = (" died: " . $childPerson['deathdate']);
+					} else {
+						$childdeathdate = " died: date unknown";
+					}
+					if ($childPerson['living'] == '1') {
+						$childdeathdate = "  (Living)";
+					}
+					?>
 
 
 
-                            <li colspan="0", class="<?php echo $class ?>">
-                                <a href="?personId=<?php echo $childPerson['personID']; ?>">
+			<li colspan="0", class="<?php echo $class ?>">
+				<a href="?personId=<?php echo $childPerson['personID']; ?>">
 
-                                    <?php
-                                    if ($childPerson['birthdatetr'] == "0000-00-00") {
-                                        $childbirthmonth = null;
-                                    } else {
-                                        $childbirthmonth = substr($childPerson['birthdatetr'], -5, 2);
-                                    }
-                                    if ($childPerson['deathdatetr'] == "0000-00-00") {
-                                        $childdeathmonth = null;
-                                    } else {
-                                        $childdeathmonth = substr($childPerson['deathdatetr'], -5, 2);
-                                    }
+					<?php
+					if ($childPerson['birthdatetr'] == "0000-00-00") {
+						$childbirthmonth = null;
+					} else {
+						$childbirthmonth = substr($childPerson['birthdatetr'], -5, 2);
+					}
+					if ($childPerson['deathdatetr'] == "0000-00-00") {
+						$childdeathmonth = null;
+					} else {
+						$childdeathmonth = substr($childPerson['deathdatetr'], -5, 2);
+					}
 
-                                    if ($childPerson['birthdatetr'] !== "0000-00-00") {
-                                        $childbirthdate = $childPerson['birthdate'];
-                                    }
-                                    if ($childPerson['birthdatetr'] == "0000-00-00") {
-                                        $childbirthdate = ("Date Unknown");
-                                    }
-                                    //var_dump ($childbirthdate);
+					if ($childPerson['birthdatetr'] !== "0000-00-00") {
+						$childbirthdate = $childPerson['birthdate'];
+					}
+					if ($childPerson['birthdatetr'] == "0000-00-00") {
+						$childbirthdate = ("Date Unknown");
+					}
+					//var_dump ($childbirthdate);
 
-                                    If ($currentmonth == $childbirthmonth) {
+					If ($currentmonth == $childbirthmonth) {
 
-                                        echo $childName;
-                                        ?></a>,<span style="background-color:#E0E0F7"> born: <?php echo $childbirthdate; ?>, </span><?php echo $childPerson['birthplace']; ?><?php echo $childdeathdate; ?>
-                                </li> 
-                                <?php
-                            } elseif ($currentmonth == $childdeathmonth) {
-                                echo $childName;
-                                ?></a>, born: <?php echo $childbirthdate; ?>,<?php echo $childPerson['birthplace']; ?><span style="background-color:#E0E0F7"><?php echo $childdeathdate; ?>
-                                </span>
-                                </li> 
-                                <?php
-                            } elseif (($currentmonth == $childbirthmonth) AND ( $currentmonth == $childdeathmonth)) {
-                                echo $childName;
-                                ?></a>,<span style="background-color:#E0E0F7"> born: <?php echo $childbirthdate; ?>,<?php echo $childPerson['birthplace']; ?><span style="background-color:#E0E0F7"><?php echo $childdeathdate; ?>
-                                    </span>
-                                    </li>
-                                    <?php
-                                } else {
-                                    echo $childName;
-                                    ?></a>, born: <?php echo $childbirthdate; ?>, <?php echo $childPerson['birthplace']; ?><?php echo $childdeathdate; ?>
-                                    </li>
+						echo $childName;
+						?></a>,<span style="background-color:#E0E0F7"> born: <?php echo $childbirthdate; ?>, </span><?php echo $childPerson['birthplace']; ?><?php echo $childdeathdate; ?>
+				</li> 
+				<?php
+			} elseif ($currentmonth == $childdeathmonth) {
+				echo $childName;
+				?></a>, born: <?php echo $childbirthdate; ?>,<?php echo $childPerson['birthplace']; ?><span style="background-color:#E0E0F7"><?php echo $childdeathdate; ?>
+				</span>
+				</li> 
+				<?php
+			} elseif (($currentmonth == $childbirthmonth) AND ( $currentmonth == $childdeathmonth)) {
+				echo $childName;
+				?></a>,<span style="background-color:#E0E0F7"> born: <?php echo $childbirthdate; ?>,<?php echo $childPerson['birthplace']; ?><span style="background-color:#E0E0F7"><?php echo $childdeathdate; ?>
+					</span>
+					</li>
+					<?php
+				} else {
+					echo $childName;
+					?></a>, born: <?php echo $childbirthdate; ?>, <?php echo $childPerson['birthplace']; ?><?php echo $childdeathdate; ?>
+					</li>
 
                                     <?php
                                 }
                             endforeach;
+							
                             ?>
                     </ul>
                 </td>
             </tr>
             <?php
         endforeach;
+		
         ?>				
     </ul>
 </td>

@@ -9,6 +9,8 @@
 				$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
 				$currentperson = $tngcontent->getPerson($currentperson);
 				$currentuser = ($currentperson['firstname']. $currentperson['lastname']);
+				$currentuserLogin = wp_get_current_user();
+				$UserLogin = $currentuserLogin->user_login;
 				
 				
 				//get person details
@@ -20,6 +22,8 @@
 				$deathdatetr = ($person['deathdatetr']);
 				$deathplace = $person['deathplace'];
 				$name = $person['firstname']. $person['lastname'];
+				$firstname = $person['firstname'];
+				$lastname = $person['lastname'];
 				
 				//get default media
 				$defaultmedia = $tngcontent->getdefaultmedia($personId);
@@ -45,9 +49,10 @@
 				
  				
 	<form id="edit-family-form" action = "<?php echo plugins_url('templates/processfamily-notes.php', dirname(__FILE__)); ?>" method = "POST">
-	<input type="hidden" name="User" value="<?php echo $currentuser; ?>" />
+	<input type="hidden" name="User" value="<?php echo $UserLogin; ?>" />
 	<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
-	<input type="hidden" name="person Name" value="<?php echo $name; ?>" />
+	<input type="hidden" name="firstname" value="<?php echo $firstname; ?>" />
+	<input type="hidden" name="surname" value="<?php echo $lastname; ?>" />
 	<body>
 	<?php 			
 		//get All notes
@@ -62,65 +67,56 @@
 											
 		foreach($allnotes as $PersonNote):
 		if ($PersonNote['eventID'] == null) {
+					$xnote_generalID = $PersonNote['xnoteID'];
 					$note_general = $PersonNote['note'];
 					}
 		if ($PersonNote['eventID'] == "NAME") {
+					$xnote_nameID = $PersonNote['xnoteID'];
 					$note_name = $PersonNote['note'];
 					}
 		if ($PersonNote['eventID'] == "BIRT") {
+					$xnote_birthID = $PersonNote['xnoteID'];
 					$note_birth = $PersonNote['note'];
 					}
 		
 		if ($PersonNote['eventID'] == "DEAT") {
+					$xnote_deathID = $PersonNote['xnoteID'];
 					$note_death = $PersonNote['note'];
 					}
 		if ($PersonNote['eventID'] == "BURI") {
+					$xnote_funeralID = $PersonNote['xnoteID'];
 					$note_funeral = $PersonNote['note'];
 					}			
 	?>
 	<?php endforeach; ?>
 		
 		<p>
+			<input type="hidden" name="xnote_generalID" value="<?php echo $xnote_generalID ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_generalID;?></b></span></a></br>
-			<textarea style="width:100%" name="note_general" rows="3" cols="100">
-			<?php echo $note_general; ?>
+			<?php echo $note_generalID;?></b></span></a></br><textarea style="width:100%" name="note_general" rows="3" cols="100"><?php echo $note_general; ?>
 			</textarea>
 		</p>
 		<p>
+			<input type="hidden" name="xnote_nameID" value="<?php echo $xnote_nameID ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_nameID;?></b></span></a></br>
-			<textarea  style="width:100%" name="note_name" rows="3" cols="100">
-			<?php echo $note_name; ?>
-			</textarea>
+			<?php echo $note_nameID;?></b></span></a></br><textarea  style="width:100%" name="note_name" rows="3" cols="100"><?php echo $note_name; ?></textarea>
 		</p>
 		<p>
+			<input type="hidden" name="xnote_birthID" value="<?php echo $xnote_birthID ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_birthID;?></b></span></a></br>
-			<textarea style="width:100%"  name="note_birth" rows="3" cols="100">
-			<?php echo $note_birth; ?>
-			</textarea>
+			<?php echo $note_birthID;?></b></span></a></br><textarea style="width:100%"  name="note_birth" rows="3" cols="100"><?php echo $note_birth; ?></textarea>
 		</p>
 		<p>
-		<?php 
-		if ($person['living'] == '0') {
-		?>
-					
-		<span style="font-size:14pt"><b>
-			<?php echo $note_deathID;?></b></span></a></br>
-			<textarea name="note_death" rows="3" cols="100">
-			<?php echo $note_death; ?>
-			</textarea>
+						
+			<input type="hidden" name="xnote_deathID" value="<?php echo $xnote_deathID ?>" />
+			<span style="font-size:14pt"><b>
+			<?php echo $note_deathID;?></b></span></a></br><textarea name="note_death" rows="3" cols="100"><?php echo $note_death; ?></textarea>
 		</p>
 		<p>
+			<input type="hidden" name="xnote_funeralID" value="<?php echo $xnote_funeralID ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_funeralID;?></b></span></a></br>
-			<textarea name="note_funeral" rows="3" cols="100">
-			<?php echo $note_funeral; ?>
-			</textarea>
-		<?php
-		}
-		?>
+			<?php echo $note_funeralID;?></b></span></a></br><textarea name="note_funeral" rows="3" cols="100"><?php echo $note_funeral; ?></textarea>
+		
 		</p>
 		
 		
