@@ -23,18 +23,15 @@
 				} else {
 			
 //Get Headperson ID  for User and put in array 
-				$usercount = 1;
-				$usersubmissionID = $wpdb->get_results( "SELECT * FROM wp_tng_people where tnguser = '$UserLogin' AND headpersonid = personid");
-			foreach ($usersubmissionID as $userID):
+				$usersubmissionID = $wpdb->get_results( "SELECT * FROM wp_tng_people where tnguser = '$UserLogin' AND headpersonid = personid ORDER BY datemodified DESC");
+			foreach ($usersubmissionID as $usercount => $userID):
 				$submissionID = $userID->id;
 				$userentries[$usercount] = $submissionID;
-				$usercount += 1;
 			endforeach;	
 			
 
 //Get headpersonID from array and display submission				
-			$usercount = 1;
-			foreach ($userentries as $userentry):
+			foreach ($userentries as $usercount => $userentry):
 				//$usercount += 1;
 				$usersubmitID = $userentries[$usercount];
 				$person = $wpdb->get_row( "SELECT * FROM wp_tng_people WHERE id = '$userentry'");
@@ -284,7 +281,7 @@
 					}			
 	endforeach; 		
 	
-	echo "<br/><b>Changes for the Family of ". $new_firstname. " ". $new_lastname. " *** Submission " .$usercount ." of " .$usersubmissions ." (ID = ". $userentry. " )";		
+	echo "<br/><b>Changes for the Family of ". $new_firstname. " ". $new_lastname. " *** Submission " . ($usersubmissions - $usercount) ." of " .$usersubmissions ." (ID = ". $userentry. " )";		
 	?>
 	<table class="table-sheet1">
 		<tbody>
@@ -1222,7 +1219,6 @@ $childdata = $tngcontent->getChildrow($childID);
 	<?php
 	}
 //end of array
-	$usercount += 1;
 	endforeach;
 	}
 	

@@ -20,16 +20,35 @@ class Upavadi_Update_FamilyUpdate
     {
         $user = $data['User'];
         $headPersonId = $data['personId'];
-
+        $date = date('Y-m-d H:i:s');
+        $keys = array(
+            'headpersonid' => $headPersonId,
+            'tnguser' => $user,
+            'datemodified' => $date
+        );
+        
         $data['father'] = $this->extractPersonData($data, 'father');
         $data['mother'] = $this->extractPersonData($data, 'mother');
         $data['parents'] = $this->extractPersonData($data, 'parents');
 
         $people = $this->extractPeople($data);
         $families = $this->extractFamilies($data);
-        print_r($families);
-        echo str_repeat('*', 50) . PHP_EOL;
-        print_r($data);
+        $children = $this->extractChildrenFamily($data);
+        
+        $people = $this->addFields($people, $keys);
+        $families = $this->addFields($families, $keys);
+        $children = $this->addFields($children, $keys);
+        
+        $this->db->query('START TRANSACTION');
+        try {
+            $this->insertRows($this->tables['people'], $people);
+            $this->insertRows($this->tables['families'], $families);
+            $this->insertRows($this->tables['children'], $children);
+            $this->db->query('COMMIT');
+        } catch (Exception $e) {
+            $this->db->query('ROLLBACK');
+            throw $e;
+        }
     }
 
     public function extractPersonData($data, $personType)
@@ -53,6 +72,17 @@ class Upavadi_Update_FamilyUpdate
         $people = $this->extractSpouses($people, $data);
         $people = $this->extractChildren($people, $data);
         return $people;
+    }
+
+    public function extractFamilyId($data)
+    {
+        if (empty($data['personfamc']) && (empty($data['fathername']) || empty($data['mothername']))) {
+            $famc = "NewParents";
+        } else {
+            $famc = $data['personfamc'];
+        }
+
+        return $famc;
     }
 
     public function extractPerson($data)
@@ -170,22 +200,22 @@ class Upavadi_Update_FamilyUpdate
     public function extractParentsFamily($data)
     {
         $familyID = $this->extractFamilyId($data);
-        
+
         $father = $this->normaliseParent($data['father']);
         $husband = $father['personId'];
-        
+
         $mother = $this->normaliseParent($data['mother']);
         $wife = $mother['personId'];
-        
+
         $marrInfo = $this->extractPersonData($data, 'parent');
         $marrDate = $marrInfo['marr_day'];
         $marrPlace = $marrInfo['marr_Place'];
-        
+
         $husbOrder = $data['parents']['husborder'];
         $wifeOrder = $data['parents']['wifeorder'];
         $living = $data['parents']['living'];
-        
-        $familty = array(
+
+        $family = array(
             'familyid' => $familyID,
             'husband' => $husband,
             'wife' => $wife,
@@ -196,23 +226,109 @@ class Upavadi_Update_FamilyUpdate
             'living' => $living
         );
 
-        return $familty;
+        return $family;
     }
 
     public function extractSpousesFamily($families, $data)
     {
+        foreach ($data['family'] as $family) {
+            foreach ($family as $spouse) {
+                $families[] = $this->extractSpouseFamily(
+                    $data, $this->normaliseSpouse($spouse)
+                );
+            }
+        }
+
         return $families;
     }
 
-    public function extractFamilyId($data)
+    public function extractSpouseFamily($headPerson, $spouse)
     {
-        if (empty($data['personfamc']) && (empty($data['fathername']) || empty($data['mothername']))) {
-            $famc = "NewParents";
+        $familyID = $spouse['familyID'];
+        if ($spouse['sex'] == 'M') {
+            $husbandPerson = $spouse;
+            $wifePerson = $headPerson;
         } else {
-            $famc = $data['personfamc'];
+            $husbandPerson = $headPerson;
+            $wifePerson = $spouse;
+        }
+
+        $husband = $husbandPerson['personId'];
+        $wife = $wifePerson['personId'];
+
+        $marrDate = $spouse['marr.day'];
+        $marrPlace = $spouse['marr.place'];
+
+        $husbOrder = $spouse['husborder'];
+        $wifeOrder = $spouse['wifeorder'];
+        $living = $spouse['living'];
+
+        $family = array(
+            'familyid' => $familyID,
+            'husband' => $husband,
+            'wife' => $wife,
+            'marrdate' => $marrDate,
+            'marrplace' => $marrPlace,
+            'husborder' => $husbOrder,
+            'wifeorder' => $wifeOrder,
+            'living' => $living
+        );
+
+        return $family;
+    }
+
+    public function extractChildrenFamily($data)
+    {
+        $children = array();
+
+        foreach ($data['child'] as $family) {
+            foreach ($family as $child) {
+                $children[] = $this->extractChildFamily($this->normaliseChild($child));
+            }
+        }
+
+        return array_filter($children);
+    }
+
+    public function extractChildFamily($data)
+    {
+        if (empty($data['firstname'])) {
+            return null;
+        }
+        $personId = $data['personId'];
+        $familyId = $data['familyID'];
+        $hasKids = $data['haskids'];
+        $orderNum = $data['order'];
+        $parentOrder = $data['parentorder'];
+        
+        $child = array(
+            'personid' => $personId,
+            'familyID' => $familyId,
+            'haskids' => $hasKids,
+            'ordernum' => $orderNum,
+            'parentorder' => $parentOrder
+        );
+        return $child;
+    }
+
+    public function addFields($records, $fields)
+    {
+        $newRecords = array();
+        
+        foreach ($records as $record) {
+            $newRecords[] = array_merge($record, $fields);
         }
         
-        return $famc;
+        return $newRecords;
+    }
+
+    public function insertRows($table, $records)
+    {
+        foreach ($records as $record) {
+            if (!$this->db->insert($table, $record)) {
+                throw new RuntimeException('Could not insert record into ' . $table);
+            }
+        }
     }
 
 }

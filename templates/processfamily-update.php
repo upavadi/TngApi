@@ -11,24 +11,11 @@ global $wpdb;
 $people_table = $wpdb->prefix . "tng_people";
 $families_table = $wpdb->prefix . "tng_families";
 $children_table = $wpdb->prefix . "tng_children";
-$wpdb->show_errors();
-$wpdb->print_error();
 
 $update = new \Upavadi_Update_FamilyUpdate($wpdb, $people_table, $families_table, $children_table);
 
-echo "<pre>";
 $update->process($_POST);
-echo "</pre>";
-
-
-
-
-
-
-
-
-
-
+header('Location: /thank-you');
 
 /*
   //Person identifiers
