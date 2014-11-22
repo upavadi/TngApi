@@ -14,6 +14,7 @@
  * <?php echo plugins_url('subdirectory/file', dirname(__FILE__)); ?>
  *
  */
+
 require_once __DIR__ . '/autoload.php';
 include_once __DIR__. '/tabs.php';
 
