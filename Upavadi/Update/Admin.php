@@ -110,25 +110,25 @@ class Upavadi_Update_Admin
                         <div class="meta-box-sortables">
                             <?php
                             $personId = $changeSet->getHeadPersonId();
-                            $this->showPerson($changeSet, $personId, 'Person');
+                            $this->showPerson($changeSet, $personId, 'Person (' . $personId . ')');
                             $personId = $changeSet->getFatherId();
 
-                            $this->showPerson($changeSet, $personId, 'Father');
+                            $this->showPerson($changeSet, $personId, 'Father (' . $personId . ')');
                             $personId = $changeSet->getMotherId();
-                            $this->showPerson($changeSet, $personId, 'Mother');
+                            $this->showPerson($changeSet, $personId, 'Mother (' . $personId . ')');
                             
                             $familyId = $changeSet->getHeadPersonFamC();
-                            $this->showPersonFamily($changeSet, $familyId, 'Family');
+                            $this->showPersonFamily($changeSet, $familyId, 'Family (' . $familyId . ')');
                             
                             $spouses = $changeSet->getSpouseIds();
                             foreach ($spouses as $index => $personId) {
-                                $this->showPerson($changeSet, $personId, 'Spouse ' . $index);
+                                $this->showPerson($changeSet, $personId, 'Spouse ' . $index . ' (' . $personId . ')');
                                 $familyId = $changeSet->getSpouseFamilyId($personId);
-                                $this->showPersonFamily($changeSet, $familyId, 'Spouse ' . $index . ' - Family');
+                                $this->showPersonFamily($changeSet, $familyId, 'Spouse ' . $index . ' - Family (' . $familyId . ')');
                                 $children = $changeSet->getChildrenIdsByParent($personId);
                                 foreach ($children as $cIndex => $childId) {
-                                    $this->showPerson($changeSet, $childId, 'Spouse ' . $index . ' - Child ' . $cIndex);
-                                    $this->showChildFamily($changeSet, $childId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (cont)');
+                                    $this->showPerson($changeSet, $childId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (' . $childId . ')');
+                                    $this->showChildFamily($changeSet, $childId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (' . $childId . ') (cont)');
                                 }
                             }
                             ?>
@@ -148,11 +148,12 @@ class Upavadi_Update_Admin
         return array_shift($results);
     }
 
-    public function showBox($title, $fields)
+    public function showBox($title, $fields, $entity, $id)
     {
+        $prefix = '[' . $entity . '][' . $id . ']';
         ?>
         <div class="postbox ">
-            <h3 class="hndle"><span><?php echo $title; ?></span></h3>
+            <h2><span> <?php echo $title; ?></span></h2>
             <div class="inside">
                 <table class="form-table">
                     <thead>
@@ -167,6 +168,7 @@ class Upavadi_Update_Admin
                         <?php
                         foreach ($fields as $name => $data) {
                             $type = 'string';
+                            $inputName = $prefix . '[' . $name . ']';
                             if (isset($data['type'])) {
                                 $type = $data['type'];
                             }
@@ -174,6 +176,9 @@ class Upavadi_Update_Admin
                             switch ($data['change']) {
                                 case 'edit':
                                     $change = '<span class="dashicons dashicons-flag"></span>';
+                                    break;
+                                case 'add':
+                                    $change = '<span class="dashicons dashicons-plus"></span>';
                                     break;
                             }
                             ?>
@@ -197,18 +202,18 @@ class Upavadi_Update_Admin
                                 <td><?php
                                     switch ($type) {
                                         case 'string':
-                                            ?><input type="text" size="80" name="<?php echo $name; ?>" value="<?php echo $data['new'] ?>"><?php
+                                            ?><input type="text" size="80" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
                                             break;
                                         case 'boolean';
                                             if ($data['old']) {
-                                                ?><input type="checkbox" name="<?php echo $name; ?>" checked="checked"><?php
+                                                ?><input type="checkbox" name="changes<?php echo $inputName; ?>" checked="checked"><?php
                                             } else {
-                                                ?><input type="checkbox" name="<?php echo $name; ?>"><?php
+                                                ?><input type="checkbox" name="changes<?php echo $inputName; ?>"><?php
                                             }
                                             break;
                                         case 'enum':
                                             ?>
-                                            <select name="<?php echo $name; ?>">
+                                            <select name="changes<?php echo $inputName; ?>">
                                                 <?php
                                                 foreach ($data['values'] as $value) {
                                                     $selected = null;
@@ -255,7 +260,7 @@ class Upavadi_Update_Admin
             'sex' => array('name' => 'Sex', 'type' => 'enum', 'values' => array('', 'M', 'F')),
         );
         
-        $this->showChanges($changes, $names, $title);
+        $this->showChanges($changes, $names, $title, 'people', $personId);
     }
 
     
@@ -272,10 +277,10 @@ class Upavadi_Update_Admin
            'husborder' => array('name' => 'Husband Order'),
            'wifeorder' => array('name' => 'Wife Order'),
         ); 
-        $this->showChanges($changes, $names, $title);
+        $this->showChanges($changes, $names, $title, 'family', $familyId);
     }
 
-    public function showChanges($changes, $names, $title)
+    public function showChanges($changes, $names, $title, $entity, $id)
     {
         $fields = array();
         foreach ($names as $field => $data) {
@@ -283,13 +288,13 @@ class Upavadi_Update_Admin
             if (isset($changes['diff'][$field])) {
                 $change = $changes['diff'][$field]['type'];
             }
-            $fields[] = array_merge($data, array(
+            $fields[$field] = array_merge($data, array(
                 'old' => $changes['old'][$field],
                 'new' => $changes['new'][$field],
                 'change' => $change,
             ));
         }
-        $this->showBox($title, $fields);
+        $this->showBox($title, $fields, $entity, $id);
     }
 
     public function showChildFamily($changeSet, $childId, $title)
@@ -304,7 +309,7 @@ class Upavadi_Update_Admin
            'haskids' => array('name' => 'Has Kids', 'type' => 'boolean'),
            'parentorder' => array('name' => 'Parent Order'),
         ); 
-        $this->showChanges($changes, $names, $title);
+        $this->showChanges($changes, $names, $title, 'children', $childId);
     }
 
 }

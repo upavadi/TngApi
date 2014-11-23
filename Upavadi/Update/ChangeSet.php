@@ -150,10 +150,18 @@ class Upavadi_Update_ChangeSet
         foreach ($newEntities as $id => $new) {
             if (!isset($oldEntities[$id])) {
                 // new
-                continue;
+                $new = $this->makeSafe($new);
+                foreach ($new as $key => $value) {
+                    $changes[$id][$key] = array(
+                        'type' => 'add',
+                        'old' => null,
+                        'new' => $value
+                    );
+                }
+            } else {
+                // Existing entities changed
+                $changes[$id] = $this->calcEditEntity($new, $oldEntities[$id]);
             }
-            // Existing entities changed
-            $changes[$id] = $this->calcEditEntity($new, $oldEntities[$id]);
         }
         return $changes;
     }
@@ -177,6 +185,9 @@ class Upavadi_Update_ChangeSet
 
     public function makeSafe($record)
     {
+        if (!$record) {
+            return array();
+        }
         $exclude = array(
             'id', 'tnguser', 'headpersonid', 'cause', 'personevent',
             'datemodified', 'birthdatetr', 'deathdatetr', 'marrdatetr'

@@ -460,7 +460,7 @@
 				
 				$spouse = $tngcontent->getPerson($family['husband']);
 				$spousehusband = $family['husband'];
-				$husbandname = $spousehusband['lastname'];
+				$husbandname = $spouse['lastname'];
 				$spousewife = $person['personID'];
 				$spousehusborder = $family['husborder'];
 				$spousewifeorder = $family['wifeorder'];
@@ -472,8 +472,9 @@
 					$spousewifeorder = $family['wifeorder'];
 					$husbandname = $person['lastname'];
 				}
+				 
 				$spousedeathdate = $spouse['deathdate'];
-				$spousemarrdate = $family['marrdate'];
+				//$spousemarrdate = $family['marrdate'];
 				$spouseRow = $tngcontent->getSpEvent($spouse['personID']);
 				$spouseSpEvent = $spouseRow['info'];
 				$spouseName = $spouse['firstname'] . $spouse['lastname'];
