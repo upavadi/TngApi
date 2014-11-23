@@ -55,15 +55,15 @@ $wpdb->insert(
 $headpersonid = $_POST['personId'];
 $tnguser = $_POST[User];
 $personid = $_POST['personId'];
-$xnote_generalID = $_POST['xnote_generalID'];
+$xnote_generalID = '';
 $note_general = $_POST['note_general'];
-$xnote_nameID = $_POST['xnote_nameID'];
+$xnote_nameID = 'NAME';
 $note_name = $_POST['note_name'];
-$xnote_birthID = $_POST['xnote_birthID'];
+$xnote_birthID = 'BIRT';
 $note_birth = $_POST['note_birth'];
-$xnote_deathID = $_POST['xnote_deathID'];
+$xnote_deathID = 'DEAT';
 $note_death = $_POST['note_death'];
-$xnote_funeralID = $_POST['xnote_funeralID'];
+$xnote_funeralID = 'BURI';
 $note_funeral = $_POST['note_funeral'];
 
 //Insert Notes

@@ -217,4 +217,29 @@ class Upavadi_Repository_TngRepository
         return $newId;
     }
 
+    public function getNote($personId, $id)
+    {
+        if (!isset($this->notes[$personId])) {
+            $notes = $this->content->getNotes($personId);
+            foreach ($notes as $note) {
+                $id = $note['eventID'];
+                $this->notes[$id] = array('note' => $note['note']);
+            }
+        }
+        return $this->notes[$personId][$id];
+    }
+
+    public function addNote($fields)
+    {
+        $noteLinks = $fields;
+        unset($noteLinks['note']);
+        $xnotes = array(
+            'note' => $fields['note'],
+            'gedcom' => $fields['note']
+        );
+        var_dump($xnotes);
+        var_dump($noteLinks);
+        exit;
+    }
+
 }

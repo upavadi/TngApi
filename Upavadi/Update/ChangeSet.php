@@ -34,11 +34,13 @@ class Upavadi_Update_ChangeSet
         $people = $this->loadPeopleChanges();
         $family = $this->loadFamilyChanges();
         $children = $this->loadChildrenFamilyChanges();
+        $notes = $this->loadNotesChanges();
 
         $this->changes = array(
             'people' => $people,
             'family' => $family,
-            'children' => $children
+            'children' => $children,
+            'notes' => $notes
         );
     }
 
@@ -47,11 +49,13 @@ class Upavadi_Update_ChangeSet
         $people = $this->loadPeopleOriginals();
         $family = $this->loadFamilyOriginals();
         $children = $this->loadChildrenFamilyOriginals();
-
+        $notes = $this->loadNotesOriginals();
+        
         $this->originals = array(
             'people' => $people,
             'family' => $family,
-            'children' => $children
+            'children' => $children,
+            'notes' => $notes
         );
     }
 
@@ -400,6 +404,12 @@ class Upavadi_Update_ChangeSet
                     $fields['gedcom'] = $headPerson['gedcom'];
                     $newId = $this->repo->addChildren($fields);
                     break;
+                case 'notes':
+                    $fields['gedcom'] = $headPerson['gedcom'];
+                    $fields['ordnum'] = 999;
+                    $fields['secret'] = 0;
+                    $this->repo->addNote($fields);
+                    break;
             }
             $ids[$id] = $newId;
         }
@@ -562,6 +572,46 @@ class Upavadi_Update_ChangeSet
         foreach ($tables as $table) {
             $this->wpdb->delete($table, $where);
         }
+    }
+
+    public function loadNotesChanges()
+    {
+        $notes = array();
+        $rows = $this->wpdb->get_results("SELECT * FROM wp_tng_notes where " . $this->getKey(), ARRAY_A);
+        $all = array();
+        foreach ($rows as $row) {
+            $note = array();
+            foreach ($row as $key => $value) {
+                if (!preg_match('/^note(.*?)(ID)?$/', $key, $m)) {
+                    $all[$key] = $value;
+                    continue;
+                }
+                if (empty($m[2])) {
+                    $m[2] = 'note';
+                }
+                $note[$m[1]][$m[2]] = $value;
+            }
+            foreach ($note as $item) {
+                $notes[$row['persfamID']][$item['ID']]['note'] = $item['note'];
+            }
+            
+        }
+        return $notes;
+    }
+
+    public function loadNotesOriginals()
+    {
+        $notes = array();
+        foreach ($this->changes['notes'] as $personId => $person) {
+            foreach ($person as $index => $note) {
+                $id = $note['ID'];
+                $originalNote = $this->repo->getNote($personId, $id);
+                if ($originalNote) {
+                    $notes[$personId][$index] = $originalNote;
+                }
+            }
+        }
+        return $notes;
     }
 
 }
