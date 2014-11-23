@@ -31,7 +31,7 @@ class Upavadi_Update_FamilyUpdate
         $data['mother'] = $this->extractPersonData($data, 'mother');
         $data['parents'] = $this->extractPersonData($data, 'parents');
 
-        $people = $this->extractPeople($data);
+        $people = array_filter($this->extractPeople($data));
         $families = $this->extractFamilies($data);
         $children = $this->extractChildrenFamily($data);
         
@@ -60,6 +60,9 @@ class Upavadi_Update_FamilyUpdate
             }
             $personData[$m[1]] = $value;
         }
+        if (!count($personData)) {
+            return null;
+        }
         return $personData;
     }
 
@@ -87,6 +90,12 @@ class Upavadi_Update_FamilyUpdate
 
     public function extractPerson($data)
     {
+        if (!$data) {
+            return null;
+        }
+        if (!$data['firstname']) {
+            return null;
+        }
         $personid = $data['personId'];
         $firstname = $data['firstname'];
         $lastname = $data['surname'];
@@ -119,6 +128,9 @@ class Upavadi_Update_FamilyUpdate
 
     public function normaliseParent($data)
     {
+        if (!$data) {
+            return null;
+        }
         $data['firstname'] = $data['name'];
         $data['lastname'] = $data['surname'];
         $data['personfamc'] = $data['famc'];
@@ -141,6 +153,9 @@ class Upavadi_Update_FamilyUpdate
 
     public function normaliseSpouse($data)
     {
+        if (!$data) {
+            return null;
+        }
         $data = $this->extractPersonData($data, 'spouse');
         foreach ($data as $key => $value) {
             if (preg_match('/^(.)[.](.)(.*)$/', $key, $m)) {
@@ -173,6 +188,9 @@ class Upavadi_Update_FamilyUpdate
 
     public function normaliseChild($data)
     {
+        if (!$data) {
+            return null;
+        }
         $data = $this->extractPersonData($data, 'child');
         $data['personId'] = $data['ID'];
         $data['personsex'] = $data['sex'];

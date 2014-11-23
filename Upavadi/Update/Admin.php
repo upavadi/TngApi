@@ -140,7 +140,7 @@ class Upavadi_Update_Admin
                                     <h2><span>Actions</span></h2>
                                     <div class="inside">
                                         <input class="button" type="submit" value="Save Accepted Changes" />
-                                        <input class="button" type="submit" value="Discard Submission" />
+                                        <input class="button" name="discard" type="submit" value="Discard Submission" />
                                     </div>
                                 </div>
                             </form>
@@ -233,39 +233,41 @@ class Upavadi_Update_Admin
                                         case 'boolean';
                                             if ($data['old']) {
                                                 echo '<span class="dashicons dashicons-yes"></span>';
-                                            } else {
+                                            } else if ($data['old'] !== null) {
                                                 echo '<span class="dashicons dashicons-no"></span>';
                                             }
                                             break;
                                     }
                                     ?></td>
                                 <td><?php
-                                    switch ($type) {
-                                        case 'date':
-                                        case 'string':
-                                            ?><input type="text" size="80" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
-                                            break;
-                                        case 'boolean';
-                                            if ($data['old']) {
-                                                ?><input type="checkbox" value="1" name="changes<?php echo $inputName; ?>" checked="checked"><?php
-                                            } else {
-                                                ?><input type="checkbox" value="1" name="changes<?php echo $inputName; ?>"><?php
-                                            }
-                                            break;
-                                        case 'enum':
-                                            ?>
-                                            <select name="changes<?php echo $inputName; ?>">
-                                                <?php
-                                                foreach ($data['values'] as $value) {
-                                                    $selected = null;
-                                                    if ($value == $data['new']) {
-                                                        $selected = "selected";
-                                                    }
-                                                    echo "<option value='$value' $selected>$value</option>";
+                                    if ($data['change'] !== 'exclude') {
+                                        switch ($type) {
+                                            case 'date':
+                                            case 'string':
+                                                ?><input type="text" size="80" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
+                                                break;
+                                            case 'boolean';
+                                                if ($data['new']) {
+                                                    ?><input type="checkbox" value="1" name="changes<?php echo $inputName; ?>" checked="checked"><?php
+                                                } else {
+                                                    ?><input type="checkbox" value="1" name="changes<?php echo $inputName; ?>"><?php
                                                 }
+                                                break;
+                                            case 'enum':
                                                 ?>
-                                            </select>
-                                        <?php
+                                                <select name="changes<?php echo $inputName; ?>">
+                                                    <?php
+                                                    foreach ($data['values'] as $value) {
+                                                        $selected = null;
+                                                        if ($value == $data['new']) {
+                                                            $selected = "selected";
+                                                        }
+                                                        echo "<option value='$value' $selected>$value</option>";
+                                                    }
+                                                    ?>
+                                                </select>
+                                            <?php
+                                        }
                                     }
                                     ?>
 
@@ -275,7 +277,13 @@ class Upavadi_Update_Admin
 
                                 </td>
                                 <td>
-                                    <input type="checkbox" class="input_accept" value="<?php echo $type; ?>" data-target="<?php echo $targetName; ?>" id="accept<?php echo $idName; ?>" name="accept<?php echo $inputName; ?>">
+                                    <?php
+                                    if ($data['change'] !== 'exclude') {
+                                        ?>
+                                        <input type="checkbox" class="input_accept" value="<?php echo $type; ?>" data-target="<?php echo $targetName; ?>" id="accept<?php echo $idName; ?>" name="accept<?php echo $inputName; ?>">
+                                        <?php
+                                    }
+                                    ?>
                                 </td>
                             </tr>
                             <?php
@@ -359,7 +367,16 @@ class Upavadi_Update_Admin
 
     public function processSubmission(Upavadi_Update_ChangeSet $changeSet)
     {
+//        echo "<pre>";
+//        print_r($changeSet->getDiff());
+//        echo "</pre>";
         $post = filter_input_array(INPUT_POST);
+        if (isset($post['discard'])) {
+            $changeSet->discard();
+            $url = admin_url('admin.php?page=tng_api_submissions');
+            header('Location: ' . $url);
+            exit;
+        }
         if (!isset($post['accept'])) {
             return;
         }
@@ -388,7 +405,9 @@ class Upavadi_Update_Admin
         }
         $updates = $changeSet->simplifyChanges($updates);
         $changeSet->apply($updates);
-        $changeSet->init();
+        $url = admin_url('admin.php?page=tng_api_submission_view&id=' . $changeSet->getId());
+        header('Location: ' . $url);
+        exit;
     }
 
     private function convertDate($olddate)

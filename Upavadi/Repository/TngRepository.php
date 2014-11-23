@@ -55,7 +55,7 @@ class Upavadi_Repository_TngRepository
         array_unshift($args, $types);
         var_dump(array($sql, $args));
         call_user_func_array(array($stmnt, 'bind_param'), $args);
-        //$stmnt->execute();
+        $stmnt->execute();
         var_dump($db->error);
     }
 
@@ -115,8 +115,14 @@ class Upavadi_Repository_TngRepository
 
     public function addPerson($fields)
     {
-        $newId = 'I0000';
+        $db = $this->content->getDbLink();
         $tables = $this->content->getTngTables();
+        $db->query("LOCK TABLES {$tables['people_table']}");
+        $sql =  "SELECT MAX(CAST(SUBSTRING(personID, 2) AS SIGNED)) as id FROM {$tables['people_table']} WHERE gedcom = '" . $fields['gedcom']. "'";
+        $res = $db->query($sql);
+        $row = $res->fetch_assoc();
+        $newIdInt = intval($row['id']) + 1;
+        $newId = 'I' . $newIdInt;
         $sql = "INSERT INTO {$tables['people_table']} ";
         $args = array();
         $sets = array();
@@ -141,19 +147,65 @@ class Upavadi_Repository_TngRepository
         $sql .= '(' . join(', ', $sets) . ') VALUES';
         $sql .= '(' . join(', ', $vals) . ')';
         $this->execute($sql, $args);
+        $db->query("UNLOCK TABLES");
         return $newId;
     }
 
     public function addFamily($fields)
     {
-        $newId = 'F0000';
+        $db = $this->content->getDbLink();
         $tables = $this->content->getTngTables();
+        $db->query("LOCK TABLES {$tables['families_table']}");
+        $sql =  "SELECT MAX(CAST(SUBSTRING(familyID, 2) AS SIGNED)) as id FROM {$tables['families_table']} WHERE gedcom = '" . $fields['gedcom']. "'";
+        $res = $db->query($sql);
+        $row = $res->fetch_assoc();
+        $newIdInt = intval($row['id']) + 1;
+        $newId = 'F' . $newIdInt;
         $sql = "INSERT INTO {$tables['families_table']} ";
         $args = array();
         $sets = array();
         $vals = array();
         $fields['familyID'] = $newId;
 
+        $dates = array(
+            'sealdatetr',
+            'divdatetr'
+        );
+        foreach ($dates as $date) {
+            if (!isset($fields[$date])) {
+                $fields[$date] = '0000-00-00';
+            }
+        }
+        
+        foreach ($fields as $name => $value) {
+            $sets[] = $name;
+            $vals[] = '?';
+            $args[] = & $fields[$name];
+        }
+        $sql .= '(' . join(', ', $sets) . ') VALUES';
+        $sql .= '(' . join(', ', $vals) . ')';
+        $this->execute($sql, $args);
+        $db->query("UNLOCK TABLES");
+        return $newId;
+    }
+
+    public function addChildren($fields)
+    {
+        $tables = $this->content->getTngTables();
+        $sql = "INSERT INTO {$tables['children_table']} ";
+        $args = array();
+        $sets = array();
+        $vals = array();
+
+        $dates = array(
+            'sealdatetr'
+        );
+        foreach ($dates as $date) {
+            if (!isset($fields[$date])) {
+                $fields[$date] = '0000-00-00';
+            }
+        }
+        
         foreach ($fields as $name => $value) {
             $sets[] = $name;
             $vals[] = '?';

@@ -173,7 +173,13 @@ class Upavadi_Update_ChangeSet
         $new = $this->makeSafe($new);
         $old = $this->makeSafe($old);
         foreach ($new as $key => $value) {
-            if ($value !== $old[$key]) {
+            if ($value === null) {
+                $changess[$key] = array(
+                    'type' => 'exclude',
+                    'old' => $old[$key],
+                    'new' => $value
+                );
+            } else if ($value !== $old[$key]) {
                 $changess[$key] = array(
                     'type' => 'edit',
                     'old' => $old[$key],
@@ -225,7 +231,9 @@ class Upavadi_Update_ChangeSet
     public function getFatherId()
     {
         $familyId = $this->userSubmission['famc'];
-        return $this->changes['family'][$familyId]['husband'];
+        if ($this->changes['family'][$familyId]['husband']) {
+            return $this->changes['family'][$familyId]['husband'];
+        }
     }
 
     public function getMotherId()
@@ -236,7 +244,9 @@ class Upavadi_Update_ChangeSet
 
     public function getSpouseIds()
     {
-        if ($this->userSubmission['sex'] === 'M') {
+        $personId = $this->getHeadPersonId();
+
+        if ($this->originals['people'][$personId]['sex'] === 'M') {
             $person = 'husband';
             $spouse = 'wife';
             $order = 'husborder';
@@ -246,7 +256,6 @@ class Upavadi_Update_ChangeSet
             $order = 'wifeorder';
         }
         $spouses = array();
-        $personId = $this->getHeadPersonId();
         foreach ($this->changes['family'] as $family) {
             if ($family[$person] === $personId) {
                 $spouses[$family[$order]] = $family[$spouse];
@@ -261,9 +270,6 @@ class Upavadi_Update_ChangeSet
         $famC = $this->getSpouseFamilyId($parentId);
         $children = array();
         foreach ($this->changes['people'] as $personId => $person) {
-            if (false === strpos($personId, 'I')) {
-                continue;
-            }
             if ($person['famc'] === $famC) {
                 $childFamily = $this->changes['children'][$personId];
                 $children[$childFamily['ordernum']] = $personId;
@@ -274,6 +280,11 @@ class Upavadi_Update_ChangeSet
         return $children;
     }
 
+    public function getId()
+    {
+        return $this->userSubmission['id'];
+    }
+    
     public function getHeadPersonFamC()
     {
         return $this->userSubmission['famc'];
@@ -300,7 +311,7 @@ class Upavadi_Update_ChangeSet
         }
         if ($type === 'add') {
             $updates[] = array('insert', $entity, $id, array($key => $value));
-            $newIds = $this->updateIds($id);
+            $newIds = $this->updateIds($id, $entity);
             foreach ($newIds as $update) {
                 $updates[] = $update;
             }
@@ -345,12 +356,17 @@ class Upavadi_Update_ChangeSet
             if ($op !== 'update') {
                 continue;
             }
+            if (isset($additions[$entity][$id])) {
+                $additions[$entity][$id] = array_merge($additions[$entity][$id], $fields);
+                continue;
+            }
             if (!isset($edits[$entity])) {
                 $edits[$entity] = array();
             }
             if (!isset($edits[$entity][$id])) {
                 $edits[$entity][$id] = array();
             }
+
             $edits[$entity][$id] = array_merge($edits[$entity][$id], $fields);
         }
 
@@ -362,29 +378,30 @@ class Upavadi_Update_ChangeSet
         $ids = array();
         list($inserts, $updates) = $changes;
         $headPerson = $this->originals['people'][$this->getHeadPersonId()];
-        foreach ($inserts as $entity => $insert) {
-            foreach ($insert as $id => $fields) {
-                $fields = $this->replaceIds($fields, $ids);
-                switch ($entity) {
-                    case 'people':
-                        $fields['changedate'] = $this->userSubmission['datemodified'];
-                        $fields['changedby'] = $this->userSubmission['tnguser'];
-                        $fields['gedcom'] = $headPerson['gedcom'];
-                        $newId = $this->repo->addPerson($fields);
-                        break;
-                    case 'family':
-                        $fields['changedate'] = $this->userSubmission['datemodified'];
-                        $fields['changedby'] = $this->userSubmission['tnguser'];
-                        $fields['gedcom'] = $headPerson['gedcom'];
-                        $newId = $this->repo->addFamily($fields);
-                        break;
-                    case 'children':
-                        $fields['gedcom'] = $headPerson['gedcom'];
-                        $newId = $this->repo->addChildren($fields);
-                        break;
-                }
-                $ids[$id] = $newId;
+
+        $inserts = $this->sortInserts($inserts);
+        foreach ($inserts as $insert) {
+            list($entity, $id, $fields) = $insert;
+            $fields = $this->replaceIds($fields, $ids);
+            switch ($entity) {
+                case 'people':
+                    $fields['changedate'] = $this->userSubmission['datemodified'];
+                    $fields['changedby'] = $this->userSubmission['tnguser'];
+                    $fields['gedcom'] = $headPerson['gedcom'];
+                    $newId = $this->repo->addPerson($fields);
+                    break;
+                case 'family':
+                    $fields['changedate'] = $this->userSubmission['datemodified'];
+                    $fields['changedby'] = $this->userSubmission['tnguser'];
+                    $fields['gedcom'] = $headPerson['gedcom'];
+                    $newId = $this->repo->addFamily($fields);
+                    break;
+                case 'children':
+                    $fields['gedcom'] = $headPerson['gedcom'];
+                    $newId = $this->repo->addChildren($fields);
+                    break;
             }
+            $ids[$id] = $newId;
         }
 
         foreach ($updates as $entity => $update) {
@@ -410,14 +427,16 @@ class Upavadi_Update_ChangeSet
                 }
             }
         }
+
+        $this->updateChangeIds($ids);
     }
 
-    public function updateIds($newId)
+    public function updateIds($newId, $entity)
     {
         $updates = array();
         foreach ($this->changes as $type => $entities) {
             foreach ($entities as $id => $fields) {
-                if ($id === $newId) {
+                if ($id === $newId && $type === $entity) {
                     continue;
                 }
                 foreach ($fields as $key => $value) {
@@ -430,17 +449,119 @@ class Upavadi_Update_ChangeSet
         return $updates;
     }
 
-    public function replaceIds($fields, $ids)
+    public function replaceIds($fields, $ids, $id = null)
     {
         foreach ($fields as $key => $value) {
             if (preg_match('/^::(.*)$/', $value, $m)) {
-                if (!isset($ids[$m[1]])) {
+                if ($m[1] !== $id && !isset($ids[$m[1]])) {
                     return null;
+                } else {
+                    $fields[$key] = $ids[$m[1]];
                 }
-                $fields[$key] = $ids[$m[1]];
             }
         }
         return $fields;
+    }
+
+    public function sortInserts($inserts)
+    {
+        $orderedInserts = array();
+        $unorderedInserts = array();
+        $ids = array();
+        foreach ($inserts as $entity => $insert) {
+            foreach ($insert as $id => $fields) {
+                $unorderedInserts[] = array($entity, $id, $fields);
+            }
+        }
+        $attempts = 5 * count($unorderedInserts);
+
+        while (count($unorderedInserts) && --$attempts) {
+            $insert = array_shift($unorderedInserts);
+            list($entity, $id, $fields) = $insert;
+            $pk = null;
+            if (in_array($entity, array('people', 'family'))) {
+                $pk = $id;
+            }
+            if ($this->replaceIds($fields, $ids, $pk)) {
+                $ids[$id] = '*' . $id;
+                $orderedInserts[] = $insert;
+            } else {
+                $unorderedInserts[] = $insert;
+            }
+        }
+        if (count($unorderedInserts) && $attempts <= 0) {
+            var_dump($unorderedInserts);
+            var_dump($orderedInserts);
+            var_dump($ids);
+            throw new RuntimeException('There is no good order to insert these records');
+        }
+        return $orderedInserts;
+    }
+
+    public function updateChangeIds($ids)
+    {
+        $updates = array();
+        foreach ($this->changes as $entity => $entities) {
+            switch ($entity) {
+                case 'people':
+                    $table = $this->wpdb->prefix . 'tng_people';
+                    $pk = 'personid';
+                    break;
+                case 'family':
+                    $table = $this->wpdb->prefix . 'tng_families';
+                    $pk = 'familyid';
+                    break;
+                case 'children':
+                    $table = $this->wpdb->prefix . 'tng_children';
+                    $pk = 'personID';
+                    break;
+            }
+            foreach ($entities as $id => $fields) {
+                $id = serialize(array($pk, $id));
+                foreach ($fields as $key => $value) {
+                    if (!isset($ids[$value])) {
+                        continue;
+                    }
+
+                    if (!isset($updates[$table])) {
+                        $updates[$table] = array();
+                    }
+                    if (!isset($updates[$table][$id])) {
+                        $updates[$table][$id] = array();
+                    }
+                    $updates[$table][$id][$key] = $ids[$value];
+                }
+            }
+        }
+        foreach ($updates as $table => $records) {
+            foreach ($records as $id => $fields) {
+                list($pk, $id) = unserialize($id);
+                $where = array(
+                    'headpersonid' => $this->userSubmission['headpersonid'],
+                    'tnguser' => $this->userSubmission['tnguser'],
+                    'datemodified' => $this->userSubmission['datemodified'],
+                    $pk => $id
+                );
+                $this->wpdb->update($table, $fields, $where);
+            }
+        }
+    }
+
+    public function discard()
+    {
+        $where = array(
+            'headpersonid' => $this->userSubmission['headpersonid'],
+            'tnguser' => $this->userSubmission['tnguser'],
+            'datemodified' => $this->userSubmission['datemodified'],
+        );
+        $tables = array(
+            $this->wpdb->prefix . 'tng_people',
+            $this->wpdb->prefix . 'tng_families',
+            $this->wpdb->prefix . 'tng_children'
+        );
+        foreach ($tables as $table) {
+            $this->wpdb->delete($table, $where);
+        }
     }
 
 }

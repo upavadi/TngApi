@@ -7,8 +7,14 @@ $people_table = $wpdb->prefix . "tng_people";
 $families_table = $wpdb->prefix . "tng_families";
 $children_table = $wpdb->prefix . "tng_children";
 $notes_table = $wpdb->prefix . "tng_notes";
-$wpdb->print_error();
 
+$update = new \Upavadi_Update_FamilyAdd($wpdb, $people_table, $families_table, $children_table);
+$update->process($_POST);
+header('Location: /thank-you');
+
+// $wpdb->print_error();
+
+/*
 //Person identifiers
 $tnguser = $_POST['User'];
 $headpersonid = $_POST['personId'];
@@ -256,6 +262,8 @@ MSG;
 $msg .= print_r($_REQUEST, true);
 echo "<pre>{$msg}</pre>";
 mail($email, 'New data', $msg);
+ * 
+ */
 ?>
 <html>
 <head>
