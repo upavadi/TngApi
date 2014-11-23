@@ -1,7 +1,5 @@
 <?php
 
-$SpEvent = "10";
-
 class Upavadi_TngContent
 {
 //Define Special Event ID, if required
@@ -104,7 +102,7 @@ class Upavadi_TngContent
         $dbUser = esc_attr(get_option('tng-api-db-user'));
         $dbPassword = esc_attr(get_option('tng-api-db-password'));
         $dbName = esc_attr(get_option('tng-api-db-database'));
-
+		$EventID = esc_attr(get_option('tng-api-tng-event'));
         $db = mysqli_connect($dbHost, $dbUser, $dbPassword);
         mysqli_select_db($db, $dbName);
         $this->db = $db;
@@ -128,6 +126,7 @@ class Upavadi_TngContent
     public function initAdmin()
     {
         register_setting('tng-api-options', 'tng-api-email');
+        register_setting('tng-api-options', 'tng-api-tng-event');
         register_setting('tng-api-options', 'tng-api-tng-page-id');
         register_setting('tng-api-options', 'tng-api-tng-path');
         register_setting('tng-api-options', 'tng-api-tng-photo-upload');
@@ -144,18 +143,20 @@ class Upavadi_TngContent
             $tngEmail = esc_attr(get_option('tng-api-email'));
             echo "<input type='text' name='tng-api-email' value='$tngEmail' />";
         }, 'tng-api', 'general');
-
-        add_settings_section('tng', 'TNG', function() {
-            echo "In order for the plug in work we need to know where the original TNG source files live";
+		add_settings_section('tng', 'TNG', function() {
+            echo "In order for the plugin to work we need to know where the original TNG source files live";
         }, 'tng-api');
-
-        add_settings_field('tng-path', 'TNG Path', function () {
+		add_settings_field('tng-path', 'TNG Path', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
             echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
         }, 'tng-api', 'tng');
         add_settings_field('tng-photo-upload', 'Photo Upload mediatypeID', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-photo-upload'));
             echo "<input type='text' name='tng-api-tng-photo-upload' value='$tngPath' />";
+        }, 'tng-api', 'tng');
+        add_settings_field('tng-event', 'TNG Event to Track', function () {
+            $tngEvent = esc_attr(get_option('tng-api-tng-event'));
+			echo "<input type='text' name='tng-api-tng-event' value='$tngEvent' />";
         }, 'tng-api', 'tng');
         add_settings_section('db', 'Database', function() {
             echo "We also need to know where the TNG database lives";
@@ -243,6 +244,29 @@ SQL;
 
         return $row;
     }
+
+/* Get Special events for ADMIN selection*/
+    function getEventList()
+    {
+	$sql = <<<SQL
+    
+SELECT *
+FROM {$this->tables['eventtypes_table']}
+ORDER BY display
+	
+SQL;
+		$result = $this->query($sql);
+
+        $rows = array();
+        while ($row = $result->fetch_assoc()) {
+            $eventrows[] = $row;
+        //var_dump($eventrows);
+		}
+        
+		return $eventrows;
+	}
+	
+	
 /* Special event type 10 is called here*/
     public function getSpEvent($personId = null)
     {
@@ -250,12 +274,12 @@ SQL;
         if (!$personId) {
             $personId = $this->currentPerson;
         }
-
+		$EventID = esc_attr(get_option('tng-api-tng-event'));
         $sql = <<<SQL
 		
 SELECT *
 FROM {$this->tables['events_table']}
-where persfamID = '{$personId}' AND eventtypeID = '10'
+where persfamID = '{$personId}' AND eventtypeID = '$EventID'
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
@@ -265,12 +289,12 @@ SQL;
 /* Display for Special event type 10 is called here*/	
 	public function getEventDisplay()
     {
-
+		$EventID = esc_attr(get_option('tng-api-tng-event'));
         $sql = <<<SQL
 		
 SELECT *
 FROM {$this->tables['eventtypes_table']}
-where eventtypeID = "10"
+where eventtypeID = "$EventID"
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
