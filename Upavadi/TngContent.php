@@ -79,6 +79,9 @@ class Upavadi_TngContent
         return $this->domain;
     }
 
+    /**
+     * @return mysqli
+     */
     public function getDbLink()
     {
         return $this->db;

@@ -2,6 +2,7 @@
 
 class Upavadi_Update_ChangeSet
 {
+
     private $userSubmission;
 
     /**
@@ -17,7 +18,7 @@ class Upavadi_Update_ChangeSet
     {
         $this->repo = $repo;
         $this->wpdb = $wpdb;
-        $this->userSubmission = (array)$userSubmission;
+        $this->userSubmission = (array) $userSubmission;
         $this->init();
     }
 
@@ -33,7 +34,7 @@ class Upavadi_Update_ChangeSet
         $people = $this->loadPeopleChanges();
         $family = $this->loadFamilyChanges();
         $children = $this->loadChildrenFamilyChanges();
-        
+
         $this->changes = array(
             'people' => $people,
             'family' => $family,
@@ -46,7 +47,7 @@ class Upavadi_Update_ChangeSet
         $people = $this->loadPeopleOriginals();
         $family = $this->loadFamilyOriginals();
         $children = $this->loadChildrenFamilyOriginals();
-        
+
         $this->originals = array(
             'people' => $people,
             'family' => $family,
@@ -66,7 +67,7 @@ class Upavadi_Update_ChangeSet
     public function loadPeopleChanges()
     {
         $people = array();
-        $rows =  $this->wpdb->get_results("SELECT * FROM wp_tng_people where " . $this->getKey(), ARRAY_A);
+        $rows = $this->wpdb->get_results("SELECT * FROM wp_tng_people where " . $this->getKey(), ARRAY_A);
         foreach ($rows as $row) {
             $people[$row['personid']] = $row;
         }
@@ -76,7 +77,7 @@ class Upavadi_Update_ChangeSet
     public function loadFamilyChanges()
     {
         $families = array();
-        $rows =  $this->wpdb->get_results("SELECT * FROM wp_tng_families where " . $this->getKey(), ARRAY_A);
+        $rows = $this->wpdb->get_results("SELECT * FROM wp_tng_families where " . $this->getKey(), ARRAY_A);
         foreach ($rows as $row) {
             $families[$row['familyid']] = $row;
         }
@@ -86,7 +87,7 @@ class Upavadi_Update_ChangeSet
     public function loadChildrenFamilyChanges()
     {
         $children = array();
-        $rows =  $this->wpdb->get_results("SELECT * FROM wp_tng_children where " . $this->getKey(), ARRAY_A);
+        $rows = $this->wpdb->get_results("SELECT * FROM wp_tng_children where " . $this->getKey(), ARRAY_A);
         foreach ($rows as $row) {
             $children[$row['personID']] = $row;
         }
@@ -110,7 +111,7 @@ class Upavadi_Update_ChangeSet
     {
         return $this->originals;
     }
-    
+
     public function getDiff()
     {
         return $this->diff;
@@ -146,7 +147,7 @@ class Upavadi_Update_ChangeSet
     public function calcDiffEntities($newEntities, $oldEntities)
     {
         $changes = array();
-        
+
         foreach ($newEntities as $id => $new) {
             if (!isset($oldEntities[$id])) {
                 // new
@@ -221,7 +222,6 @@ class Upavadi_Update_ChangeSet
         return $this->userSubmission['personid'];
     }
 
-
     public function getFatherId()
     {
         $familyId = $this->userSubmission['famc'];
@@ -269,7 +269,7 @@ class Upavadi_Update_ChangeSet
                 $children[$childFamily['ordernum']] = $personId;
             }
         }
-        
+
         ksort($children);
         return $children;
     }
@@ -290,6 +290,157 @@ class Upavadi_Update_ChangeSet
             }
         }
         return null;
+    }
+
+    public function applyChange($entity, $id, $key, $value, $updates)
+    {
+        $type = $this->getDiffType($entity, $id, $key);
+        if ($type === 'edit') {
+            $updates[] = array('update', $entity, $id, array($key => $value));
+        }
+        if ($type === 'add') {
+            $updates[] = array('insert', $entity, $id, array($key => $value));
+            $newIds = $this->updateIds($id);
+            foreach ($newIds as $update) {
+                $updates[] = $update;
+            }
+        }
+        return $updates;
+    }
+
+    public function getDiffType($entity, $id, $key, $default = 'edit')
+    {
+        if (!isset($this->diff[$entity])) {
+            return $default;
+        }
+        if (!isset($this->diff[$entity][$id])) {
+            return $default;
+        }
+        if (!isset($this->diff[$entity][$id][$key])) {
+            return $default;
+        }
+        return $this->diff[$entity][$id][$key]['type'];
+    }
+
+    public function simplifyChanges($updates)
+    {
+        $additions = array();
+        $edits = array();
+        foreach ($updates as $update) {
+            list($op, $entity, $id, $fields) = $update;
+            if ($op !== 'insert') {
+                continue;
+            }
+            if (!isset($additions[$entity])) {
+                $additions[$entity] = array();
+            }
+            if (!isset($additions[$entity][$id])) {
+                $additions[$entity][$id] = array();
+            }
+            $additions[$entity][$id] = array_merge($additions[$entity][$id], $fields);
+        }
+
+        foreach ($updates as $update) {
+            list($op, $entity, $id, $fields) = $update;
+            if ($op !== 'update') {
+                continue;
+            }
+            if (!isset($edits[$entity])) {
+                $edits[$entity] = array();
+            }
+            if (!isset($edits[$entity][$id])) {
+                $edits[$entity][$id] = array();
+            }
+            $edits[$entity][$id] = array_merge($edits[$entity][$id], $fields);
+        }
+
+        return array($additions, $edits);
+    }
+
+    public function apply($changes)
+    {
+        $ids = array();
+        list($inserts, $updates) = $changes;
+        $headPerson = $this->originals['people'][$this->getHeadPersonId()];
+        foreach ($inserts as $entity => $insert) {
+            foreach ($insert as $id => $fields) {
+                $fields = $this->replaceIds($fields, $ids);
+                switch ($entity) {
+                    case 'people':
+                        $fields['changedate'] = $this->userSubmission['datemodified'];
+                        $fields['changedby'] = $this->userSubmission['tnguser'];
+                        $fields['gedcom'] = $headPerson['gedcom'];
+                        $newId = $this->repo->addPerson($fields);
+                        break;
+                    case 'family':
+                        $fields['changedate'] = $this->userSubmission['datemodified'];
+                        $fields['changedby'] = $this->userSubmission['tnguser'];
+                        $fields['gedcom'] = $headPerson['gedcom'];
+                        $newId = $this->repo->addFamily($fields);
+                        break;
+                    case 'children':
+                        $fields['gedcom'] = $headPerson['gedcom'];
+                        $newId = $this->repo->addChildren($fields);
+                        break;
+                }
+                $ids[$id] = $newId;
+            }
+        }
+
+        foreach ($updates as $entity => $update) {
+            foreach ($update as $id => $fields) {
+                if (isset($ids[$id])) {
+                    $id = $ids[$id];
+                }
+                $fields = $this->replaceIds($fields, $ids);
+                switch ($entity) {
+                    case 'people':
+                        $fields['changedate'] = $this->userSubmission['datemodified'];
+                        $fields['changedby'] = $this->userSubmission['tnguser'];
+                        $this->repo->updatePerson($id, $fields);
+                        break;
+                    case 'family':
+                        $fields['changedate'] = $this->userSubmission['datemodified'];
+                        $fields['changedby'] = $this->userSubmission['tnguser'];
+                        $this->repo->updateFamily($id, $fields);
+                        break;
+                    case 'children':
+                        $this->repo->updateChildren($id, $fields);
+                        break;
+                }
+            }
+        }
+    }
+
+    public function updateIds($newId)
+    {
+        $updates = array();
+        foreach ($this->changes as $type => $entities) {
+            foreach ($entities as $id => $fields) {
+                if ($id === $newId) {
+                    continue;
+                }
+                foreach ($fields as $key => $value) {
+                    if ($newId === $value) {
+                        $updates = $this->applyChange($type, $id, $key, '::' . $value, $updates);
+                    }
+                }
+            }
+        }
+        return $updates;
+    }
+
+    public function replaceIds($fields, $ids)
+    {
+        foreach ($fields as $key => $value) {
+            if (preg_match('/^::(.*)$/', $value, $m)) {
+                if (!isset($ids[$m[1]])) {
+                    return null;
+                }
+                $fields[$key] = $ids[$m[1]];
+            }
+        }
+        return $fields;
     }
 
 }

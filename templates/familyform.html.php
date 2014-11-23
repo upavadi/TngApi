@@ -631,11 +631,16 @@ function initChildren(order) {
 			}
 		}
 		var inputs=newclone.getElementsByTagName('input'), inp, i=0;
+                i=0;
 		while(inp=inputs[i++]) {
 			inp.name=inp.name.replace(/\]\[\d\]/g, '][' + idx + ']');
-			inp.value = null;
+                        if ($(inp).prop('type') === 'hidden') {
+                            continue;
+                        }
+                        $(inp).val(null);
 		}
 		var selects=newclone.getElementsByTagName('select'), sel, i=0;
+                i=0;
 		while(sel=selects[i++]) {
 			sel.name=sel.name.replace(/\]\[\d\]/g, '][' + idx + ']');
 			sel.selectedItem = 0;
