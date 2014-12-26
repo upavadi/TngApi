@@ -51,8 +51,8 @@
 	<form id="edit-family-form" action = "<?php echo plugins_url('templates/processfamily-notes.php', dirname(__FILE__)); ?>" method = "POST">
 	<input type="hidden" name="User" value="<?php echo $UserLogin; ?>" />
 	<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
-	<input type="hidden" name="firstname" value="<?php echo $firstname; ?>" />
-	<input type="hidden" name="surname" value="<?php echo $lastname; ?>" />
+	<input type="hidden" name="personfirstname" value="<?php echo $firstname; ?>" />
+	<input type="hidden" name="personsurname" value="<?php echo $lastname; ?>" />
 	<body>
 	<?php 			
 		//get All notes

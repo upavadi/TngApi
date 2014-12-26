@@ -92,8 +92,34 @@
 //talk to TNG   
     $tngcontent = Upavadi_TngContent::instance();
 	$UserName = get_user_by( 'login', $User );
+
 	
-//get person details
+//get Description of Event type 
+		
+	$EventRow = $tngcontent->getEventList();	
+	$EventDisplay = $EventRow['display'];
+	?>
+	<form>
+	<select>
+	<option value="<?php echo $tngEvent ; ?> selected">&nbsp;</option>";
+	<?php
+	foreach ($EventRow as $Event):
+	$display = $Event['display'];
+	$tngEvent = $Event['eventID'];
+	?>
+	<option value="<?php echo $tngEvent; ?>"><?php echo $display; ?></option>";
+	<?php
+		
+	endforeach;
+	?>
+	</select>
+	</form>
+	
+	<?php
+	echo $selectedevent; 
+
+/* testing dropdown above *********************/	
+	//get person details
 	$personID = $new_personid; 
     $person = $tngcontent->getPerson($personID);
     $birthdate = $person['birthdate'];
@@ -280,6 +306,7 @@
 					$note_funeral = $PersonNote['note'];
 					}			
 	endforeach; 		
+	
 	?>
 	
 	<B>Changes Submitted by <?php echo $UserName->display_name. " *** Submission " .$usercount ." of " .$usersubmissions ." (ID = ". $userentry. " )"; ?></B><br/>

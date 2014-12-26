@@ -46,7 +46,7 @@ $(function() {
 <p><br/></P>
 <p><h2><span style="color:#D77600; font-size:25px">Marriage Anniversaries for <?php echo $date->format('F Y'); ?></span></h2></p>
 Clicking on a name takes you to the Individual's Family Page.</br>
-<table class="form-table" border="1">
+<table class="form-table">
 	<tbody>
 			<th class="theader">Husband</th>
 			<th class="theader">Wife</th>

@@ -153,10 +153,10 @@ echo $husbandlastname;
 
 <form id="add-family-form" action = "<?php echo plugins_url('templates/processfamily-add.php', dirname(__FILE__)); ?>" method = "POST">
 <input type="hidden" name="User" value="<?php echo $UserLogin; ?>" />
-<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
-<input type="hidden" name="personfamc" value="<?php echo $person['famc']; ?>" />
-<input type="hidden" name="firstname" value="<?php echo $person['firstname']; ?>" />
-<input type="hidden" name="surname" value="<?php echo $person['lastname']; ?>" />
+<input type="hidden" name="personID" value="<?php echo $person['personID']; ?>" />
+<input type="hidden" name="person[famc]" value="<?php echo $person['famc']; ?>" />
+<input type="hidden" name="person[firstname]" value="<?php echo $person['firstname']; ?>" />
+<input type="hidden" name="person[surname]" value="<?php echo $person['lastname']; ?>" />
 
 <div id="wizard-add" class="swMain">
   <ul>
@@ -236,17 +236,17 @@ $spousehusband = $spouseID;
 			
 		<tr>	
 			<td class="tdback">Name of </br><?php echo "Spouse ". ($order+1); ?></td>
-			<td class="tdfront"><span style="color:#777777">(Name - 2nd name or Father's Name)<br/></span><input type="text" name="spousefirstname" value="" size="30"/></td>
+			<td class="tdfront"><span style="color:#777777">(Name - 2nd name or Father's Name)<br/></span><input type="text" name="spouse[firstname]" value="" size="30"/></td>
 			<td valign="bottom" class="tdback"><?php echo $EventDisplay; ?></td>
 			<?php if ($EventDisplay != "") {  ?>
-			<td valign="bottom" class="tdfront"><input type="text" name="spouseevent" value="" /></td>
+			<td valign="bottom" class="tdfront"><input type="text" name="spouse[event]" value="" /></td>
 			<?php } else { ?><td></td><?php }?> 
 		</tr>
 		<tr>
 			<td class="tdback"></td>
-			<td class="tdfront"><span style="color:#777777">(Surname)<br/></span><input type="text" name="spousesurname" value="" size="30"/></td>
+			<td class="tdfront"><span style="color:#777777">(Surname)<br/></span><input type="text" name="spouse[surname]" value="" size="30"/></td>
 			<td class="tdback">Gender</td>
-			<td valign="bottom" class="tdfront"><select name="spousesex">
+			<td valign="bottom" class="tdfront"><select name="spouse[sex]">
 			<?php
 			if ($person['sex'] == 'F') { 
 			echo '<option value="M" selected>Male</option>'; 
@@ -264,39 +264,39 @@ $spousehusband = $spouseID;
 		</tr>	
 		<tr>	
 			<td class="tdback"><br/>Born</td>
-			<td valign="bottom" class="tdfront"><span style="color:#777777">Date Born(dd mmm yyyy)<br/></span><input type="text" name="spousebirthdate" value="" size="10"/></td>
+			<td valign="bottom" class="tdfront"><span style="color:#777777">Date Born(dd mmm yyyy)<br/></span><input type="text" name="spouse[birthdate]" value="" size="10"/></td>
 			<td valign="bottom" class="tdback"><?php echo "Place"; ?></td>
-			<td valign="bottom" class="tdfront"><input type="text" name="spousebirthplace" value="" size="30"/></td>
+			<td valign="bottom" class="tdfront"><input type="text" name="spouse[birthplace]" value="" size="30"/></td>
 		</tr>	
 		<tr>	
 			<td valign="top" class="tdback"><br/>Living / Deceased<br/><br/>Died</td>
 			<td valign="bottom" class="tdfront"><br/>
-			<select name="spouseliving" >
+			<select name="spouse[living]" >
 			<option value="1">Living</option>
 			<option value="0">Deceased</option>
 			<option value="U">unknown</option>
 			</select>
-		<br/><br/><span style="color:#777777">(dd mmm yyyy)<br/></span><input type="text" name="spousedeathdate" value="" size="10"/>
+		<br/><br/><span style="color:#777777">(dd mmm yyyy)<br/></span><input type="text" name="spouse[deathdate]" value="" size="10"/>
 			</td>
 			
 			
 			<td valign="middle" class="tdback"><?php echo "Cause of Death". '<br><br/>'. "Place"; ?></td>
 			</td>
-			<td valign="middle" class="tdfront"><input type="text" name="spouse_cause_of_death" value=""><br/><br/><input type="text" name="spousedeathplace" value="" /></td>
+			<td valign="middle" class="tdfront"><input type="text" name="spouse[cause]" value=""><br/><br/><input type="text" name="spouse[deathplace]" value="" /></td>
 		</tr>
 		
 		<tr>
 		<td class="tdback"><?php echo "Married" ?></td>
-			<td valign="middle" class="tdfront"><span style="color:#777777">(dd mmm yyyy)<br/></span><input type="text" name="spousemarr.day" value="" /></td>
+			<td valign="middle" class="tdfront"><span style="color:#777777">(dd mmm yyyy)<br/></span><input type="text" name="spouse[marrdate]" value="" /></td>
 			<td class="tdback"><?php echo "Place"; ?></td>
-			<td valign="middle" class="tdfront"><input type="text" name="spousemarr.place" value="" /></td>
+			<td valign="middle" class="tdfront"><input type="text" name="spouse[marrplace]" value="" /></td>
 		</tr>
-		<input type="hidden" name="spouseID" value="<?php echo $spouseID ?>" />
-		<input type="hidden" name="spousehusband" value="<?php echo $spousehusband ?>" />
-		<input type="hidden" name="spousewife" value="<?php echo $spousewife ?>" />
-		<input type="hidden" name="spousehusbandorder" value="<?php echo $spousehusbandorder ?>" />
-		<input type="hidden" name="spousewifeorder" value="<?php echo $spousewifeorder ?>" />
-		<input type="hidden" name="husbandSpEvent" value="<?php echo $husbandSpEvent ?>" />
+		<input type="hidden" name="spouse[personID]" value="<?php echo $spouseID ?>" />
+		<input type="hidden" name="spouse[husband]" value="<?php echo $spousehusband ?>" />
+		<input type="hidden" name="spouse[wife]" value="<?php echo $spousewife ?>" />
+		<input type="hidden" name="spouse[husbandorder]" value="<?php echo $spousehusbandorder ?>" />
+		<input type="hidden" name="spouse[wifeorder]" value="<?php echo $spousewifeorder ?>" />
+		<input type="hidden" name="husband[event]" value="<?php echo $husbandSpEvent ?>" />
 	
 	</tbody>
 	</table>
@@ -323,23 +323,23 @@ $spousehusband = $spouseID;
 	</thead>
 	<?php
 	$childorder = 0;
-	echo $childorder;
+	//echo $childorder;
 	?>
 	<tbody>
 		<tr class="child">
-		<td><input type="text" name="child[0][childfirstname]" value="" size="10"/></td>
-		<td><input type="text" name="child[0][childsurname]" value="<?php echo $husbandlastname; ?>" size="10"/></td>	
-		<td> <select name="child[0][childsex]" size"3">
+		<td><input type="text" name="child[0][firstname]" value="" size="10"/></td>
+		<td><input type="text" name="child[0][surname]" value="<?php echo $husbandlastname; ?>" size="10"/></td>	
+		<td> <select name="child[0][sex]" size"3">
 		<option value="M">M</option>
 		<option value="F">F</option>
 		</select>
 		</td>
-		<td><input type="text" name="child[0][childdateborn]" value="" size="10"/></td>
-		<td><input type="text" name="child[0][childplaceborn]" value="" size="10"/></td>
-		<td><input type="text" name="child[0][childdatedied]" value="" size="10"/></td>
-		<td><input type="text" name="child[0][childplacedied]" value="" size="10"/></td>
-		<td><input type="checkbox" name="child[0][childliving]" value="1" checked />
-		<td><input type="text" name="child[0][childcause]" value="" size="10" />
+		<td><input type="text" name="child[0][birthdate]" value="" size="08"/></td>
+		<td><input type="text" name="child[0][birthplace]" value="" size="10"/></td>
+		<td><input type="text" name="child[0][deathdate]" value="" size="08"/></td>
+		<td><input type="text" name="child[0][deathplace]" value="" size="10"/></td>
+		<td><input type="checkbox" name="child[0][living]" value="1" checked />
+		<td><input type="text" name="child[0][cause]" value="" size="10" />
 		</td>
 		</tr>
 		
@@ -389,32 +389,32 @@ $spousehusband = $spouseID;
 	<?php endforeach; */ ?>
 		
 		<p>
-			<input type="hidden" name="xnote_generalID" value="New Gen ID" />
+			<input type="hidden" name="xnote_generalID" value="" />
 			<span style="font-size:14pt"><b>
 			<?php echo $note_generalID;?></b></span></a></br>
 			<textarea style="width:100%" name="note_general" rows="3" cols="100"><?php echo $note_general; ?></textarea>
 		</p>
 		<p>
-			<input type="hidden" name="xnote_nameID" value="New Name ID"" />
+			<input type="hidden" name="xnote_nameID" value="" />
 			<span style="font-size:14pt"><b>
 			<?php echo $note_nameID;?></b></span></a></br>
 			<textarea  style="width:100%" name="note_name" rows="3" cols="100"><?php echo $note_name; ?></textarea>
 		</p>
 		<p>
-			<input type="hidden" name="xnote_birthID" value="New Birth ID" />
+			<input type="hidden" name="xnote_birthID" value="" />
 			<span style="font-size:14pt"><b>
 			<?php echo $note_birthID;?></b></span></a></br>
 			<textarea style="width:100%"  name="note_birth" rows="3" cols="100"><?php echo $note_birth; ?></textarea>
 		</p>
 		<p>
 						
-			<input type="hidden" name="xnote_deathID" value="New Death ID" />
+			<input type="hidden" name="xnote_deathID" value="" />
 			<span style="font-size:14pt"><b>
 			<?php echo $note_deathID;?></b></span></a></br>
 			<textarea name="note_death" rows="3" cols="100"><?php echo $note_death; ?></textarea>
 		</p>
 		<p>
-			<input type="hidden" name="xnote_funeralID" value="New Burial ID" />
+			<input type="hidden" name="xnote_funeralID" value="" />
 			<span style="font-size:14pt"><b>
 			<?php echo $note_funeralID;?></b></span></a></br>
 			<textarea name="note_funeral" rows="3" cols="100">
@@ -454,7 +454,9 @@ function addRow(evt) {
     var inputs=newclone.getElementsByTagName('input'), inp, i=0;
     while(inp=inputs[i++]) {
         inp.name=inp.name.replace(/\d/g, idx );
-		inp.value = null;
+		if (inp.type !== 'checkbox') {
+			inp.value = null;
+		}
     }
     var selects=newclone.getElementsByTagName('select'), sel, i=0;
     while(sel=selects[i++]) {

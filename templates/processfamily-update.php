@@ -333,18 +333,21 @@ header('Location: /thank-you');
   //print_r($children);
   //echo "<pre>{$_POST}</pre>";
   //this the original
-  $date = date('c');
-  $email = esc_attr(get_option('tng-api-email'));
-  $msg = <<<MSG
-  Person Details Updated({$date}):
-
-  MSG;
-  $msg .= print_r($_REQUEST, true);
-  echo "<pre>{$msg}</pre>";
-  mail($email, 'New data', $msg);
- * 
+ 
+ 
  */
+ $date = date('c');
+	$email = esc_attr(get_option('tng-api-email'));
+	$msg = <<<MSG
+	Person Details Updated ({$date}):
+
+MSG;
+$msg .= print_r($_REQUEST, true);
+echo "<pre>{$msg}</pre>";
+mail($email, 'New data', $msg);
+
 ?>
+Person Notes Added /Updated
 <html>
     <head>
     </head>

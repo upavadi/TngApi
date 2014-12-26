@@ -112,7 +112,7 @@ Select image to upload by clicking on Browse Button. There is a limit of 5Mb for
 <form class="upload-wrapper upload-wrapper-aligned"action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm"><fieldset>
 <div class="upload-control-group">
             <label for="Image">Select Image</label>
-            <input name="ImageFile" id="imageInput" type="file" placeholder="no file selected">  Maximum size 5Gb
+            <input name="ImageFile" id="imageInput" type="file" placeholder="no file selected">  Maximum size 5Mb
 </div>
 <div class="upload-control-group">
             <label for="title">Title or Full Name</label>

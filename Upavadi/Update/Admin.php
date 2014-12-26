@@ -115,6 +115,11 @@ class Upavadi_Update_Admin
                                 <?php
                                 $personId = $changeSet->getHeadPersonId();
                                 $this->showPerson($changeSet, $personId, 'Person (' . $personId . ')');
+
+                                $noteIds = $changeSet->getNoteIds($personId);
+                                foreach ($noteIds as $noteId) {
+                                    $this->showNotes($changeSet, $noteId, 'Person (' . $personId . ') - Notes');
+                                }
                                 $personId = $changeSet->getFatherId();
 
                                 $this->showPerson($changeSet, $personId, 'Father (' . $personId . ')');
@@ -127,6 +132,10 @@ class Upavadi_Update_Admin
                                 $spouses = $changeSet->getSpouseIds();
                                 foreach ($spouses as $index => $personId) {
                                     $this->showPerson($changeSet, $personId, 'Spouse ' . $index . ' (' . $personId . ')');
+                                    $noteIds = $changeSet->getNoteIds($personId);
+                                    foreach ($noteIds as $noteId) {
+                                        $this->showNotes($changeSet, $noteId, 'Spouse ' . $index . ' (' . $personId . ') - Notes');
+                                    }
                                     $familyId = $changeSet->getSpouseFamilyId($personId);
                                     $this->showPersonFamily($changeSet, $familyId, 'Spouse ' . $index . ' - Family (' . $familyId . ')');
                                     $children = $changeSet->getChildrenIdsByParent($personId);
@@ -228,6 +237,7 @@ class Upavadi_Update_Admin
                                         case 'date':
                                         case 'enum':
                                         case 'string':
+                                        case 'text':
                                             echo $data['old'];
                                             break;
                                         case 'boolean';
@@ -242,9 +252,12 @@ class Upavadi_Update_Admin
                                 <td><?php
                                     if ($data['change'] !== 'exclude') {
                                         switch ($type) {
+                                            case 'text':
+                                                ?><textarea cols="50" rows="10" name="changes<?php echo $inputName; ?>"><?php echo $data['new'] ?></textarea><?php
+                                                break;
                                             case 'date':
                                             case 'string':
-                                                ?><input type="text" size="80" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
+                                                ?><input type="text" size="50" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
                                                 break;
                                             case 'boolean';
                                                 if ($data['new']) {
@@ -299,7 +312,7 @@ class Upavadi_Update_Admin
     public function showPerson(Upavadi_Update_ChangeSet $changeSet, $personId, $title)
     {
         if (!$personId) {
-            echo "<p class='error'>Could not find $title</p>";
+            //echo "<p class='error'>Could not find $title</p>";
             return;
         }
         $changes = $changeSet->getChangesFor('people', $personId);
@@ -320,7 +333,7 @@ class Upavadi_Update_Admin
     public function showPersonFamily($changeSet, $familyId, $title)
     {
         if (!$familyId) {
-            echo "<p class='error'>Could not find $title</p>";
+            //echo "<p class='error'>Could not find $title</p>";
             return;
         }
         $changes = $changeSet->getChangesFor('family', $familyId);
@@ -406,7 +419,7 @@ class Upavadi_Update_Admin
         $updates = $changeSet->simplifyChanges($updates);
         $changeSet->apply($updates);
         $url = admin_url('admin.php?page=tng_api_submission_view&id=' . $changeSet->getId());
-        header('Location: ' . $url);
+        //header('Location: ' . $url);
         exit;
     }
 
@@ -544,6 +557,37 @@ class Upavadi_Update_Admin
         } else
             $newdate = "0000-00-00";
         return( $newdate );
+    }
+
+    public function showNotes(Upavadi_Update_ChangeSet $changeSet, $noteId, $title)
+    {
+        $changes = $changeSet->getChangesFor('notes', $noteId);
+        $names = array(
+            'persfamid' => array('name' => 'Person ID'),
+            'note' => array('name' => 'Note', 'type' => 'text'),
+        );
+
+        switch ($changes['new']['eventid']) {
+            case '':
+                $title .= ' General';
+                break;
+            case 'BIRT':
+                $title .= ' Birth';
+                break;
+            case 'NAME':
+                $title .= ' Name';
+                break;
+            case 'DEAT':
+                $title .= ' Death';
+                break;
+            case 'BURI':
+                $title .= ' Funeral';
+                break;
+            case 'BIRT':
+                $title .= ' Birth';
+                break;
+        }
+        $this->showChanges($changes, $names, $title, 'notes', $noteId);
     }
 
 }

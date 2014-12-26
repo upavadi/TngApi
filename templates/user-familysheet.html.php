@@ -10,7 +10,8 @@ foreach ($changeSets as $index => $change):
         <?php
         echo $change->getKey() . PHP_EOL;
         print_r($change->getDiff());
-        ?>
+        //var_dump($change);
+		?>
     </pre>
 </strong>
 <?php

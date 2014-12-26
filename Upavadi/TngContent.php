@@ -150,7 +150,7 @@ class Upavadi_TngContent
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
             echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
         }, 'tng-api', 'tng');
-        add_settings_field('tng-photo-upload', 'Photo Upload mediatypeID', function () {
+        add_settings_field('tng-photo-upload', 'TNG Collection ID for Photo Uploads', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-photo-upload'));
             echo "<input type='text' name='tng-api-tng-photo-upload' value='$tngPath' />";
         }, 'tng-api', 'tng');

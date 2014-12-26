@@ -5,9 +5,10 @@ class Upavadi_Update_FamilyAdd extends Upavadi_Update_FamilyUpdate
 
     public function process($data)
     {
-        $spouse = $this->extractPersonData($data, 'spouse');
+        $data['person']['personID'] = $data['personID'];
+        $spouse = $data['spouse'];
         $data['family'] = array(
-            '1' => array($spouse)
+            '1' => array('spouse' => array($spouse))
         );
         $children = $data['child'];
         $data['child'] = array(array());
@@ -16,7 +17,7 @@ class Upavadi_Update_FamilyAdd extends Upavadi_Update_FamilyUpdate
             $child['childfamc'] = 'NewSpouseFamily';
             $child['childfamilyID'] = 'NewSpouseFamily';
             $child['childorder'] = ($index + 1);
-            $data['child'][0][$index] = $child;
+            $data['family'][1]['child'][$index] = $child;
         }
         return parent::process($data);
     }
@@ -40,8 +41,6 @@ class Upavadi_Update_FamilyAdd extends Upavadi_Update_FamilyUpdate
     {
         $spouse['familyID'] = 'NewSpouseFamily';
         $spouse['husborder'] = $spouse['husbandorder'];
-        $spouse['marr.day'] = $spouse['marr_day'];
-        $spouse['marr.place'] = $spouse['marr_place'];
         return parent::extractSpouseFamily($headPerson, $spouse);
     }
 

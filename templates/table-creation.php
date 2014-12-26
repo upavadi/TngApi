@@ -31,7 +31,7 @@ function create_tng_tables()
 		dbDelta($sql_families);
 	}
 
-	// this 'if statement' makes sure that the families_table doe not exist already
+	// this 'if statement' makes sure that the children_table doe not exist already
 	if($wpdb->get_var('SHOW TABLES LIKE' .$add_children) != $add_children) 
 	{
 		echo "in children table";

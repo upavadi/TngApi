@@ -34,11 +34,13 @@ class Upavadi_Update_ChangeSet
         $people = $this->loadPeopleChanges();
         $family = $this->loadFamilyChanges();
         $children = $this->loadChildrenFamilyChanges();
+        $notes = $this->loadNotesChanges();
 
         $this->changes = array(
             'people' => $people,
             'family' => $family,
-            'children' => $children
+            'children' => $children,
+            'notes' => $notes
         );
     }
 
@@ -47,11 +49,13 @@ class Upavadi_Update_ChangeSet
         $people = $this->loadPeopleOriginals();
         $family = $this->loadFamilyOriginals();
         $children = $this->loadChildrenFamilyOriginals();
+        $notes = $this->loadNotesOriginals();
 
         $this->originals = array(
             'people' => $people,
             'family' => $family,
-            'children' => $children
+            'children' => $children,
+            'notes' => $notes
         );
     }
 
@@ -284,7 +288,7 @@ class Upavadi_Update_ChangeSet
     {
         return $this->userSubmission['id'];
     }
-    
+
     public function getHeadPersonFamC()
     {
         return $this->userSubmission['famc'];
@@ -380,6 +384,7 @@ class Upavadi_Update_ChangeSet
         $headPerson = $this->originals['people'][$this->getHeadPersonId()];
 
         $inserts = $this->sortInserts($inserts);
+
         foreach ($inserts as $insert) {
             list($entity, $id, $fields) = $insert;
             $fields = $this->replaceIds($fields, $ids);
@@ -399,6 +404,15 @@ class Upavadi_Update_ChangeSet
                 case 'children':
                     $fields['gedcom'] = $headPerson['gedcom'];
                     $newId = $this->repo->addChildren($fields);
+                    break;
+                case 'notes':
+                    $fields['gedcom'] = $headPerson['gedcom'];
+                    $fields['ordernum'] = 999;
+                    $fields['secret'] = 0;
+                    if (isset($fields['persfamID'])) {
+                        unset($fields['persfamid']);
+                    }
+                    $this->repo->addNote($fields);
                     break;
             }
             $ids[$id] = $newId;
@@ -423,6 +437,9 @@ class Upavadi_Update_ChangeSet
                         break;
                     case 'children':
                         $this->repo->updateChildren($id, $fields);
+                        break;
+                    case 'notes':
+                        $this->repo->updateNote($id, $fields);
                         break;
                 }
             }
@@ -515,7 +532,12 @@ class Upavadi_Update_ChangeSet
                     $table = $this->wpdb->prefix . 'tng_children';
                     $pk = 'personID';
                     break;
+                case 'notes':
+                    $table = $this->wpdb->prefix . 'tng_notes';
+                    $pk = 'xnoteID';
+                    break;
             }
+            
             foreach ($entities as $id => $fields) {
                 $id = serialize(array($pk, $id));
                 foreach ($fields as $key => $value) {
@@ -557,11 +579,85 @@ class Upavadi_Update_ChangeSet
         $tables = array(
             $this->wpdb->prefix . 'tng_people',
             $this->wpdb->prefix . 'tng_families',
-            $this->wpdb->prefix . 'tng_children'
+            $this->wpdb->prefix . 'tng_children',
+            $this->wpdb->prefix . 'tng_notes'
         );
         foreach ($tables as $table) {
             $this->wpdb->delete($table, $where);
         }
+    }
+
+    public function loadNotesChanges()
+    {
+        $notes = array();
+        $rows = $this->wpdb->get_results("SELECT * FROM wp_tng_notes where " . $this->getKey(), ARRAY_A);
+        $notes = array();
+        $index = 0;
+
+        foreach ($rows as $row) {
+            $types = array();
+            foreach ($row as $key => $value) {
+                if (preg_match('/^note(.*)ID$/', $key, $m)) {
+                    $type = $m[1];
+                    $types[] = $type;
+                }
+            }
+            foreach ($types as $type) {
+                $note = array();
+                $note['persfamID'] = $row['persfamID'];
+                $note['eventID'] = '';
+                switch ($type) {
+                    case 'birt':
+                        $note['eventID'] = 'BIRT';
+                        break;
+                    case 'deat':
+                        $note['eventID'] = 'DEAT';
+                        break;
+                    case 'name':
+                        $note['eventID'] = 'NAME';
+                        break;
+                    case 'buri':
+                        $note['eventID'] = 'BURI';
+                        break;
+                }
+                $note['note'] = $row['note' . $type];
+                $note['xnoteID'] = $row['note' . $type . 'ID'];
+
+                if ($note['note'] || $note['xnoteID']) {
+                    if (!$note['xnoteID']) {
+                        $index++;
+                        $note['xnoteID'] = 'NewNote' . $index;
+                    }
+                    $notes[$note['xnoteID']] = $note;
+                }
+            }
+        }
+        return $notes;
+    }
+
+    public function loadNotesOriginals()
+    {
+        $notes = array();
+        foreach ($this->changes['notes'] as $id => $note) {
+            $personId = $note['persfamID'];
+            $originalNote = $this->repo->getNote($personId, $id);
+            if ($originalNote) {
+                $notes[$id] = $originalNote;
+            }
+        }
+        return $notes;
+    }
+
+    public function getNoteIds($personId)
+    {
+        $ids = array();
+        foreach ($this->changes['notes'] as $id => $note) {
+            if ($note['persfamID'] !== $personId) {
+                continue;
+            }
+            $ids[] = $id;
+        }
+        return $ids;
     }
 
 }

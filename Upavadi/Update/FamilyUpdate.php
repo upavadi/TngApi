@@ -19,7 +19,7 @@ class Upavadi_Update_FamilyUpdate
     public function process($data)
     {
         $user = $data['User'];
-        $headPersonId = $data['personId'];
+        $headPersonId = $data['personID'];
         $date = date('Y-m-d H:i:s');
         $keys = array(
             'headpersonid' => $headPersonId,
@@ -27,10 +27,6 @@ class Upavadi_Update_FamilyUpdate
             'datemodified' => $date
         );
         
-        $data['father'] = $this->extractPersonData($data, 'father');
-        $data['mother'] = $this->extractPersonData($data, 'mother');
-        $data['parents'] = $this->extractPersonData($data, 'parents');
-
         $people = array_filter($this->extractPeople($data));
         $families = $this->extractFamilies($data);
         $children = $this->extractChildrenFamily($data);
@@ -49,29 +45,15 @@ class Upavadi_Update_FamilyUpdate
             $this->db->query('ROLLBACK');
             throw $e;
         }
-    }
-
-    public function extractPersonData($data, $personType)
-    {
-        $personData = array();
-        foreach ($data as $key => $value) {
-            if (!preg_match("/^{$personType}_?(.*)$/", $key, $m)) {
-                continue;
-            }
-            $personData[$m[1]] = $value;
-        }
-        if (!count($personData)) {
-            return null;
-        }
-        return $personData;
+        return $date;
     }
 
     public function extractPeople($data)
     {
         $people = array();
-        $people[] = $this->extractPerson($data);
-        $people[] = $this->extractPerson($this->normaliseParent($data['father']));
-        $people[] = $this->extractPerson($this->normaliseParent($data['mother']));
+        $people[] = $this->extractPerson($data['person']);
+        $people[] = $this->extractPerson($data['father']);
+        $people[] = $this->extractPerson($data['mother']);
         $people = $this->extractSpouses($people, $data);
         $people = $this->extractChildren($people, $data);
         return $people;
@@ -96,19 +78,19 @@ class Upavadi_Update_FamilyUpdate
         if (!$data['firstname']) {
             return null;
         }
-        $personid = $data['personId'];
+        $personid = $data['personID'];
         $firstname = $data['firstname'];
         $lastname = $data['surname'];
-        $birthdate = $data['B_day'];
-        $birthplace = $data['B_Place'];
-        $deathdate = $data['D_day'];
-        $deathplace = $data['D_Place'];
-        $sex = $data['personsex'];
+        $birthdate = $data['birthdate'];
+        $birthplace = $data['birthplace'];
+        $deathdate = $data['deathdate'];
+        $deathplace = $data['deathplace'];
+        $sex = $data['sex'];
 
         $famc = $this->extractFamilyId($data);
-        $living = $data['personliving'];
-        $personevent = $data['personevent'];
-        $cause = $data['cause_of_death'];
+        $living = $data['living'];
+        $personevent = $data['event'];
+        $cause = $data['cause'];
 
         return array(
             'personid' => $personid,
@@ -126,83 +108,26 @@ class Upavadi_Update_FamilyUpdate
         );
     }
 
-    public function normaliseParent($data)
-    {
-        if (!$data) {
-            return null;
-        }
-        $data['firstname'] = $data['name'];
-        $data['lastname'] = $data['surname'];
-        $data['personfamc'] = $data['famc'];
-        $data['personsex'] = $data['sex'];
-        $data['personliving'] = $data['living'];
-        $data['personevent'] = $data['event'];
-        return $data;
-    }
-
     public function extractSpouses($people, $data)
     {
         foreach ($data['family'] as $family) {
-            foreach ($family as $spouse) {
-                $people[] = $this->extractPerson($this->normaliseSpouse($spouse));
+            foreach ($family['spouse'] as $spouse) {
+                $people[] = $this->extractPerson($spouse);
             }
         }
 
         return $people;
-    }
-
-    public function normaliseSpouse($data)
-    {
-        if (!$data) {
-            return null;
-        }
-        $data = $this->extractPersonData($data, 'spouse');
-        foreach ($data as $key => $value) {
-            if (preg_match('/^(.)[.](.)(.*)$/', $key, $m)) {
-                $newKey = $m[1] . '_' . strtoupper($m[2]) . $m[3];
-                $data[$newKey] = $value;
-                $newKey = $m[1] . '_' . $m[2] . $m[3];
-                $data[$newKey] = $value;
-            }
-        }
-        $data['personId'] = $data['ID'];
-        $data['firstname'] = $data['name'];
-        $data['personsex'] = $data['sex'];
-        $data['personfamc'] = $data['famc'];
-        $data['personliving'] = $data['living'];
-        $data['personevent'] = $data['event'];
-
-        return $data;
     }
 
     public function extractChildren($people, $data)
     {
-        foreach ($data['child'] as $family) {
-            foreach ($family as $child) {
-                $people[] = $this->extractPerson($this->normaliseChild($child));
+        foreach ($data['family'] as $family) {
+            foreach ($family['child'] as $child) {
+                $people[] = $this->extractPerson($child);
             }
         }
 
         return $people;
-    }
-
-    public function normaliseChild($data)
-    {
-        if (!$data) {
-            return null;
-        }
-        $data = $this->extractPersonData($data, 'child');
-        $data['personId'] = $data['ID'];
-        $data['personsex'] = $data['sex'];
-        $data['personliving'] = $data['living'];
-        $data['personevent'] = $data['event'];
-        $data['personfamc'] = $data['famc'];
-        $data['B_day'] = $data['dateborn'];
-        $data['B_Place'] = $data['placeborn'];
-        $data['D_day'] = $data['datedied'];
-        $data['D_Place'] = $data['placedied'];
-        $data['cause_of_death'] = $data['cause'];
-        return $data;
     }
 
     public function extractFamilies($data)
@@ -217,15 +142,15 @@ class Upavadi_Update_FamilyUpdate
     {
         $familyID = $this->extractFamilyId($data);
 
-        $father = $this->normaliseParent($data['father']);
-        $husband = $father['personId'];
+        $father = $data['father'];
+        $husband = $father['personID'];
 
-        $mother = $this->normaliseParent($data['mother']);
-        $wife = $mother['personId'];
+        $mother = $data['mother'];
+        $wife = $mother['personID'];
 
-        $marrInfo = $this->extractPersonData($data, 'parent');
-        $marrDate = $marrInfo['marr_day'];
-        $marrPlace = $marrInfo['marr_Place'];
+        $marrInfo = $data['parents'];
+        $marrDate = $marrInfo['marrdate'];
+        $marrPlace = $marrInfo['marrplace'];
 
         $husbOrder = $data['parents']['husborder'];
         $wifeOrder = $data['parents']['wifeorder'];
@@ -248,10 +173,8 @@ class Upavadi_Update_FamilyUpdate
     public function extractSpousesFamily($families, $data)
     {
         foreach ($data['family'] as $family) {
-            foreach ($family as $spouse) {
-                $families[] = $this->extractSpouseFamily(
-                    $data, $this->normaliseSpouse($spouse)
-                );
+            foreach ($family['spouse'] as $spouse) {
+                $families[] = $this->extractSpouseFamily($data, $spouse);
             }
         }
 
@@ -269,11 +192,11 @@ class Upavadi_Update_FamilyUpdate
             $wifePerson = $spouse;
         }
 
-        $husband = $husbandPerson['personId'];
-        $wife = $wifePerson['personId'];
+        $husband = $husbandPerson['personID'];
+        $wife = $wifePerson['personID'];
 
-        $marrDate = $spouse['marr.day'];
-        $marrPlace = $spouse['marr.place'];
+        $marrDate = $spouse['marrdate'];
+        $marrPlace = $spouse['marrplace'];
 
         $husbOrder = $spouse['husborder'];
         $wifeOrder = $spouse['wifeorder'];
@@ -297,9 +220,9 @@ class Upavadi_Update_FamilyUpdate
     {
         $children = array();
 
-        foreach ($data['child'] as $family) {
-            foreach ($family as $child) {
-                $children[] = $this->extractChildFamily($this->normaliseChild($child));
+        foreach ($data['family'] as $family) {
+            foreach ($family['child'] as $child) {
+                $children[] = $this->extractChildFamily($child);
             }
         }
 
@@ -311,14 +234,14 @@ class Upavadi_Update_FamilyUpdate
         if (empty($data['firstname'])) {
             return null;
         }
-        $personId = $data['personId'];
+        $personID = $data['personID'];
         $familyId = $data['familyID'];
         $hasKids = $data['haskids'];
         $orderNum = $data['order'];
         $parentOrder = $data['parentorder'];
         
         $child = array(
-            'personid' => $personId,
+            'personid' => $personID,
             'familyID' => $familyId,
             'haskids' => $hasKids,
             'ordernum' => $orderNum,

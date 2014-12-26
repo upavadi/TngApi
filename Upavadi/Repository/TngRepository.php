@@ -52,6 +52,10 @@ class Upavadi_Repository_TngRepository
             }
         }
         $stmnt = $db->prepare($sql);
+        if (!$stmnt) {
+            var_dump($db->error);
+            return;
+        }
         array_unshift($args, $types);
         var_dump(array($sql, $args));
         call_user_func_array(array($stmnt, 'bind_param'), $args);
@@ -214,6 +218,97 @@ class Upavadi_Repository_TngRepository
         $sql .= '(' . join(', ', $sets) . ') VALUES';
         $sql .= '(' . join(', ', $vals) . ')';
         $this->execute($sql, $args);
+        return $newId;
+    }
+
+    public function getNote($personId, $id)
+    {
+        if (!isset($this->notes[$personId][$id])) {
+            $notes = $this->content->getNotes($personId);
+            foreach ($notes as $note) {
+                $xid = $note['xnoteID'];
+                $this->notes[$xid] = array(
+                    'persfamID' => $note['persfamID'],
+                    'eventID' => $note['eventID'],
+                    'note' => $note['note'],
+                    'xnoteID' => $note['xnoteID']
+                );
+            }
+        }
+        return $this->notes[$id];
+    }
+
+    public function addNote($fields)
+    {
+        $noteLinks = $fields;
+        unset($noteLinks['note']);
+        $xnotes = array(
+            'note' => $fields['note'],
+            'gedcom' => $fields['gedcom']
+        );
+        
+        $xnoteId = $this->addXNote($xnotes);
+        $noteLinks['xnoteID'] = $xnoteId;
+        $this->addNoteLink($noteLinks);
+    }
+
+    public function updateNote($id, $fields)
+    {
+        $tables = $this->content->getTngTables();
+        $sql = "UPDATE {$tables['xnotes_table']} SET ";
+        $args = array();
+        $sets = array();
+
+        foreach ($fields as $name => $value) {
+            $sets[] = "$name = ?";
+            $args[] = & $fields[$name];
+        }
+        $sql .= join(', ', $sets);
+        $sql .= ' WHERE ID = ?';
+        $args[] = & $id;
+        $this->execute($sql, $args);
+        unset($this->notes[$id]);
+    }
+
+    public function addXNote($fields)
+    {
+        $tables = $this->content->getTngTables();
+        $sql = "INSERT INTO {$tables['xnotes_table']} ";
+        $args = array();
+        $sets = array();
+        $vals = array();
+
+        foreach ($fields as $name => $value) {
+            $sets[] = $name;
+            $vals[] = '?';
+            $args[] = & $fields[$name];
+        }
+        $sql .= '(' . join(', ', $sets) . ') VALUES';
+        $sql .= '(' . join(', ', $vals) . ')';
+        $this->execute($sql, $args);
+        $db = $this->content->getDbLink();
+        $newId = $db->insert_id;
+        return $newId;
+    }
+
+    public function addNoteLink($fields)
+    {
+        $tables = $this->content->getTngTables();
+        $sql = "INSERT INTO {$tables['notelinks_table']} ";
+        $args = array();
+        $sets = array();
+        $vals = array();
+
+        foreach ($fields as $name => $value) {
+            $sets[] = $name;
+            $vals[] = '?';
+            $args[] = & $fields[$name];
+        }
+        $sql .= '(' . join(', ', $sets) . ') VALUES';
+        $sql .= '(' . join(', ', $vals) . ')';
+        $this->execute($sql, $args);
+        $db = $this->content->getDbLink();
+        $newId = $db->insert_id;
         return $newId;
     }
 
