@@ -15,6 +15,7 @@ class Upavadi_TngContent
      */
     protected $shortcodes = array();
     protected $domain;
+    private $tngUser;
 
     protected function __construct()
     {
@@ -154,9 +155,15 @@ class Upavadi_TngContent
             $tngPath = esc_attr(get_option('tng-api-tng-photo-upload'));
             echo "<input type='text' name='tng-api-tng-photo-upload' value='$tngPath' />";
         }, 'tng-api', 'tng');
-        add_settings_field('tng-event', 'TNG Event to Track', function () {
+        
+        $events = $this->getEventList();
+        add_settings_field('tng-event', 'TNG Event to Track', function () use ($events) {
             $tngEvent = esc_attr(get_option('tng-api-tng-event'));
-			echo "<input type='text' name='tng-api-tng-event' value='$tngEvent' />";
+            /* <select> */
+            foreach ($events as $event) {
+                /* <option> */
+            }
+            echo "<input type='text' name='tng-api-tng-event' value='$tngEvent' />";
         }, 'tng-api', 'tng');
         add_settings_section('db', 'Database', function() {
             echo "We also need to know where the TNG database lives";
@@ -216,10 +223,19 @@ class Upavadi_TngContent
             $personId = $this->currentPerson;
         }
 
+        $user = $this->getTngUser();
+        $gedcom = $user['gedcom'];
+        
+        $treeWhere = null;
+        if ($gedcom) {
+            $treeWhere = ' AND gedcom = "' . $gedcom . '" AND privacy = 0';
+        }
+        
         $sql = <<<SQL
 SELECT *
 FROM {$this->tables['people_table']}
 WHERE personID = '{$personId}'
+{$treeWhere}
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
@@ -248,26 +264,25 @@ SQL;
 /* Get Special events for ADMIN selection*/
     function getEventList()
     {
-	$sql = <<<SQL
+        $sql = <<<SQL
     
 SELECT *
 FROM {$this->tables['eventtypes_table']}
 ORDER BY display
 	
 SQL;
-		$result = $this->query($sql);
+        $result = $this->query($sql);
 
         $rows = array();
         while ($row = $result->fetch_assoc()) {
             $eventrows[] = $row;
-        //var_dump($eventrows);
-		}
-        
-		return $eventrows;
-	}
-	
-	
-/* Special event type 10 is called here*/
+            //var_dump($eventrows);
+        }
+
+        return $eventrows;
+    }
+
+    /* Special event type 10 is called here*/
     public function getSpEvent($personId = null)
     {
 	
@@ -674,6 +689,19 @@ SQL;
         if (count($wheres)) {
             $where = 'WHERE ' . implode(' AND ', $wheres);
         }
+        
+        $user = $this->getTngUser();
+        $gedcom = $user['gedcom'];
+        
+        if ($gedcom) {
+            if (!$where) {
+                $where = ' WHERE ';
+            } else {
+                $where .= ' AND ';
+            }
+            $where .= ' gedcom = "' . $gedcom . '" AND privacy = 0';
+        }
+        
         $sql = <<<SQL
 SELECT *
 FROM {$this->tables['people_table']}
@@ -698,12 +726,16 @@ SQL;
 
     public function getTngUser()
     {
+        if ($this->tngUser) {
+            return $this->tngUser;
+        }
         $currentUser = wp_get_current_user();
         $userName = $currentUser->user_login;
         $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$userName}'";
         $result = $this->query($query);
         $row = $result->fetch_assoc();
         if ($row) {
+            $this->tngUser = $row;
             return $row;
         }
         wp_die('User ' . $userName . ' not found in TNG');
