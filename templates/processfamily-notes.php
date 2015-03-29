@@ -52,19 +52,20 @@ $wpdb->insert(
 		);
 
 //Notes identifiers
+$personNotes = array($_POST['person_note']);
+foreach ($personNotes as $Array):
+foreach ($Array as $Notes):
 $headpersonid = $_POST['personId'];
-$tnguser = $_POST[User];
+$tnguser = $_POST['User'];
 $personid = $_POST['personId'];
-$xnote_generalID = '';
-$note_general = $_POST['note_general'];
-$xnote_nameID = $_POST['xnote_nameID'];;
-$note_name = $_POST['note_name'];
-$xnote_birthID = $_POST['xnote_birthID'];;
-$note_birth = $_POST['note_birth'];
-$xnote_deathID = $_POST['xnote_deathID'];;
-$note_death = $_POST['note_death'];
-$xnote_funeralID = 'BURI';
-$note_funeral = $_POST['note_funeral'];
+$gedcom = $_POST['persongedcom'];
+$xnoteID = $Notes['xnote_ID'];
+$note = $Notes['note'];
+$eventID = $Notes['xeventID'];
+$ordernum = $Notes['ordernum'];
+$secret = $Notes['secret'];
+//var_dump($personNotes);
+
 
 //Insert Notes
 	$wpdb->insert(
@@ -73,21 +74,18 @@ $note_funeral = $_POST['note_funeral'];
 			headpersonid =>$headpersonid,
 			tnguser =>$tnguser,
 			persfamID =>$personid,
-			noteID =>$xnote_generalID,
-			note =>$note_general,
-			notenameID =>$xnote_nameID,
-			notename =>$note_name,
-			notebirtID =>$xnote_birthID,
-			notebirt =>$note_birth,
-			notedeatID =>$xnote_deathID,
-			notedeat =>$note_death,
-			noteburiID =>$xnote_funeralID,
-			noteburi =>$note_funeral,
+			gedcom =>$gedcom,
+			xnoteID =>$xnoteID,
+			note =>$note,
+			eventID =>$eventID,
+			ordernum =>$ordernum,
+			secret =>$secret,
 			datemodified =>$datemodified,
 			)
 		);
- 
-
+ //print_r($Notes);
+ endforeach;
+endforeach;
 $date = date('c');
 $email = esc_attr(get_option('tng-api-email'));
 $msg = <<<MSG

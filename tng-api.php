@@ -41,7 +41,7 @@ add_action( 'admin_menu', array($content, 'adminMenu') );
 add_action( 'admin_init', array($content, 'initAdmin') );
 add_action( 'admin_menu', array($update, 'initAdmin') );
 //add_filter('the_posts', array($content, 'proxyFilter'));
-/**********************************************/
+
 function create_tng_tables()
 {	
     global $wpdb;
@@ -50,82 +50,100 @@ function create_tng_tables()
 	$add_families = $wpdb->prefix . "tng_families";
 	$add_children = $wpdb->prefix . "tng_children";
 	$add_notes = $wpdb->prefix . "tng_notes";
-	
+	$add_events  = $wpdb->prefix . "tng_events";
+	 
 	// this 'if statement' makes sure that the families_table doe not exist already
-	$sql_families = 'CREATE TABLE '. $add_families.'(
+	$sql_families = "CREATE TABLE " . $add_families . " ( 
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		headpersonid varchar(22) NOT NULL,
 		tnguser varchar(22) NOT NULL,
+		gedcom varchar(22) NOT NULL,
 		familyid varchar(22) NOT NULL,
 		husband varchar(22) NOT NULL,
 		wife varchar(22) NOT NULL,
 		marrdate varchar(50) NOT NULL,
-		marrdatetr varchar(50),
+		marrdatetr date DEFAULT '0000-00-00' NOT NULL,
 		marrplace varchar(255) NOT NULL,
-		husborder tinyint(4),
-		wifeorder tinyint(4),
-		living tinyint(4),
+		husborder tinyint(4) NOT NULL,
+		wifeorder tinyint(4) NOT NULL,
+		living tinyint(4) NOT NULL,
 		datemodified datetime,
-		PRIMARY KEY  id (id))';
+		PRIMARY KEY  id (id));";
+	//require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+	
 	dbDelta($sql_families);
 	
-	$sql_children = 'CREATE TABLE '. $add_children.'(
+	$sql_children = "CREATE TABLE " . $add_children . " ( 
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
-		headpersonid varchar(22),
-		tnguser varchar(22),
-		familyID varchar(22),
-		personID varchar(22),
-		haskids varchar(22),
-		ordernum smallint(6),
-		parentorder tinyint(4),
+		headpersonid varchar(22) NOT NULL,
+		tnguser varchar(22) NOT NULL,
+		gedcom varchar(22) NOT NULL,
+		familyID varchar(22) NOT NULL,
+		personID varchar(22) NOT NULL,
+		haskids varchar(22) NOT NULL,
+		ordernum smallint(6) NOT NULL,
+		parentorder tinyint(4) NOT NULL,
 		datemodified datetime,
-		PRIMARY KEY  (id))';
-		
+		PRIMARY KEY  id (id));";		
 	dbDelta($sql_children);
 	
 	//this 'if statement' makes sure that the people_table doe not exist already
-	$sql_people = 'CREATE TABLE ' . $add_people.'(
-		id INT(11) UNSIGNED AUTO_INCREMENT,
+	$sql_people = "CREATE TABLE " . $add_people . " (
+		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		headpersonid VARCHAR(22),
 		tnguser varchar(22) NOT NULL,
+		gedcom varchar(22) NOT NULL,
 		personid varchar(22) NOT NULL,
 		lastname varchar(122) NOT NULL,
 		firstname varchar(122) NOT NULL,
 		personevent varchar(122) NOT NULL,
 		birthdate varchar(52) NOT NULL,
-		birthdatetr date,
+		birthdatetr date DEFAULT '0000-00-00' NOT NULL,
 		birthplace varchar(122) NOT NULL,
 		deathdate varchar(52) NOT NULL,
-		deathdatetr date,
+		deathdatetr date DEFAULT '0000-00-00' NOT NULL,
 		deathplace varchar(122) NOT NULL,
 		sex varchar(22) NOT NULL,
 		famc varchar(22) NOT NULL,
 		living varchar(22) NOT NULL,
 		cause varchar(90) NOT NULL,
 		datemodified datetime,
-		PRIMARY KEY  (id))';
-		
+		PRIMARY KEY  id (id));";		
 	dbDelta($sql_people);
 	
-	$sql_notes = 'CREATE TABLE '. $add_notes.'(
+	$sql_notes = "CREATE TABLE " . $add_notes . " (
+		id mediumint(9) NOT NULL AUTO_INCREMENT,
+		headpersonid VARCHAR(22),
+		tnguser varchar(22) NOT NULL,
+		gedcom varchar(22) NOT NULL,
+		xnoteID varchar(22) NOT NULL,
+		note text NOT NULL,
+		eventID varchar(22) NOT NULL,
+		ordernum varchar(22) NOT NULL,
+		secret varchar(22) NOT NULL,
+		noteID varchar(22) NOT NULL,
+		datemodified datetime,
+		PRIMARY KEY  id (id));";		
+	dbDelta($sql_notes);
+	
+	$sql_events = "CREATE TABLE " . $add_events . " ( 
 		id mediumint(9) NOT NULL AUTO_INCREMENT,
 		headpersonid varchar(22),
-		tnguser varchar(22),
-		persfamID varchar(22),
-		noteID varchar(22),
-		note text,
-		notenameID varchar(22),
-		notename text,
-		notebirtID varchar(22),
-		notebirt text,
-		notedeatID varchar(22),
-		notedeat text,
-		noteburiID varchar(22),
-		noteburi text,
+		tnguser varchar(22) NOT NULL,
+		persfamID varchar(22) NOT NULL,
+		gedcom varchar(22) NOT NULL,
+		eventID varchar(22) NOT NULL,
+		eventtypeID varchar(22) NOT NULL,
+		eventdate varchar(22) NOT NULL,
+		eventdatetr date DEFAULT '0000-00-00' NOT NULL,
+		cause varchar(90) NOT NULL,
+		parenttag varchar(22) NOT NULL,
+		info varchar(22) NOT NULL,
 		datemodified datetime,
-		PRIMARY KEY  (id))';
-		
-	dbDelta($sql_notes);
+		PRIMARY KEY  id (id));";
+	dbDelta($sql_events);
+	
+	echo $wpdb->show_errors();
 	
 }
 

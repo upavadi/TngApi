@@ -1,4 +1,11 @@
-
+			<?php
+				//get and hold current user
+				$tngcontent = Upavadi_tngcontent::instance()->init();
+				$user = $tngcontent->getTngUser();
+				$usertree = $user['gedcom'];
+				
+				
+			?>
 <!---- Jquery date picker strat -->
 <link rel="stylesheet" href="<?php echo plugins_url('css/jquery-ui-1.10.4.custom.css', dirname(__FILE__)); ?>" rel="stylesheet" type="text/css">
 <script src="<?php echo plugins_url('js/jquery-1.10.2.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
@@ -43,7 +50,9 @@
 <p><br/></P>
 <h2><span style="color:#D77600; font-size:25px">Birthdays for <?php echo $date->format('F Y'); ?></span></h2>
 Clicking on a name takes you to the Individual's Family Page
+<!--
 </br> Clicking on VIEW will show your relationship to the individual (Blood relationships only)								
+-->
 <table class="form-table">
     <tbody>
     <th class="theader">Name</th>
@@ -51,17 +60,27 @@ Clicking on a name takes you to the Individual's Family Page
     <th class="theader">Birth Place</th>
     <th class="theader">Age</th>
     <th class="theader">Relationship</th>
-
-    <?php foreach ($birthdays as $birthday): ?>
+	<?php 
+		if ($usertree == '') { ?>
+	<th class="theader">Tree</th>
+			
+	<?php } ?>	
+    <?php foreach ($birthdays as $birthday):
+	$tree = $birthday['gedcom'];
+	?>
         <tr>
-            <td class="tdfront"><a href="/family/?personId=<?php echo $birthday['personid']; ?>">
+            <td class="tdfront"><a href="/family/?personId=<?php echo $birthday['personid'];?>&amp;tree=<?php echo $tree; ?>">
                     <?php echo $birthday['firstname'] . " "; ?><?php echo $birthday['lastname']; ?></a></td>
             <td class="tdfront"><?php echo $birthday['birthdate']; ?></td>
             <td class="tdfront"><?php echo $birthday['birthplace']; ?></td>
             <td class="tdfront"><?php echo $birthday['age']; ?></td>
             <td class="tdfront"><a href="../genealogy/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $birthday['personid']; ?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo "View" ?></td>
-
+		<?php 
+		if ($usertree == '') { ?>
+			<td class="tdfront"><?php echo $birthday['gedcom']; ?></td>
         </tr>
-    <?php endforeach; ?>
+    <?php 
+			}
+	endforeach; ?>
 </tbody>
 </table>

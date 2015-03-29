@@ -1,3 +1,11 @@
+		<?php
+				//get and hold current user
+				$tngcontent = Upavadi_tngcontent::instance()->init();
+				$user = $tngcontent->getTngUser();
+				$usertree = $user['gedcom'];
+				
+				
+		?>
 <head>
 <!---- Jquery date picker strat -->
 <link rel="stylesheet" href="<?php echo plugins_url('css/jquery-ui-1.10.4.custom.css', dirname(__FILE__)); ?>" rel="stylesheet" type="text/css">
@@ -53,25 +61,37 @@ Clicking on a name takes you to the Individual's Family Page.</br>
 			<th class="theader">Date</th>
 			<th class="theader">Place</th>
 			<th class="theader">Years</th>
-	
-<?php foreach ($manniversaries as $manniversary):
+		<?php 
+		if ($usertree == '') { ?>
+	<th class="theader">Tree</th>
+			
+	<?php } ?>	
+    
+	<?php foreach ($manniversaries as $manniversary):
 		$manniversarydate = strtotime($manniversary['marrdate']);
 		$Years = $year - date('Y', $manniversarydate);
+		$tree = $manniversary['gedcom'];
+		
 		?>
 		<tr>
-			<td><a href="/family/?personId=<?php echo $manniversary['personid1'];?>">
+			<td class="tdfront"><a href="/family/?personId=<?php echo $manniversary['personid1'];?>&amp;tree=<?php echo $tree; ?>">
 			<?php echo $manniversary['firstname1']; ?><?php echo $manniversary['lastname1']; ?></a></td>
-			<td><a href="/family/?personId=<?php echo $manniversary['personid2'];?>">
+			<td class="tdfront"><a href="/family/?personId=<?php echo $manniversary['personid2'];?>&amp;tree=<?php echo $tree; ?>">
 			<?php echo $manniversary['firstname2']; ?><?php echo $manniversary['lastname2']; ?></a></td>
 				
-			<td><?php echo $manniversary['marrdate']; ?></a></td>
+			<td class="tdfront"><?php echo $manniversary['marrdate']; ?></a></td>
 			
 			
 			
-			<td><?php echo $manniversary['marrplace']; ?></td>
-			<td><?php echo $Years; ?></td>
-		</tr>
-<?php endforeach; ?>
+			<td class="tdfront"><?php echo $manniversary['marrplace']; ?></td>
+			<td class="tdfront"><?php echo $Years; ?></td>
+		<?php 
+		if ($usertree == '') { ?>
+			<td class="tdfront"><?php echo $manniversary['gedcom']; ?></td>
+        </tr>
+    <?php 
+			}
+	endforeach; ?>
 	</tbody>
 </table>
 </html>

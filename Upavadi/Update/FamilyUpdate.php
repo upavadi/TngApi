@@ -18,15 +18,17 @@ class Upavadi_Update_FamilyUpdate
 
     public function process($data)
     {
-        $user = $data['User'];
+        $gedcom = $data['gedcom'];
+		$user = $data['User'];
         $headPersonId = $data['personID'];
         $date = date('Y-m-d H:i:s');
         $keys = array(
             'headpersonid' => $headPersonId,
             'tnguser' => $user,
-            'datemodified' => $date
+            'datemodified' => $date,
+			'gedcom' => $gedcom
         );
-        
+       
         $people = array_filter($this->extractPeople($data));
         $families = $this->extractFamilies($data);
         $children = $this->extractChildrenFamily($data);

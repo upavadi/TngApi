@@ -23,7 +23,7 @@
     $UserID = $User->ID;
 
     //get person details
-    $person = $tngcontent->getPerson($personId);
+    $person = $tngcontent->getPerson($personId, $tree);
     $birthdate = $person['birthdate'];
     $birthdatetr = ($person['birthdatetr']);
     $birthplace = $person['birthplace'];
@@ -31,11 +31,11 @@
     $deathdatetr = ($person['deathdatetr']);
     $deathplace = $person['deathplace'];
     $name = $person['firstname'] . $person['lastname'];
-
     //get default media
-    $defaultmedia = $tngcontent->getDefaultMedia($personId);
+    $defaultmedia = $tngcontent->getDefaultMedia($personId, $tree);
     //$mediaID = "../tng/photos/". $defaultmedia['thumbpath'];
 
+	
     if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "M") {
         $mediaID = "../tng/img/male.jpg";
     }
@@ -46,7 +46,6 @@
         $mediaID = "../tng/photos/" . $defaultmedia['thumbpath'];
     }
     ?>
-
     <a href="?personId=<?php echo $currentperson['personID']; ?>">
         <span style="color:#D77600; font-size:14pt">			
             <?php echo "Welcome " . $currentuser; ?>
@@ -59,7 +58,7 @@
                 <table border="0">
                     <tr>
                         <td colspan="2">
-                            <span style="font-size:14pt"><a href="?personId=<?php echo $person['personID']; ?>">			
+                            <span style="font-size:14pt"><a href="?personId=<?php echo $person['personID']; ?>&amp;tree=<?php echo $person['gedcom']; ?>">			
                                 <?php echo "Family of " . $name; ?></span></a>
                         </td>
                     </tr>
@@ -107,7 +106,7 @@
 			$bornClass = "";
 		}
 //get Cause of Death for person
-		$personRow = $tngcontent->getCause($person['personID']);
+		$personRow = $tngcontent->getCause($person['personID'], $tree);
 		if ($personRow['eventtypeID'] == "0") {
 			$cause_of_death = ". Cause: ". $personRow['cause'];
 		} else {
@@ -134,7 +133,7 @@
 		}
 
 //get Special Event
-    $personRow = $tngcontent->getSpEvent($person['personID']);
+    $personRow = $tngcontent->getSpEvent($person['personID'], $tree);
 	$spevent = $personRow['info'];
 //get Description of Event type
 	$EventRow = $tngcontent->getEventDisplay($event['display']);	
@@ -159,9 +158,8 @@
     if ($person['living'] == '0' AND $person['deathplace'] == "") {
         $deathplace = "unknown";
     }
-    $families = $tngcontent->getFamilyUser($person['personID'], $sortBy);
-    
-	?>		
+    $families = $tngcontent->getFamilyUser($person['personID'], $tree, $sortBy);
+    ?>		
 
     <table class="form-table">
         <tbody>
@@ -197,13 +195,13 @@
         </tbody>
         <?php
         $parents = '';
-        $parents = $tngcontent->getFamilyById($person['famc']);
+		$parents = $tngcontent->getFamilyById($person['famc'], $tree);
 
         if ($person['famc'] !== '' and $parents['wife'] !== '') {
-            $mother = $tngcontent->getPerson($parents['wife']);
+            $mother = $tngcontent->getPerson($parents['wife'], $tree);
         }
         if ($person['famc'] !== ''and $parents['husband'] !== '') {
-            $father = $tngcontent->getPerson($parents['husband']);
+            $father = $tngcontent->getPerson($parents['husband'], $tree);
         }
         ?>
         <tbody>
@@ -265,7 +263,7 @@
 // Father - Special Event
 				if ($father['personID'] !== null)
 				{
-				$fatherRow = $tngcontent->getSpEvent($father['personID']);
+				$fatherRow = $tngcontent->getSpEvent($father['personID'], $tree);
 				$father_spevent = $fatherRow['info'];
 				} else {
 				$father_spevent = "Unknown";
@@ -275,13 +273,13 @@
 					
                 }
 //get Cause of Death for Father
-				$fatherRow = $tngcontent->getCause($father['personID']);
+				$fatherRow = $tngcontent->getCause($father['personID'], $tree);
 				if ($fatherRow['eventtypeID'] == "0") {
 					$father_cause_of_death = ". Cause: ". $fatherRow['cause'];
 				} else {
 				$father_cause_of_death = "";
 				} 
-                 ?>
+				?>
                 <td class="tdback">Father</td>
                 <td class="tdfront" colspan="0">
 
@@ -294,7 +292,7 @@
                         <?php
                     } elseif ($father['personID'] !== null) {
                         ?>
-                        <a href="?personId=<?php echo $father['personID']; ?>">
+                        <a href="?personId=<?php echo $father['personID']; ?>&amp;tree=<?php echo $father['gedcom']; ?>">
                             <?php echo $fathername; ?></a>,<?php echo $fatherdeathdate; ?>, </span><?php
                         echo $fatherdeathplace. $father_cause_of_death;
                     } else {
@@ -382,13 +380,13 @@
 // Mother - Special Event
 				if ($mother['personID'] !== null)
 				{
-				$motherRow = $tngcontent->getSpEvent($mother['personID']);
+				$motherRow = $tngcontent->getSpEvent($mother['personID'], $tree);
 				$mother_spevent = $motherRow['info'];
 				} else {
 				$mother_spevent = "Unknown";
 				}
  //get Cause of Death for Mother
-				$motherRow = $tngcontent->getCause($mother['personID']);
+				$motherRow = $tngcontent->getCause($mother['personID'], $tree);
 				if ($motherRow['eventtypeID'] == "0") {
 					$mother_cause_of_death = ". Cause: ". $motherRow['cause'];
 				} else {
@@ -416,13 +414,13 @@
                     <?php
                     If ($currentmonth == $motherdeathmonth and $mother['personID'] !== null) {
                         ?>
-                        <a href="?personId=<?php echo $mother['personID']; ?>">
+                        <a href="?personId=<?php echo $mother['personID']; ?>&amp;tree=<?php echo $mother['gedcom']; ?>">
                             <?php echo $mothername; ?></a>,<span style="background-color:#E0E0F7"><?php echo $motherdeathdate; ?>, </span><?php echo $father['deathplace']; ?>
                         </li> 
                         <?php
                     } elseif ($mother['personID'] !== null) {
                         ?>
-                        <a href="?personId=<?php echo $mother['personID']; ?>">
+                        <a href="?personId=<?php echo $mother['personID']; ?>&amp;tree=<?php echo $mother['gedcom']; ?>">
                             <?php echo $mothername; ?></a>,<?php echo $motherdeathdate; ?>, </span><?php
                         echo $motherdeathplace. $mother_cause_of_death;
                     } else {
@@ -475,17 +473,16 @@
             if ($sortBy && count($families) > 1) {
                 $order = $family[$sortBy];
             }
-
             $spouse['personID'] == '';
 
             if ($person['personID'] == $family['wife']) {
                 if ($family['husband'] !== '') {
-                    $spouse = $tngcontent->getPerson($family['husband']);
+                    $spouse = $tngcontent->getPerson($family['husband'], $tree);
                 }
             }
             if ($person['personID'] == $family['husband']) {
                 if ($family['wife'] !== '') {
-                    $spouse = $tngcontent->getPerson($family['wife']);
+                    $spouse = $tngcontent->getPerson($family['wife'], $tree);
                 }
             }
 			 if ($family['marrdate'] == '') {
@@ -536,7 +533,7 @@
 				{
 					if ($spouse['personID'] !== null)
 					{
-					$spouseRow = $tngcontent->getSpEvent($spouse['personID']);
+					$spouseRow = $tngcontent->getSpEvent($spouse['personID'], $tree);
 						if ($spouseRow !== null)  {
 						$spouse_spevent = " (". $EventDisplay. ":". $spouseRow['info']. " )";
 						} else {
@@ -546,7 +543,7 @@
 				}
 				
 //get Cause of Death for Spouse
-				$spouseRow = $tngcontent->getCause($spouse['personID']);
+				$spouseRow = $tngcontent->getCause($spouse['personID'], $tree);
 				if ($spouseRow['eventtypeID'] == "0") {
 					$spouse_cause_of_death = ". Cause: ". $spouseRow['cause'];
 				} else {
@@ -569,7 +566,7 @@
                     } else {
                         $spousename = $spouse['firstname'] . $spouse['lastname'];
                         ?>
-                        <a href="?personId=<?php echo $spouse['personID']; ?>">
+                        <a href="?personId=<?php echo $spouse['personID']; ?>&amp;tree=<?php echo $spouse['gedcom']; ?>">
                             <?php
                             echo $spousename. $spouse_spevent;
                         }
@@ -639,10 +636,10 @@
 
 				
             <?php
-            $children = $tngcontent->getChildren($family['familyID']);
+            $children = $tngcontent->getChildren($family['familyID'], $tree);
 				foreach ($children as $child):
 					$classes = array('child');
-					$childPerson = $tngcontent->getPerson($child['personID']);
+					$childPerson = $tngcontent->getPerson($child['personID'], $tree);
 					$childName = $childPerson['firstname'] . $childPerson['lastname'];
 					$childdeathdate = $childPerson['deathdate'];
 
@@ -650,9 +647,6 @@
 						$classes[] = 'haskids';
 					}
 					$class = join(' ', $classes);
-
-					?>
-					<?php
 					if ($childPerson['living'] == '0' AND $childPerson['deathdatetr'] !== '0000-00-00') {
 						$childdeathdate = (" died: " . $childPerson['deathdate']);
 					} else {
@@ -666,7 +660,7 @@
 
 
 			<li colspan="0", class="<?php echo $class ?>">
-				<a href="?personId=<?php echo $childPerson['personID']; ?>">
+				<a href="?personId=<?php echo $childPerson['personID']; ?>&amp;tree=<?php echo $childPerson['gedcom']; ?>">
 
 					<?php
 					if ($childPerson['birthdatetr'] == "0000-00-00") {
@@ -733,12 +727,12 @@
 <?php
 //get All media
 
-$allpersonmedia = $tngcontent->getAllPersonMedia($personId);
+$allpersonmedia = $tngcontent->getAllPersonMedia($personId, $tree);
 if ($person['famc']) {
-    $allpersonmedia = array_merge($allpersonmedia, $tngcontent->getAllPersonMedia($person['famc']));
+    $allpersonmedia = array_merge($allpersonmedia, $tngcontent->getAllPersonMedia($person['famc'], $tree));
 }
 foreach ($families as $family):
-    $allpersonmedia = array_merge($allpersonmedia, $tngcontent->getAllPersonMedia($family['familyID']));
+    $allpersonmedia = array_merge($allpersonmedia, $tngcontent->getAllPersonMedia($family['familyID'], $tree));
 endforeach;
 
 $images = array();
@@ -766,7 +760,7 @@ You may add or change notes about <?php echo $name; ?> by clicking on <b>Update 
 </p>
 <?php
 //get All notes
-$allnotes = $tngcontent->getNotes($personId);
+$allnotes = $tngcontent->getNotes($personId, $tree);
 
 //var_dump ($allnotes);
 

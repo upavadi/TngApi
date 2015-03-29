@@ -1,13 +1,13 @@
-<?php
-/*
-Search TNG database for names
-*/
-
-
-
-
-$tngcontent = Upavadi_TngContent::instance()->init();
-?>
+		<?php
+		/*
+		Search TNG database for names
+		*/
+			$tngcontent = Upavadi_TngContent::instance()->init();
+			$user = $tngcontent->getTngUser();
+			$usertree = $user['gedcom'];
+			$tree = $result['gedcom'];
+	
+		?>
 
 <form style="display: inline-block;" method="get">
 	<label for="search-lastname">Last Name: <input type="text" value="<?php echo $lastName; ?>" name="lastName" id="search-lastname"></label> 
@@ -25,7 +25,11 @@ if (!count($results)): ?>
 	<tr>
 			<th class="theader">Name</th>
 			<th class="theader">Birth Date</th>
+			<?php 
+			if ($usertree == '') { ?>
+			<th class="theader">Tree</th>
 			
+			<?php } ?>
 			
 	</tr>
 </thead>
@@ -36,17 +40,25 @@ if (!count($results)): ?>
 		} else {
 		$age = $result['Age'];
 		}
+	$tree = $result['gedcom'];
+
 	?>
 	<tr>
 		<td class="tdfront">
-			<a href="/family/?personId=<?php echo $result['personID']; ?>"><?php echo $result['firstname'] . ' ' . $result['lastname']; ?></a>
+			<a href="/family/?personId=<?php echo $result['personID']?>&amp;tree=<?php echo $tree; ?> "><?php echo $result['firstname'] . ' ' . $result['lastname']; ?></a>
 		</td>
-		<td>
+		<td  class="tdfront">
 			<?php echo $result['birthdate']; ?>
 		</td>
 		
-	</tr>
-	<?php endforeach; ?> 
+	<?php 
+		if ($usertree == '') { ?>
+			<td class="tdfront"><?php echo $result['gedcom']; ?></td>
+        </tr>
+    <?php
+	
+			}
+	endforeach; ?> 
 </tbody>
 </table>
 <?php endif; ?>

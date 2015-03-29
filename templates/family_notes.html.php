@@ -53,72 +53,161 @@
 	<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
 	<input type="hidden" name="personfirstname" value="<?php echo $firstname; ?>" />
 	<input type="hidden" name="personsurname" value="<?php echo $lastname; ?>" />
+	<input type="hidden" name="persongedcom" value="<?php echo $person['gedcom']; ?>" />
+	
 	<body>
 	<?php 			
+	 
 		//get All notes
 		$allnotes = $tngcontent->getnotes($personId);
+			
+		$note_general_secret = 0;
+		$note_general_ordernum = 999;
+		$note_name_secret = 0;
+		$note_name_ordernum = 999;
+		$note_birth_secret = 0;
+		$note_birth_ordernum = 999;
+		$note_death_secret = 0;
+		$note_death_ordernum = 999;
+		$note_funeral_secret = 0;
+		$note_funeral_ordernum = 999;
 		
-		//var_dump ($allnotes);
 		$note_generalID = "About Person";
 		$note_nameID = "About Person's Name";
 		$note_birthID = "About Person's Birth";
 		$note_deathID = "About Person's Death";
 		$note_funeralID = "About Funeral, Cremation / Burial";
-											
+		$note_header = array(
+		$note_generalID,
+		$note_nameID,
+		$note_birthID,
+		$note_deathID,
+		$note_funeralID,);
+		
 		foreach($allnotes as $PersonNote):
 		if ($PersonNote['eventID'] == null) {
 					$xnote_generalID = $PersonNote['xnoteID'];
 					$note_general = $PersonNote['note'];
+					$note_general_secret = $PersonNote['secret'];
+					$note_general_ordernum = $PersonNote['ordernum'];
+					
 					}
+		
 		if ($PersonNote['eventID'] == "NAME") {
 					$xnote_nameID = $PersonNote['xnoteID'];
 					$note_name = $PersonNote['note'];
+					$note_name_secret = $PersonNote['secret'];
+					$note_name_ordernum = $PersonNote['ordernum'];
+					
 					}
 		if ($PersonNote['eventID'] == "BIRT") {
 					$xnote_birthID = $PersonNote['xnoteID'];
 					$note_birth = $PersonNote['note'];
+					$note_birth_secret = $PersonNote['secret'];
+					$note_birth_ordernum = $PersonNote['ordernum'];
 					}
 		
 		if ($PersonNote['eventID'] == "DEAT") {
 					$xnote_deathID = $PersonNote['xnoteID'];
 					$note_death = $PersonNote['note'];
+					$note_death_secret = $PersonNote['secret'];
+					$note_death_ordernum = $PersonNote['ordernum'];
 					}
 		if ($PersonNote['eventID'] == "BURI") {
 					$xnote_funeralID = $PersonNote['xnoteID'];
 					$note_funeral = $PersonNote['note'];
-					}			
+					$note_funeral_secret = $PersonNote['secret'];
+					$note_funeral_ordernum = $PersonNote['ordernum'];
+		}
+	endforeach; 
+	
+		$xnote_ID = Array(
+		$xnote_generalID,
+		$xnote_nameID,
+		$xnote_birthID,
+		$xnote_deathID,
+		$xnote_funeralID,);
+		
+		$xnotes = Array(
+		$note_general,
+		$note_name,
+		$note_birth,
+		$note_death,
+		$note_funeral,);
+		
+		$xnote_eventID = Array (
+		null,
+		"NAME",
+		"BIRT",
+		"DEAT",
+		"BURI",);
+		 	
+		$xnote_secret = Array(
+		$note_general_secret,
+		$note_name_secret,
+		$note_birth_secret,
+		$note_death_secret,
+		$note_funeral_secret,);
+		
+		$xnote_ordernum = Array(
+		$note_general_ordernum,
+		$note_name_ordernum,
+		$note_birth_ordernum,
+		$note_death_ordernum,
+		$note_funeral_ordernum,);
+		
+		
+	
+	
+	//var_dump($allnotes);
 	?>
-	<?php endforeach; ?>
-		
+		<class = "person_note">
 		<p>
-			<input type="hidden" name="xnote_generalID" value="<?php echo $xnote_generalID ?>" />
+			<input type="hidden" name="person_note[0][xnote_ID]" value="<?php echo $xnote_ID[0] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_generalID;?></b></span></a></br><textarea style="width:100%" name="note_general" rows="3" cols="100"><?php echo $note_general; ?>
+			<?php echo $note_header[0];?></b></span></a></br><textarea style="width:98%" name="person_note[0][note]" rows="3" cols="100"><?php echo $xnotes[0]; ?>
 			</textarea>
+		<input type="hidden" name="person_note[0][xeventID]" value="<?php echo $xnote_eventID[0]; ?>" />
+		<input type="hidden" name="person_note[0][secret]" value="<?php echo $xnote_secret[0]; ?>" />
+		<input type="hidden" name="person_note[0][ordernum]" value="<?php echo $xnote_ordernum[0]; ?>" />
 		</p>
 		<p>
-			<input type="hidden" name="xnote_nameID" value="<?php echo $xnote_nameID ?>" />
+			<input type="hidden" name="person_note[1][xnote_ID]" value="<?php echo $xnote_ID[1] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_nameID;?></b></span></a></br><textarea  style="width:100%" name="note_name" rows="3" cols="100"><?php echo $note_name; ?></textarea>
+			<?php echo $note_header[1];?></b></span></a></br><textarea style="width:98%" name="person_note[1][note]" rows="3" cols="100"><?php echo $xnotes[1]; ?>
+			</textarea>
+		<input type="hidden" name="person_note[1][xeventID]" value="<?php echo $xnote_eventID[1]; ?>" />
+		<input type="hidden" name="person_note[1][secret]" value="<?php echo $xnote_secret[1]; ?>" />
+		<input type="hidden" name="person_note[1][ordernum]" value="<?php echo $xnote_ordernum[1]; ?>" />
 		</p>
 		<p>
-			<input type="hidden" name="xnote_birthID" value="<?php echo $xnote_birthID ?>" />
+			<input type="hidden" name="person_note[2][xnote_ID]" value="<?php echo $xnote_ID[2] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_birthID;?></b></span></a></br><textarea style="width:100%"  name="note_birth" rows="3" cols="100"><?php echo $note_birth; ?></textarea>
+			<?php echo $note_header[2];?></b></span></a></br><textarea style="width:98%" name="person_note[2][note]" rows="3" cols="100"><?php echo $xnotes[2]; ?>
+			</textarea>
+		<input type="hidden" name="person_note[2][xeventID]" value="<?php echo $xnote_eventID[2]; ?>" />
+		<input type="hidden" name="person_note[2][secret]" value="<?php echo $xnote_secret[2]; ?>" />
+		<input type="hidden" name="person_note[2][ordernum]" value="<?php echo $xnote_ordernum[2]; ?>" />
 		</p>
 		<p>
-						
-			<input type="hidden" name="xnote_deathID" value="<?php echo $xnote_deathID ?>" />
+			<input type="hidden" name="person_note[3][xnote_ID]" value="<?php echo $xnote_ID[3] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_deathID;?></b></span></a></br><textarea name="note_death" rows="3" cols="100"><?php echo $note_death; ?></textarea>
+			<?php echo $note_header[3];?></b></span></a></br><textarea style="width:98%" name="person_note[3][note]" rows="3" cols="100"><?php echo $xnotes[3]; ?>
+			</textarea>
+		<input type="hidden" name="person_note[3][xeventID]" value="<?php echo $xnote_eventID[3]; ?>" />
+		<input type="hidden" name="person_note[3][secret]" value="<?php echo $xnote_secret[3]; ?>" />
+		<input type="hidden" name="person_note[3][ordernum]" value="<?php echo $xnote_ordernum[3]; ?>" />
 		</p>
 		<p>
-			<input type="hidden" name="xnote_funeralID" value="<?php echo $xnote_funeralID ?>" />
+			
+		<input type="hidden" name="person_note[4][xnote_ID]" value="<?php echo $xnote_ID[4] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_funeralID;?></b></span></a></br><textarea name="note_funeral" rows="3" cols="100"><?php echo $note_funeral; ?></textarea>
-		
+			<?php echo $note_header[4];?></b></span></a></br><textarea style="width:98%" name="person_note[4][note]" rows="3" cols="100"><?php echo $xnotes[4]; ?>
+			</textarea>
+		<input type="hidden" name="person_note[4][xeventID]" value="<?php echo $xnote_eventID[4]; ?>" />
+		<input type="hidden" name="person_note[4][secret]" value="<?php echo $xnote_secret[4]; ?>" />
+		<input type="hidden" name="person_note[4][ordernum]" value="<?php echo $xnote_ordernum[4]; ?>" />
 		</p>
-		
 		
 	
 	<input type="submit" value="Submit Notes">

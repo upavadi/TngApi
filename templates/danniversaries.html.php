@@ -1,3 +1,11 @@
+			<?php
+				//get and hold current user
+				$tngcontent = Upavadi_tngcontent::instance()->init();
+				$user = $tngcontent->getTngUser();
+				$usertree = $user['gedcom'];
+				
+				
+			?>
 <html>
 <head>
 <!---- Jquery date picker strat -->
@@ -56,28 +64,35 @@ Clicking on a name takes you to the Individual's FamilyAMILY Page</br> Clicking 
 			<th class="theader">Years</th>
 			<th class="theader">Relationship</th>
 			
-	<?php
-			//get and hold current user
-			$tngcontent = Upavadi_TngContent::instance()->init();
-			$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
-	?>		
-		
+	<?php 
+		if ($usertree == '') { ?>
+	<th class="theader">Tree</th>
+			
+	<?php } ?>	
+    
+			
 	
-<?php foreach ($danniversaries as $danniversary): 
+	<?php foreach ($danniversaries as $danniversary): 
 		$danniversarydate = strtotime($danniversary['deathdate']);
 		$Years = $year - date('Y', $danniversarydate);
+		$tree = $danniversary['gedcom'];
 		?>
 		<tr>
-			<td class="tdfront"><a href="/family/?personId=<?php echo $danniversary['personid'];?>">
+			<td class="tdfront"><a href="/family/?personId=<?php echo $danniversary['personid']; ?>&amp;tree=<?php echo $tree; ?>">
 			<?php echo $danniversary['firstname']; ?><?php echo $danniversary['lastname']; ?></a></td>
 			<td class="tdfront"><?php echo $danniversary['deathdate']; ?></td>
 			<td class="tdfront"><?php echo $danniversary['deathplace']; ?></td>
 			<td class="tdfront"><?php echo $Years ?></td>
 			
 			<td class="tdfront"><a href="../genealogy/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $danniversary['personid'];?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo "View"?></td>
-			
-		</tr>
-<?php endforeach; ?>
+			<?php 
+		if ($usertree == '') { ?>
+			<td class="tdfront"><?php echo $danniversary['gedcom']; ?></td>
+        </tr>
+		<?php 
+			}
+	endforeach; 
+		?>
 	</tbody>
 </table>
 </html>
