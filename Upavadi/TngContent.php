@@ -154,13 +154,14 @@ class Upavadi_TngContent
             $tngPath = esc_attr(get_option('tng-api-tng-photo-upload'));
             echo "<input type='text' name='tng-api-tng-photo-upload' value='$tngPath' />";
         }, 'tng-api', 'tng');
-  /*-------------------------------------------------------------------------------------*/      
+  /*-------------------------------------------------------------------------------------      
 		$this->init();
 		$events = $this->getEventList();
-		add_settings_field('tng-event', 'TNG Event to Track', function () use ($events) {
+*******************/	
+	add_settings_field('tng-event', 'TNG Event to Track', function () use ($events) {
             $tngEvent = esc_attr(get_option('tng-api-tng-event'));
     
-
+/**********************************
 			echo '<form action="" name="eventchange" method="post">';
 			echo '<select name="selectevent" onchange="eventchange.submit()">';
 			echo '<option value="new">Do not Track</option>';
@@ -177,10 +178,9 @@ class Upavadi_TngContent
 			echo '</select>';
 			echo '</form>';
 			var_dump($_POST[selectevent]);
-
-	echo "<input type='text' name='tng-api-tng-event' value='$eventId' />";
+**********************/
+	echo "<input type='text' name='tng-api-tng-event' value='$tngEvent' />";
         }, 'tng-api', 'tng');
-	
 /*-----------------------------------------		-----------------------------------------------*/
 		add_settings_section('db', 'Database', function() {
              echo "We also need to know where the TNG database lives";
