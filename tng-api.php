@@ -122,6 +122,8 @@ function create_tng_tables()
 		ordernum varchar(22),
 		secret varchar(22),
 		noteID varchar(22),
+		notelinkID varchar(22),
+		persfamID varchar(22),
 		datemodified datetime,
 		PRIMARY KEY  id (id));";		
 	dbDelta($sql_notes);

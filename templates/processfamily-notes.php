@@ -4,6 +4,7 @@ require_once '../../../../wp-load.php';
 //this the original
 
 global $wpdb;
+$wpdb->show_errors();
 $people_table = $wpdb->prefix . "tng_people";
 $notes_table = $wpdb->prefix . "tng_notes";
 
@@ -28,63 +29,59 @@ $datemodified = date('Y-m-d H:i:s');
 
 // Insert Head Person in PEOPLE
 $wpdb->insert(
-		$people_table,
-		array(
-			headpersonid =>$headpersonid,
-			personid =>$personid,
-			tnguser =>$tnguser,
-			firstname =>$firstname,
-			lastname =>$lastname,
-			personevent =>$personevent,
-			birthdate =>$birthdate,
-			birthdatetr =>$birthdatetr,
-			birthplace =>$birthplace,
-			deathdate =>$deathdate,
-			deathdatetr =>$deathdatetr,
-			deathplace =>$deathplace,
-			sex =>$sex,
-			famc =>$famc,
-			living =>$living,
-			cause =>$cause,
-			datemodified => $datemodified,
-			)
-		
-		);
+    $people_table, array(
+    'headpersonid' => $headpersonid,
+    'personid' => $personid,
+    'tnguser' => $tnguser,
+    'firstname' => $firstname,
+    'lastname' => $lastname,
+    'personevent' => $personevent,
+    'birthdate' => $birthdate,
+    'birthdatetr' => $birthdatetr,
+    'birthplace' => $birthplace,
+    'deathdate' => $deathdate,
+    'deathdatetr' => $deathdatetr,
+    'deathplace' => $deathplace,
+    'sex' => $sex,
+    'famc' => $famc,
+    'living' => $living,
+    'cause' => $cause,
+    'datemodified' => $datemodified,
+    )
+);
 
 //Notes identifiers
-$personNotes = array($_POST['person_note']);
-foreach ($personNotes as $Array):
-foreach ($Array as $Notes):
-$headpersonid = $_POST['personId'];
-$tnguser = $_POST['User'];
-$personid = $_POST['personId'];
-$gedcom = $_POST['persongedcom'];
-$xnoteID = $Notes['xnote_ID'];
-$note = $Notes['note'];
-$eventID = $Notes['xeventID'];
-$ordernum = $Notes['ordernum'];
-$secret = $Notes['secret'];
+$personNotes = (array) $_POST['person_note'];
+foreach ($personNotes as $Notes):
+    $headpersonid = $_POST['personId'];
+    $tnguser = $_POST['User'];
+    $personid = $_POST['personId'];
+    $gedcom = $_POST['persongedcom'];
+    $xnoteID = $Notes['xnoteID'];
+    $notelinkID = $Notes['notelinkID'];
+    $note = $Notes['note'];
+    $eventID = $Notes['xeventID'];
+    $ordernum = $Notes['ordernum'];
+    $secret = $Notes['secret'];
 //var_dump($personNotes);
-
-
 //Insert Notes
-	$wpdb->insert(
-		$notes_table,
-		array(
-			headpersonid =>$headpersonid,
-			tnguser =>$tnguser,
-			persfamID =>$personid,
-			gedcom =>$gedcom,
-			xnoteID =>$xnoteID,
-			note =>$note,
-			eventID =>$eventID,
-			ordernum =>$ordernum,
-			secret =>$secret,
-			datemodified =>$datemodified,
-			)
-		);
- //print_r($Notes);
- endforeach;
+    $row = array(
+        'headpersonid' => $headpersonid,
+        'tnguser' => $tnguser,
+        'persfamID' => $personid,
+        'gedcom' => $gedcom,
+        'xnoteID' => $xnoteID,
+        'notelinkID' => $notelinkID,
+        'note' => $note,
+        'eventID' => $eventID,
+        'ordernum' => $ordernum,
+        'secret' => $secret,
+        'datemodified' => $datemodified,
+    );
+    if (!$wpdb->insert($notes_table, $row)) {
+        var_dump($row);
+    }
+    //print_r($Notes);
 endforeach;
 $date = date('c');
 $email = esc_attr(get_option('tng-api-email'));
@@ -97,8 +94,8 @@ echo "<pre>{$msg}</pre>";
 mail($email, 'New data', $msg);
 ?>
 <html>
-<head>
-</head>
-<body>
-</body>
+    <head>
+    </head>
+    <body>
+    </body>
 </html>
