@@ -51,6 +51,7 @@ class Upavadi_Repository_TngRepository
                 $types .= 's';
             }
         }
+        var_dump($sql);
         $stmnt = $db->prepare($sql);
         if (!$stmnt) {
             var_dump($db->error);
@@ -254,6 +255,9 @@ class Upavadi_Repository_TngRepository
 
     public function updateNote($id, $fields)
     {
+        if (!count($fields)) {
+            return;
+        }
         $tables = $this->content->getTngTables();
         $sql = "UPDATE {$tables['xnotes_table']} SET ";
         $args = array();

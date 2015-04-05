@@ -151,7 +151,6 @@ class Upavadi_Update_ChangeSet
     public function calcDiffEntities($newEntities, $oldEntities)
     {
         $changes = array();
-
         foreach ($newEntities as $id => $new) {
             if (!isset($oldEntities[$id])) {
                 // new
@@ -229,7 +228,7 @@ class Upavadi_Update_ChangeSet
 
     public function getHeadPersonId()
     {
-        return $this->userSubmission['personid'];
+        return $this->userSubmission['personID'];
     }
 
     public function getFatherId()
@@ -439,6 +438,7 @@ class Upavadi_Update_ChangeSet
                         $this->repo->updateChildren($id, $fields);
                         break;
                     case 'notes':
+                        unset($fields['persfamID']);
                         $this->repo->updateNote($id, $fields);
                         break;
                 }
@@ -580,6 +580,7 @@ class Upavadi_Update_ChangeSet
             $this->wpdb->prefix . 'tng_people',
             $this->wpdb->prefix . 'tng_families',
             $this->wpdb->prefix . 'tng_children',
+            $this->wpdb->prefix . 'tng_events',
             $this->wpdb->prefix . 'tng_notes'
         );
         foreach ($tables as $table) {
@@ -595,42 +596,7 @@ class Upavadi_Update_ChangeSet
         $index = 0;
 
         foreach ($rows as $row) {
-            $types = array();
-            foreach ($row as $key => $value) {
-                if (preg_match('/^note(.*)ID$/', $key, $m)) {
-                    $type = $m[1];
-                    $types[] = $type;
-                }
-            }
-            foreach ($types as $type) {
-                $note = array();
-                $note['persfamID'] = $row['persfamID'];
-                $note['eventID'] = '';
-                switch ($type) {
-                    case 'birt':
-                        $note['eventID'] = 'BIRT';
-                        break;
-                    case 'deat':
-                        $note['eventID'] = 'DEAT';
-                        break;
-                    case 'name':
-                        $note['eventID'] = 'NAME';
-                        break;
-                    case 'buri':
-                        $note['eventID'] = 'BURI';
-                        break;
-                }
-                $note['note'] = $row['note' . $type];
-                $note['xnoteID'] = $row['note' . $type . 'ID'];
-
-                if ($note['note'] || $note['xnoteID']) {
-                    if (!$note['xnoteID']) {
-                        $index++;
-                        $note['xnoteID'] = 'NewNote' . $index;
-                    }
-                    $notes[$note['xnoteID']] = $note;
-                }
-            }
+            $notes[$row['xnoteID']] = $row;
         }
         return $notes;
     }

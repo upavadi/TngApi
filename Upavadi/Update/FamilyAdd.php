@@ -24,7 +24,7 @@ class Upavadi_Update_FamilyAdd extends Upavadi_Update_FamilyUpdate
 
     public function normaliseSpouse($data)
     {
-        $data['personId'] = $data['ID'];
+        $data['personID'] = $data['ID'];
         $data['personsex'] = $data['sex'];
         $data['personfamc'] = $data['famc'];
         $data['personliving'] = $data['living'];
