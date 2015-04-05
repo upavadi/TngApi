@@ -364,8 +364,6 @@ $spousehusband = $spouseID;
 	<?php 			
 		//get All notes
 		
-		$allnotes = $tngcontent->getnotes($personId, $tree);
-		
 		$note_general_secret = 0;
 		$note_general_ordernum = 999;
 		$note_name_secret = 0;
@@ -427,56 +425,21 @@ $spousehusband = $spouseID;
 		
 		
 	
-	
-	 ?>
+                foreach ($xnote_ordernum as $id => $ordernum):
+	?>
 		
-	<class = "spouse_note">
 		<p>
-			<input type="hidden" name="spouse_note[0][xnote_ID]" value="<?php echo $xnote_ID[0] ?>" />
+			<input type="hidden" name="spouse_note[<?php echo $id; ?>][xnote_ID]" value="<?php echo $xnote_ID[$id] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_header[0];?></b></span></a></br>
-                        <textarea style="width:98%" name="spouse_note[0][note]" rows="3" cols="100"><?php echo $xnotes[0]; ?></textarea>
-		<input type="hidden" name="spouse_note[0][xeventID]" value="<?php echo $xnote_eventID[0]; ?>" />
-		<input type="hidden" name="spouse_note[0][secret]" value="<?php echo $xnote_secret[0]; ?>" />
-		<input type="hidden" name="spouse_note[0][ordernum]" value="<?php echo $xnote_ordernum[0]; ?>" />
+			<?php echo $note_header[$id];?></b></span></a></br>
+                        <textarea style="width:98%" name="spouse_note[<?php echo $id; ?>][note]" rows="3" cols="100"></textarea>
+		<input type="hidden" name="spouse_note[<?php echo $id; ?>][xeventID]" value="<?php echo $xnote_eventID[$id]; ?>" />
+		<input type="hidden" name="spouse_note[<?php echo $id; ?>][secret]" value="<?php echo $xnote_secret[$id]; ?>" />
+		<input type="hidden" name="spouse_note[<?php echo $id; ?>][ordernum]" value="<?php echo $xnote_ordernum[$id]; ?>" />
 		</p>
-		<p>
-			<input type="hidden" name="spouse_note[1][xnote_ID]" value="<?php echo $xnote_ID[1] ?>" />
-			<span style="font-size:14pt"><b>
-			<?php echo $note_header[1];?></b></span></a></br>
-                        <textarea style="width:98%" name="spouse_note[1][note]" rows="3" cols="100"><?php echo $xnotes[1]; ?></textarea>
-		<input type="hidden" name="spouse_note[1][xeventID]" value="<?php echo $xnote_eventID[1]; ?>" />
-		<input type="hidden" name="spouse_note[1][secret]" value="<?php echo $xnote_secret[1]; ?>" />
-		<input type="hidden" name="spouse_note[1][ordernum]" value="<?php echo $xnote_ordernum[1]; ?>" />
-		</p>
-		<p>
-			<input type="hidden" name="spouse_note[2][xnote_ID]" value="<?php echo $xnote_ID[2] ?>" />
-			<span style="font-size:14pt"><b>
-			<?php echo $note_header[2];?></b></span></a></br>
-                        <textarea style="width:98%" name="spouse_note[2][note]" rows="3" cols="100"><?php echo $xnotes[2]; ?></textarea>
-		<input type="hidden" name="spouse_note[2][xeventID]" value="<?php echo $xnote_eventID[2]; ?>" />
-		<input type="hidden" name="spouse_note[2][secret]" value="<?php echo $xnote_secret[2]; ?>" />
-		<input type="hidden" name="spouse_note[2][ordernum]" value="<?php echo $xnote_ordernum[2]; ?>" />
-		</p>
-		<p>
-			<input type="hidden" name="spouse_note[3][xnote_ID]" value="<?php echo $xnote_ID[3] ?>" />
-			<span style="font-size:14pt"><b>
-			<?php echo $note_header[3];?></b></span></a></br>
-                        <textarea style="width:98%" name="spouse_note[3][note]" rows="3" cols="100"><?php echo $xnotes[3]; ?></textarea>
-		<input type="hidden" name="spouse_note[3][xeventID]" value="<?php echo $xnote_eventID[3]; ?>" />
-		<input type="hidden" name="spouse_note[3][secret]" value="<?php echo $xnote_secret[3]; ?>" />
-		<input type="hidden" name="spouse_note[3][ordernum]" value="<?php echo $xnote_ordernum[3]; ?>" />
-		</p>
-		<p>
-			
-		<input type="hidden" name="spouse_note[4][xnote_ID]" value="<?php echo $xnote_ID[4] ?>" />
-			<span style="font-size:14pt"><b>
-			<?php echo $note_header[4];?></b></span></a></br><textarea style="width:98%" name="spouse_note[4][note]" rows="3" cols="100"><?php echo $xnotes[4]; ?>
-			</textarea>
-		<input type="hidden" name="spouse_note[4][xeventID]" value="<?php echo $xnote_eventID[4]; ?>" />
-		<input type="hidden" name="spouse_note[4][secret]" value="<?php echo $xnote_secret[4]; ?>" />
-		<input type="hidden" name="spouse_note[4][ordernum]" value="<?php echo $xnote_ordernum[4]; ?>" />
-		</p>
+	<?php
+            endforeach;
+        ?>
 			
 
 	  			

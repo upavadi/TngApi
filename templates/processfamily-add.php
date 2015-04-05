@@ -3,6 +3,8 @@ require_once '../../../../wp-load.php';
 require_once '../../../../wp-config.php';
 //header('Location: /thank-you');
 global $wpdb;
+$wpdb->show_errors();
+
 $people_table = $wpdb->prefix . "tng_people";
 $families_table = $wpdb->prefix . "tng_families";
 $children_table = $wpdb->prefix . "tng_children";
@@ -19,23 +21,23 @@ $persfamID = $_POST['personId'];
 $gedcom = $_POST['gedcom'];
 $persfamID = $Spouse[0]['personID'];
 $eventtypeID = $_POST['EventID'];
-$eventdatetr = 0000-00-00;
+$eventdatetr = 0000 - 00 - 00;
 $info = $Spouse[0]['event'];
 
 //Insert Special Events
 $wpdb->insert(
-    $notes_table, array(
-    headpersonid =>$headpersonid,
-	tnguser =>$tnguser,
-	persfamID =>$persfamID,
-	gedcom =>$gedcom,
-	eventtypeID =>$eventtypeID,
-	eventdatetr => $eventdateter,
-	cause => '',
-	parenttag => '',
-	info => $info,
-	datemodified =>$datemodified,
-			)
+    $events_table, array(
+    headpersonid => $headpersonid,
+    tnguser => $tnguser,
+    persfamID => $persfamID,
+    gedcom => $gedcom,
+    eventtypeID => $eventtypeID,
+    eventdatetr => $eventdateter,
+    cause => '',
+    parenttag => '',
+    info => $info,
+    datemodified => $datemodified,
+    )
 );
 //CauseOfDeath - Spouse Identifiers
 $Spouse = array($_POST['spouse']);
@@ -53,89 +55,89 @@ $info = '';
 //Insert CauseOfDeath - Spouse
 $wpdb->insert(
     $events_table, array(
-    headpersonid =>$headpersonid,
-	tnguser =>$tnguser,
-	persfamID =>$persfamID,
-	gedcom =>$gedcom,
-	eventtypeID =>$eventtypeID,
-	eventdatetr => $eventdateter,
-	cause => $cause,
-	parenttag => $parenttag,
-	info => $info,
-	datemodified =>$datemodified,
-			)
+    headpersonid => $headpersonid,
+    tnguser => $tnguser,
+    persfamID => $persfamID,
+    gedcom => $gedcom,
+    eventtypeID => $eventtypeID,
+    eventdatetr => $eventdateter,
+    cause => $cause,
+    parenttag => $parenttag,
+    info => $info,
+    datemodified => $datemodified,
+    )
 );
 
 //CauseOfDeath - Children identifiers
-  $child = array($_POST['child']);
+$child = array($_POST['child']);
 
-  $ordernum = 0;
-  foreach ($child as $array2):
-  foreach ($array2 as $children):
-	$ordernum += 1;
-	$headpersonid = $_POST['personID'];
-	$tnguser = $_POST['User'];
-	$persfamID = "NewChild". $ordernum;
-	$gedcom = $_POST['gedcom'];
-	$eventtypeID = 0;
-	$eventdatetr = '0000-00-00';
-	$cause = $children['cause'];
-	$parenttag = 'DEAT';
-	$info = '';
+$ordernum = 0;
+foreach ($child as $array2):
+    foreach ($array2 as $children):
+        $ordernum += 1;
+        $headpersonid = $_POST['personID'];
+        $tnguser = $_POST['User'];
+        $persfamID = "NewChild" . $ordernum;
+        $gedcom = $_POST['gedcom'];
+        $eventtypeID = 0;
+        $eventdatetr = '0000-00-00';
+        $cause = $children['cause'];
+        $parenttag = 'DEAT';
+        $info = '';
 
 //Insert CauseOfDeath - Child
-$wpdb->insert(
-    $events_table, array(
-    headpersonid =>$headpersonid,
-	tnguser =>$tnguser,
-	persfamID =>$persfamID,
-	gedcom =>$gedcom,
-	eventtypeID =>$eventtypeID,
-	eventdatetr => $eventdateter,
-	cause => $cause,
-	parenttag => $parenttag,
-	info => $info,
-	datemodified =>$datemodified,
-			)
-);
+        $wpdb->insert(
+            $events_table, array(
+            headpersonid => $headpersonid,
+            tnguser => $tnguser,
+            persfamID => $persfamID,
+            gedcom => $gedcom,
+            eventtypeID => $eventtypeID,
+            eventdatetr => $eventdateter,
+            cause => $cause,
+            parenttag => $parenttag,
+            info => $info,
+            datemodified => $datemodified,
+            )
+        );
 
-  endforeach;
-  endforeach;
- 
+    endforeach;
+endforeach;
+
 //Notes identifiers
 $personNotes = array($_POST['spouse_note']);
 foreach ($personNotes as $Array):
-foreach ($Array as $Notes):
-$headpersonid = $_POST['personID'];
-$tnguser = $_POST['User'];
-$persfamID = $Spouse[0]['personID'];
-$gedcom = $_POST['gedcom'];
-$xnoteID = $Notes['xnote_ID'];
-$note = $Notes['note'];
-$eventID = $Notes['xeventID'];
-$ordernum = $Notes['ordernum'];
-$secret = $Notes['secret'];
+    foreach ($Array as $Notes):
+        $headpersonid = $_POST['personID'];
+        $tnguser = $_POST['User'];
+        $persfamID = $Spouse[0]['personID'];
+        $gedcom = $_POST['gedcom'];
+        $xnoteID = $Notes['xnote_ID'];
+        $note = $Notes['note'];
+        $eventID = $Notes['xeventID'];
+        $ordernum = $Notes['ordernum'];
+        $secret = $Notes['secret'];
 
 //Insert Notes
-$wpdb->insert(
-    $notes_table, array(
-    headpersonid =>$headpersonid,
-			tnguser =>$tnguser,
-			persfamID =>$persfamID,
-			gedcom =>$gedcom,
-			xnoteID =>$xnoteID,
-			note =>$note,
-			eventID =>$eventID,
-			ordernum =>$ordernum,
-			secret =>$secret,
-			datemodified =>$datemodified,
-			)
-);
-endforeach;
+        $row = array(
+            'headpersonid' => $headpersonid,
+            'tnguser' => $tnguser,
+            'persfamID' => $persfamID,
+            'gedcom' => $gedcom,
+            'xnoteID' => $xnoteID,
+            'note' => $note,
+            'eventID' => $eventID,
+            'ordernum' => $ordernum,
+            'secret' => $secret,
+            'datemodified' => $datemodified,
+        );
+        if (!$wpdb->insert($notes_table, $row)) {
+            var_dump($row);
+        }
+    endforeach;
 endforeach;
 //var_dump($personNotes);
 //header('Location: /thank-you');
-
 // $wpdb->print_error();
 
 /*
