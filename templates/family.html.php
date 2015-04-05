@@ -11,8 +11,18 @@
     
     <?php
     $tngcontent = Upavadi_TngContent::instance();
-
-
+/********************************************************************************************/	
+/** In the Family page there are three links to TNG. Ancestors, Genealogy and Descendents **/
+/** Value of $genealogy controls the links. Enter value you use to navigate to tng page **/
+/** Such as mysite.com/genealogy OR mysite.com/tng/
+/** Enter $genealogy = "genealogy" OR $genealogy = "tng"
+/** If you leave blank, $genealogy = "", links will not be shown.
+*********************************************/
+	
+	$genealogy = "tng";  
+	
+/********************************************/	
+	
     //get and hold current user
     $currentperson = $tngcontent->getCurrentPersonId($person['personID']);
     $currentperson = $tngcontent->getPerson($currentperson);
@@ -66,18 +76,23 @@
                         <td><input type="button" style="width:150px" value="submit-profile-photo" onclick="location.href = '#submit-profile-photo'"/>
                         </td>
                         <td>
-                            <input type="button" style="width:150px" value="Genealogy Page" onclick="window.location.href = '../genealogy/getperson.php?personID=<?php echo $person['personID']; ?>&tree=upavadi_1'" />
-                        </td>
+		<?php
+		$linkPerson = $person['personID'];
+		$tree = $person['gedcom'];
+		if ($genealogy != "") {
+			echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '../$genealogy/getperson.php?personID=$linkPerson&tree=$tree' \" />";
+			echo '</td>';
+			echo '</tr><tr><td>';
+			echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '../$genealogy/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
+			echo '</td><td>';                        
+			echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '../$genealogy/descend.php?personID=$linkPerson&tree=$tree'\" />";
+		}
+		?>	                      
+
+					   </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <input type="button" style="width:150px" value="Ancestors" onclick="window.location.href = '../genealogy/pedigree.php?personID=<?php echo $person['personID']; ?>&tree=upavadi_1'" />
-                        </td>
-                        <td>
-                            <input type="button" style="width:150px" value="Descendants" onclick="window.location.href = '../genealogy/descend.php?personID=<?php echo $person['personID']; ?>&tree=upavadi_1'" />
-                        </td>
-                    </tr>
-                </table>
+
+					</table>
             </td>
         </tr>
     </table>	

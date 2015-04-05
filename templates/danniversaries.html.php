@@ -62,8 +62,9 @@ Clicking on a name takes you to the Individual's FamilyAMILY Page</br> Clicking 
 			<th class="theader">Date</th>
 			<th class="theader">Death Place</th>
 			<th class="theader">Years</th>
+			<!--
 			<th class="theader">Relationship</th>
-			
+			-->
 	<?php 
 		if ($usertree == '') { ?>
 	<th class="theader">Tree</th>
@@ -83,8 +84,9 @@ Clicking on a name takes you to the Individual's FamilyAMILY Page</br> Clicking 
 			<td class="tdfront"><?php echo $danniversary['deathdate']; ?></td>
 			<td class="tdfront"><?php echo $danniversary['deathplace']; ?></td>
 			<td class="tdfront"><?php echo $Years ?></td>
-			
+			<!--
 			<td class="tdfront"><a href="../genealogy/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $danniversary['personid'];?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo "View"?></td>
+			-->
 			<?php 
 		if ($usertree == '') { ?>
 			<td class="tdfront"><?php echo $danniversary['gedcom']; ?></td>

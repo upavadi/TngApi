@@ -59,7 +59,9 @@ Clicking on a name takes you to the Individual's Family Page
     <th class="theader">Date</th>
     <th class="theader">Birth Place</th>
     <th class="theader">Age</th>
-    <th class="theader">Relationship</th>
+    <!--
+	<th class="theader">Relationship</th>
+	-->
 	<?php 
 		if ($usertree == '') { ?>
 	<th class="theader">Tree</th>
@@ -74,7 +76,9 @@ Clicking on a name takes you to the Individual's Family Page
             <td class="tdfront"><?php echo $birthday['birthdate']; ?></td>
             <td class="tdfront"><?php echo $birthday['birthplace']; ?></td>
             <td class="tdfront"><?php echo $birthday['age']; ?></td>
-            <td class="tdfront"><a href="../genealogy/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $birthday['personid']; ?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo "View" ?></td>
+		<!--
+	   <td class="tdfront"><a href="../genealogy/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $birthday['personid']; ?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo "View" ?></td>
+		-->
 		<?php 
 		if ($usertree == '') { ?>
 			<td class="tdfront"><?php echo $birthday['gedcom']; ?></td>
