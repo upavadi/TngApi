@@ -90,6 +90,9 @@
                             $note['eventID'] = null;
                         }
                     }
+                    if ($note['secret']) {
+                        $note['note'] = null;
+                    }
 	?>
             <p>
                 <input type="hidden" name="person_note[<?php echo $type; ?>][xnoteID]" value="<?php echo $note['xnoteID'] ?>" />

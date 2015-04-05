@@ -454,7 +454,7 @@ SELECT nl.ID as notelinkID, nl.*, xl.*
 FROM   {$this->tables['notelinks_table']} as nl
 LEFT JOIN {$this->tables['xnotes_table']} AS xl
 ON nl.xnoteID = xl.ID
-where persfamID = '{$personId}' AND secret="0"
+where persfamID = '{$personId}'
 SQL;
         $result = $this->query($sql);
 
