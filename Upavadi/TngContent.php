@@ -811,43 +811,41 @@ SQL;
 
     public function getMarriageAnniversaries($month)
     {
-       $user = $this->getTngUser();
+        $user = $this->getTngUser();
         $gedcom = $user['gedcom'];
         // If we are searching, enter $tree value
-		 if ($tree) {
-		 $gedcom = $tree;
-		 }
-		$treeWhere = null;
+        if ($tree) {
+            $gedcom = $tree;
+        }
+        $treeWhere = null;
         if ($gedcom) {
-            $treeWhere_h = ' AND h.gedcom = "' . $gedcom . '" AND h.private = 0';
-			$treeWhere_f = ' AND f.gedcom = "' . $gedcom . '" AND f.private = 0';
-			$treeWhere_w = ' AND w.gedcom = "' . $gedcom . '" AND w.private = 0';
-        
-		}
+            $treeWhere = ' AND f.gedcom = "' . $gedcom . '" AND f.private = 0';
+        }
         $sql = <<<SQL
-SELECT h.gedcom,
-	   h.private,
-	   h.personid AS personid1,
-       h.firstname AS firstname1,
-       h.lastname AS lastname1,
-       w.personid AS personid2,
-       w.firstname AS firstname2,
-       w.lastname AS lastname2,
-	   w.private,
-	   w.gedcom,
-	   f.gedcom,
-	   f.private,
-	   f.familyID,
-       f.marrdate,
-       f.marrplace,
-       Year(Now()) - Year(marrdatetr) AS Years
-FROM   {$this->tables['families_table']} as f
+SELECT
+    h.gedcom,
+    h.private,
+    h.personid AS personid1,
+    h.firstname AS firstname1,
+    h.lastname AS lastname1,
+    w.personid AS personid2,
+    w.firstname AS firstname2,
+    w.lastname AS lastname2,
+    w.private,
+    w.gedcom,
+    f.gedcom,
+    f.private,
+    f.familyID,
+    f.marrdate,
+    f.marrplace,
+    Year(Now()) - Year(marrdatetr) AS Years
+FROM {$this->tables['families_table']} as f
     LEFT JOIN {$this->tables['people_table']} AS h
-              ON f.husband = h.personid
-       LEFT JOIN {$this->tables['people_table']} AS w
-              ON f.wife = w.personid
+    ON (f.husband = h.personid AND f.gedcom = h.gedcom AND f.private = 0)
+    LEFT JOIN {$this->tables['people_table']} AS w
+    ON (f.wife = w.personid AND f.gedcom = w.gedcom AND w.private = 0)
 WHERE  Month(f.marrdatetr) = {$month} 
-{$treeWhere_h} {$treeWhere_f} {$treeWhere_w} 
+{$treeWhere}
 ORDER  BY Day(f.marrdatetr)
           
 SQL;
@@ -859,7 +857,6 @@ SQL;
         }
         return $rows;
     }
-
 
     public function searchPerson($searchFirstName, $searchLastName)
     {
