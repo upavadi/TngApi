@@ -11,16 +11,20 @@ $tables = $content->getTngTables();
 $res = $content->query('select path from ' . $tables['mediatypes_table'] . ' WHERE mediatypeID = "' . $collection . '"');
 $row = $res->fetch_assoc();
 $uploadPath = $row['path'];
+$tngPath = $content->getTngPath();
+if (!preg_match("/" . DIRECTORY_SEPARATOR . "$/", $tngPath)) {
+    $tngPath .= DIRECTORY_SEPARATOR;
+}
 
-//$uploadsdirectory = content_url('/uploads/', dirname(__FILE__)); 
-//$temp = content_url(); 
-//$uploadsdirectory = '../templates/uploads/';
+if (!preg_match("/" . DIRECTORY_SEPARATOR . "$/", $uploadPath)) {
+    $uploadPath .= DIRECTORY_SEPARATOR;
+}
 if (isset($_POST)) {
     ############ Edit settings ##############
     $ThumbSquareSize = 100; //Thumbnail will be 200x200
     $BigImageMaxSize = 500; //Image Maximum height or width
     $ThumbPrefix = "thumb_"; //Normal thumb Prefix
-    $DestinationDirectory = $content->getTngPath() . $uploadPath; //specify upload directory ends with / (slash)
+    $DestinationDirectory = $tngPath . $uploadPath; //specify upload directory ends with / (slash)
     $Quality = 90; //jpeg quality
     ##########################################
     //check if this is an ajax request
@@ -87,7 +91,9 @@ if (isset($_POST)) {
           We can now output image to user's browser or store information in the database
          */
         $domain = preg_replace('|/$|', '', $content->getDomain());
-        $thumbPath = $domain . str_replace('//', '/', '/' . $uploadPath . '/' . basename($thumb_DestRandImageName));
+        $thumbPath = '/' . $uploadPath . '/' . basename($thumb_DestRandImageName);
+        $thumbPath = str_replace('\\', '/', $thumbPath);
+        $thumbPath = $domain . str_replace('//', '/', $thumbPath);
         echo '<table width="80%" border="0" cellpadding="4" cellspacing="0">';
         echo '<tr> Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this. </td></tr>';
 
