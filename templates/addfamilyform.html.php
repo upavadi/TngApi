@@ -434,8 +434,8 @@ $spousehusband = $spouseID;
 		<p>
 			<input type="hidden" name="spouse_note[0][xnote_ID]" value="<?php echo $xnote_ID[0] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_header[0];?></b></span></a></br><textarea style="width:98%" name="spouse_note[0][note]" rows="3" cols="100"><?php echo $xnotes[0]; ?>
-			</textarea>
+			<?php echo $note_header[0];?></b></span></a></br>
+                        <textarea style="width:98%" name="spouse_note[0][note]" rows="3" cols="100"><?php echo $xnotes[0]; ?></textarea>
 		<input type="hidden" name="spouse_note[0][xeventID]" value="<?php echo $xnote_eventID[0]; ?>" />
 		<input type="hidden" name="spouse_note[0][secret]" value="<?php echo $xnote_secret[0]; ?>" />
 		<input type="hidden" name="spouse_note[0][ordernum]" value="<?php echo $xnote_ordernum[0]; ?>" />
@@ -443,8 +443,8 @@ $spousehusband = $spouseID;
 		<p>
 			<input type="hidden" name="spouse_note[1][xnote_ID]" value="<?php echo $xnote_ID[1] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_header[1];?></b></span></a></br><textarea style="width:98%" name="spouse_note[1][note]" rows="3" cols="100"><?php echo $xnotes[1]; ?>
-			</textarea>
+			<?php echo $note_header[1];?></b></span></a></br>
+                        <textarea style="width:98%" name="spouse_note[1][note]" rows="3" cols="100"><?php echo $xnotes[1]; ?></textarea>
 		<input type="hidden" name="spouse_note[1][xeventID]" value="<?php echo $xnote_eventID[1]; ?>" />
 		<input type="hidden" name="spouse_note[1][secret]" value="<?php echo $xnote_secret[1]; ?>" />
 		<input type="hidden" name="spouse_note[1][ordernum]" value="<?php echo $xnote_ordernum[1]; ?>" />
@@ -452,8 +452,8 @@ $spousehusband = $spouseID;
 		<p>
 			<input type="hidden" name="spouse_note[2][xnote_ID]" value="<?php echo $xnote_ID[2] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_header[2];?></b></span></a></br><textarea style="width:98%" name="spouse_note[2][note]" rows="3" cols="100"><?php echo $xnotes[2]; ?>
-			</textarea>
+			<?php echo $note_header[2];?></b></span></a></br>
+                        <textarea style="width:98%" name="spouse_note[2][note]" rows="3" cols="100"><?php echo $xnotes[2]; ?></textarea>
 		<input type="hidden" name="spouse_note[2][xeventID]" value="<?php echo $xnote_eventID[2]; ?>" />
 		<input type="hidden" name="spouse_note[2][secret]" value="<?php echo $xnote_secret[2]; ?>" />
 		<input type="hidden" name="spouse_note[2][ordernum]" value="<?php echo $xnote_ordernum[2]; ?>" />
@@ -461,8 +461,8 @@ $spousehusband = $spouseID;
 		<p>
 			<input type="hidden" name="spouse_note[3][xnote_ID]" value="<?php echo $xnote_ID[3] ?>" />
 			<span style="font-size:14pt"><b>
-			<?php echo $note_header[3];?></b></span></a></br><textarea style="width:98%" name="spouse_note[3][note]" rows="3" cols="100"><?php echo $xnotes[3]; ?>
-			</textarea>
+			<?php echo $note_header[3];?></b></span></a></br>
+                        <textarea style="width:98%" name="spouse_note[3][note]" rows="3" cols="100"><?php echo $xnotes[3]; ?></textarea>
 		<input type="hidden" name="spouse_note[3][xeventID]" value="<?php echo $xnote_eventID[3]; ?>" />
 		<input type="hidden" name="spouse_note[3][secret]" value="<?php echo $xnote_secret[3]; ?>" />
 		<input type="hidden" name="spouse_note[3][ordernum]" value="<?php echo $xnote_ordernum[3]; ?>" />
