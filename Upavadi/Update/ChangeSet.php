@@ -73,7 +73,7 @@ class Upavadi_Update_ChangeSet
         $people = array();
         $rows = $this->wpdb->get_results("SELECT * FROM wp_tng_people where " . $this->getKey(), ARRAY_A);
         foreach ($rows as $row) {
-            $people[$row['personid']] = $row;
+            $people[$row['personID']] = $row;
         }
         return $people;
     }
@@ -83,7 +83,7 @@ class Upavadi_Update_ChangeSet
         $families = array();
         $rows = $this->wpdb->get_results("SELECT * FROM wp_tng_families where " . $this->getKey(), ARRAY_A);
         foreach ($rows as $row) {
-            $families[$row['familyid']] = $row;
+            $families[$row['familyID']] = $row;
         }
         return $families;
     }
@@ -101,7 +101,7 @@ class Upavadi_Update_ChangeSet
     public function getKey()
     {
         $userLogin = $this->userSubmission['tnguser'];
-        $headPersonId = $this->userSubmission['personid'];
+        $headPersonId = $this->userSubmission['personID'];
         $dateModified = $this->userSubmission['datemodified'];
         return "tnguser = '$userLogin' AND headpersonid = '$headPersonId' AND datemodified = '$dateModified'";
     }
@@ -522,11 +522,11 @@ class Upavadi_Update_ChangeSet
             switch ($entity) {
                 case 'people':
                     $table = $this->wpdb->prefix . 'tng_people';
-                    $pk = 'personid';
+                    $pk = 'personID';
                     break;
                 case 'family':
                     $table = $this->wpdb->prefix . 'tng_families';
-                    $pk = 'familyid';
+                    $pk = 'familyID';
                     break;
                 case 'children':
                     $table = $this->wpdb->prefix . 'tng_children';
