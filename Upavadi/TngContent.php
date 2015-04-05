@@ -143,10 +143,10 @@ class Upavadi_TngContent
             $tngEmail = esc_attr(get_option('tng-api-email'));
             echo "<input type='text' name='tng-api-email' value='$tngEmail' />";
         }, 'tng-api', 'general');
-		add_settings_section('tng', 'TNG', function() {
+        add_settings_section('tng', 'TNG', function() {
             echo "In order for the plugin to work we need to know where the original TNG source files live";
         }, 'tng-api');
-		add_settings_field('tng-path', 'TNG Path', function () {
+        add_settings_field('tng-path', 'TNG Path', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
             echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
         }, 'tng-api', 'tng');
@@ -154,36 +154,27 @@ class Upavadi_TngContent
             $tngPath = esc_attr(get_option('tng-api-tng-photo-upload'));
             echo "<input type='text' name='tng-api-tng-photo-upload' value='$tngPath' />";
         }, 'tng-api', 'tng');
-  /*-------------------------------------------------------------------------------------      
-		$this->init();
-		$events = $this->getEventList();
-*******************/	
-	add_settings_field('tng-event', 'TNG Event to Track', function () use ($events) {
+        $this->init();
+        $events = $this->getEventList();
+        add_settings_field('tng-event', 'TNG Event to Track', function () use ($events) {
             $tngEvent = esc_attr(get_option('tng-api-tng-event'));
-    
-/**********************************
-			echo '<form action="" name="eventchange" method="post">';
-			echo '<select name="selectevent" onchange="eventchange.submit()">';
-			echo '<option value="new">Do not Track</option>';
-		
-			foreach ($events as $event):
-                $eventId =  $event[eventtypeID];
-			if ($eventId == $tngEvent) {	
-			
-			echo "<option value='$eventId' selected='selected'>'$eventId. $event[display]'</option>";
-			} else {
-			echo "<option value='$eventId' >'$eventId. $event[display]'</option>";
-			}	
-			endforeach;
-			echo '</select>';
-			echo '</form>';
-			var_dump($_POST[selectevent]);
-**********************/
-	echo "<input type='text' name='tng-api-tng-event' value='$tngEvent' />";
+
+            echo '<select name="tng-api-tng-event">';
+            echo '<option value="">Do not Track</option>';
+
+            foreach ($events as $event) {
+                $eventId = $event[eventtypeID];
+                $selected = null;
+                if ($eventId == $tngEvent) {
+
+                    $selected = "selected='selected'";
+                }
+                echo "<option value='$eventId' $selected>{$event['display']}</option>";
+            }
+            echo '</select>';
         }, 'tng-api', 'tng');
-/*-----------------------------------------		-----------------------------------------------*/
-		add_settings_section('db', 'Database', function() {
-             echo "We also need to know where the TNG database lives";
+        add_settings_section('db', 'Database', function() {
+            echo "We also need to know where the TNG database lives";
         }, 'tng-api');
         add_settings_field('db-host', 'Hostname', function () {
             $dbHost = esc_attr(get_option('tng-api-db-host'));
@@ -201,7 +192,7 @@ class Upavadi_TngContent
             $dbName = esc_attr(get_option('tng-api-db-database'));
             echo "<input type='text' name='tng-api-db-database' value='$dbName' />";
         }, 'tng-api', 'db');
-    } 
+    }
 
     public function adminMenu()
     {
