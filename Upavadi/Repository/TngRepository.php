@@ -251,6 +251,7 @@ class Upavadi_Repository_TngRepository
         $xnoteId = $this->addXNote($xnotes);
         $noteLinks['xnoteID'] = $xnoteId;
         $this->addNoteLink($noteLinks);
+        return $xnoteId;
     }
 
     public function updateNote($id, $fields)

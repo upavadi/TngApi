@@ -83,6 +83,13 @@
 	//var_dump($allnotes);
                 foreach ($noteOrder as $type => $header):
                     $note = $notes[$type];
+                    if (!$note) {
+                        $note['xnoteID'] = 'NewNote' . $type;
+                        $note['eventID'] = $type;
+                        if ($note['eventID'] == 'GEN') {
+                            $note['eventID'] = null;
+                        }
+                    }
 	?>
             <p>
                 <input type="hidden" name="person_note[<?php echo $type; ?>][xnoteID]" value="<?php echo $note['xnoteID'] ?>" />

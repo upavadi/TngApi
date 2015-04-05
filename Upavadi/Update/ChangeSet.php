@@ -407,11 +407,13 @@ class Upavadi_Update_ChangeSet
                 case 'notes':
                     $fields['gedcom'] = $headPerson['gedcom'];
                     $fields['ordernum'] = 999;
-                    $fields['secret'] = 0;
+                    if (!isset($fields['secret'])) {
+                        $fields['secret'] = 0;
+                    }
                     if (isset($fields['persfamID'])) {
                         unset($fields['persfamid']);
                     }
-                    $this->repo->addNote($fields);
+                    $newId = $this->repo->addNote($fields);
                     break;
             }
             $ids[$id] = $newId;

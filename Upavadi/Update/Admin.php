@@ -416,7 +416,9 @@ class Upavadi_Update_Admin
                 }
             }
         }
+        
         $updates = $changeSet->simplifyChanges($updates);
+        
         $changeSet->apply($updates);
         $url = admin_url('admin.php?page=tng_api_submission_view&id=' . $changeSet->getId());
         //header('Location: ' . $url);
@@ -563,8 +565,10 @@ class Upavadi_Update_Admin
     {
         $changes = $changeSet->getChangesFor('notes', $noteId);
         $names = array(
+            'eventid' => array('name' => 'Event ID'),
             'persfamid' => array('name' => 'Person ID'),
             'note' => array('name' => 'Note', 'type' => 'text'),
+            'secret' => array('name' => 'Secret?', 'type' => 'boolean'),
         );
 
         switch ($changes['new']['eventid']) {
