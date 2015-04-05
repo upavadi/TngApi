@@ -253,11 +253,11 @@ class Upavadi_Update_Admin
                                     if ($data['change'] !== 'exclude') {
                                         switch ($type) {
                                             case 'text':
-                                                ?><textarea cols="50" rows="10" name="changes<?php echo $inputName; ?>"><?php echo $data['new'] ?></textarea><?php
+                                                ?><textarea cols="40" rows="10" name="changes<?php echo $inputName; ?>"><?php echo $data['new'] ?></textarea><?php
                                                 break;
                                             case 'date':
                                             case 'string':
-                                                ?><input type="text" size="50" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
+                                                ?><input type="text" size="40" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
                                                 break;
                                             case 'boolean';
                                                 if ($data['new']) {
