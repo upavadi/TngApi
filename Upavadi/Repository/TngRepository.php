@@ -8,6 +8,7 @@ class Upavadi_Repository_TngRepository
      */
     private $content;
     private $people = array();
+    private $events = array();
     private $families = array();
     private $childFamilies = array();
 
@@ -317,4 +318,53 @@ class Upavadi_Repository_TngRepository
         return $newId;
     }
 
+    public function getEvent($id)
+    {
+        if (!isset($this->events[$id])) {
+            $this->events[$id] = $this->content->getEvent($id);
+        }
+        return $this->events[$id];
+    }
+
+    public function addEvent($fields)
+    {
+        $tables = $this->content->getTngTables();
+        $sql = "INSERT INTO {$tables['events_table']} ";
+        $args = array();
+        $sets = array();
+        $vals = array();
+        
+        foreach ($fields as $name => $value) {
+            $sets[] = $name;
+            $vals[] = '?';
+            $args[] = & $fields[$name];
+        }
+        $sql .= '(' . join(', ', $sets) . ') VALUES';
+        $sql .= '(' . join(', ', $vals) . ')';
+        $this->execute($sql, $args);
+        $db = $this->content->getDbLink();
+        $newId = $db->insert_id;
+        return $newId;
+    }
+
+    public function updateEvent($id, $fields)
+    {
+        if (!count($fields)) {
+            return;
+        }
+        $tables = $this->content->getTngTables();
+        $sql = "UPDATE {$tables['events_table']} SET ";
+        $args = array();
+        $sets = array();
+
+        foreach ($fields as $name => $value) {
+            $sets[] = "$name = ?";
+            $args[] = & $fields[$name];
+        }
+        $sql .= join(', ', $sets);
+        $sql .= ' WHERE eventID = ?';
+        $args[] =& $id;
+        $this->execute($sql, $args);
+        unset($this->events[$id]);
+    }
 }

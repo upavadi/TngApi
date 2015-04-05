@@ -163,7 +163,7 @@ class Upavadi_TngContent
             echo '<option value="">Do not Track</option>';
 
             foreach ($events as $event) {
-                $eventId = $event[eventtypeID];
+                $eventId = $event['eventtypeID'];
                 $selected = null;
                 if ($eventId == $tngEvent) {
 
@@ -383,7 +383,31 @@ SQL;
 
         return $row;
     }
-	
+
+    public function getEvent($eventId, $tree = null)
+    {
+        $user = $this->getTngUser();
+        $gedcom = $user['gedcom'];
+        // If we are searching, enter $tree value
+        if ($tree) {
+            $gedcom = $tree;
+        }
+        $treeWhere = null;
+        if ($gedcom) {
+            $treeWhere = ' AND gedcom = "' . $gedcom . '"';
+        }
+        $sql = <<<SQL
+		
+SELECT *
+FROM {$this->tables['events_table']}
+where eventID = '{$eventId}' {$treeWhere}
+SQL;
+        $result = $this->query($sql);
+        $row = $result->fetch_assoc();
+
+        return $row;
+    }
+
     public function getFamilyById($familyId = null, $tree = null)
     {
        $user = $this->getTngUser();

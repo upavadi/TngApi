@@ -115,23 +115,41 @@ class Upavadi_Update_Admin
                                 <?php
                                 $personId = $changeSet->getHeadPersonId();
                                 $this->showPerson($changeSet, $personId, 'Person (' . $personId . ')');
-
+                                $eventIds = $changeSet->getEventIds($personId);
+                                foreach ($eventIds as $eventId) {
+                                    $this->showEvent($changeSet, $eventId, 'Person (' . $personId . ') - Event');
+                                }
                                 $noteIds = $changeSet->getNoteIds($personId);
                                 foreach ($noteIds as $noteId) {
                                     $this->showNotes($changeSet, $noteId, 'Person (' . $personId . ') - Notes');
                                 }
+                                
                                 $personId = $changeSet->getFatherId();
-
                                 $this->showPerson($changeSet, $personId, 'Father (' . $personId . ')');
+                                
+                                $eventIds = $changeSet->getEventIds($personId);
+                                foreach ($eventIds as $eventId) {
+                                    $this->showEvent($changeSet, $eventId, 'Father (' . $personId . ') - Event');
+                                }
+                                
                                 $personId = $changeSet->getMotherId();
                                 $this->showPerson($changeSet, $personId, 'Mother (' . $personId . ')');
-
+                                
+                                $eventIds = $changeSet->getEventIds($personId);
+                                foreach ($eventIds as $eventId) {
+                                    $this->showEvent($changeSet, $eventId, 'Mother (' . $personId . ') - Event');
+                                }
+                                
                                 $familyId = $changeSet->getHeadPersonFamC();
                                 $this->showPersonFamily($changeSet, $familyId, 'Family (' . $familyId . ')');
 
                                 $spouses = $changeSet->getSpouseIds();
                                 foreach ($spouses as $index => $personId) {
                                     $this->showPerson($changeSet, $personId, 'Spouse ' . $index . ' (' . $personId . ')');
+                                    $eventIds = $changeSet->getEventIds($personId);
+                                    foreach ($eventIds as $eventId) {
+                                        $this->showEvent($changeSet, $eventId, 'Spouse ' . $index . ' (' . $personId . ') - Event');
+                                    }
                                     $noteIds = $changeSet->getNoteIds($personId);
                                     foreach ($noteIds as $noteId) {
                                         $this->showNotes($changeSet, $noteId, 'Spouse ' . $index . ' (' . $personId . ') - Notes');
@@ -142,6 +160,10 @@ class Upavadi_Update_Admin
                                     foreach ($children as $cIndex => $childId) {
                                         $this->showPerson($changeSet, $childId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (' . $childId . ')');
                                         $this->showChildFamily($changeSet, $childId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (' . $childId . ') (cont)');
+                                        $eventIds = $changeSet->getEventIds($childId);
+                                        foreach ($eventIds as $eventId) {
+                                            $this->showEvent($changeSet, $eventId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (' . $childId . ') - Event');
+                                        }
                                     }
                                 }
                                 ?>
@@ -220,6 +242,10 @@ class Upavadi_Update_Admin
                             if (isset($data['type'])) {
                                 $type = $data['type'];
                             }
+                            $disabled = null;
+                            if ($data['disabled']) {
+                                $disabled = "readonly";
+                            }
                             $change = null;
                             switch ($data['change']) {
                                 case 'edit':
@@ -237,6 +263,7 @@ class Upavadi_Update_Admin
                                         case 'date':
                                         case 'enum':
                                         case 'string':
+                                        case 'int':
                                         case 'text':
                                             echo $data['old'];
                                             break;
@@ -253,29 +280,34 @@ class Upavadi_Update_Admin
                                     if ($data['change'] !== 'exclude') {
                                         switch ($type) {
                                             case 'text':
-                                                ?><textarea cols="40" rows="10" name="changes<?php echo $inputName; ?>"><?php echo $data['new'] ?></textarea><?php
+                                                ?><textarea <?php echo $disabled; ?> cols="40" rows="10" name="changes<?php echo $inputName; ?>"><?php echo $data['new'] ?></textarea><?php
                                                 break;
+                                            case 'int':
+                                                $data['new'] = intval($data['new']);
                                             case 'date':
                                             case 'string':
-                                                ?><input type="text" size="40" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
+                                                ?><input <?php echo $disabled; ?> type="text" size="40" name="changes<?php echo $inputName; ?>" value="<?php echo $data['new'] ?>"><?php
                                                 break;
                                             case 'boolean';
                                                 if ($data['new']) {
-                                                    ?><input type="checkbox" value="1" name="changes<?php echo $inputName; ?>" checked="checked"><?php
+                                                    ?><input <?php echo $disabled; ?> type="checkbox" value="1" name="changes<?php echo $inputName; ?>" checked="checked"><?php
                                                 } else {
-                                                    ?><input type="checkbox" value="1" name="changes<?php echo $inputName; ?>"><?php
+                                                    ?><input <?php echo $disabled; ?> type="checkbox" value="1" name="changes<?php echo $inputName; ?>"><?php
                                                 }
                                                 break;
                                             case 'enum':
                                                 ?>
-                                                <select name="changes<?php echo $inputName; ?>">
+                                                <select <?php echo $disabled; ?> name="changes<?php echo $inputName; ?>">
                                                     <?php
-                                                    foreach ($data['values'] as $value) {
+                                                    foreach ($data['values'] as $index => $value) {
                                                         $selected = null;
-                                                        if ($value == $data['new']) {
+                                                        if (is_int($index)) {
+                                                            $index = $value;
+                                                        }
+                                                        if ($index == $data['new']) {
                                                             $selected = "selected";
                                                         }
-                                                        echo "<option value='$value' $selected>$value</option>";
+                                                        echo "<option value='$index' $selected>$value</option>";
                                                     }
                                                     ?>
                                                 </select>
@@ -393,6 +425,7 @@ class Upavadi_Update_Admin
         if (!isset($post['accept'])) {
             return;
         }
+//        print_r($post);
         $updates = array();
         foreach ($post['accept'] as $entity => $changes) {
             foreach ($changes as $id => $fields) {
@@ -418,7 +451,6 @@ class Upavadi_Update_Admin
         }
         
         $updates = $changeSet->simplifyChanges($updates);
-        
         $changeSet->apply($updates);
         $url = admin_url('admin.php?page=tng_api_submission_view&id=' . $changeSet->getId());
         //header('Location: ' . $url);
@@ -565,8 +597,8 @@ class Upavadi_Update_Admin
     {
         $changes = $changeSet->getChangesFor('notes', $noteId);
         $names = array(
-            'eventid' => array('name' => 'Event ID'),
-            'persfamid' => array('name' => 'Person ID'),
+            'eventid' => array('name' => 'Event ID', 'disabled' => true),
+            'persfamid' => array('name' => 'Person ID', 'disabled' => true),
             'note' => array('name' => 'Note', 'type' => 'text'),
             'secret' => array('name' => 'Secret?', 'type' => 'boolean'),
         );
@@ -592,6 +624,32 @@ class Upavadi_Update_Admin
                 break;
         }
         $this->showChanges($changes, $names, $title, 'notes', $noteId);
+    }
+
+    public function showEvent($changeSet, $eventId, $title)
+    {
+        $changes = $changeSet->getChangesFor('events', $eventId);
+        $eventTypeId = intval($changes['new']['eventtypeID']);
+        $events = $this->content->getEventList();
+        $eventEnum = array(
+            0 => 'Cause of death'
+        );
+        foreach ($events as $event) {
+            $eventEnum[intval($event['eventtypeID'])] = $event['display'];
+        }
+        $field = 'cause';
+        $fieldName = 'Cause of Death';
+        if ($eventTypeId > 0) {
+            $field = 'info';
+            $fieldName = $eventEnum[$eventTypeId];
+        }
+        $names = array(
+            $field => array('name' => $fieldName),
+            'parenttag' => array('name' => 'Parent Tag', 'disabled' => true),
+            'persfamid' => array('name' => 'Person ID', 'disabled' => true),
+            'eventtypeid' => array('name' => 'Event Type ID', 'type' => 'int', 'disabled' => true),
+        );
+        $this->showChanges($changes, $names, $title, 'events', $eventId);
     }
 
 }

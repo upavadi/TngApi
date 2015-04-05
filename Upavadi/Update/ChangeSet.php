@@ -35,12 +35,14 @@ class Upavadi_Update_ChangeSet
         $family = $this->loadFamilyChanges();
         $children = $this->loadChildrenFamilyChanges();
         $notes = $this->loadNotesChanges();
-
+        $events = $this->loadEventsChanges();
+        
         $this->changes = array(
             'people' => $people,
             'family' => $family,
             'children' => $children,
-            'notes' => $notes
+            'notes' => $notes,
+            'events' => $events
         );
     }
 
@@ -50,12 +52,14 @@ class Upavadi_Update_ChangeSet
         $family = $this->loadFamilyOriginals();
         $children = $this->loadChildrenFamilyOriginals();
         $notes = $this->loadNotesOriginals();
-
+        $events = $this->loadEventsOriginals();
+        
         $this->originals = array(
             'people' => $people,
             'family' => $family,
             'children' => $children,
-            'notes' => $notes
+            'notes' => $notes,
+            'events' => $events
         );
     }
 
@@ -172,25 +176,25 @@ class Upavadi_Update_ChangeSet
 
     public function calcEditEntity($new, $old)
     {
-        $changess = array();
+        $changes = array();
         $new = $this->makeSafe($new);
         $old = $this->makeSafe($old);
         foreach ($new as $key => $value) {
             if ($value === null) {
-                $changess[$key] = array(
+                $changes[$key] = array(
                     'type' => 'exclude',
                     'old' => $old[$key],
                     'new' => $value
                 );
             } else if ($value !== $old[$key]) {
-                $changess[$key] = array(
+                $changes[$key] = array(
                     'type' => 'edit',
                     'old' => $old[$key],
                     'new' => $value
                 );
             }
         }
-        return $changess;
+        return $changes;
     }
 
     public function makeSafe($record)
@@ -199,9 +203,10 @@ class Upavadi_Update_ChangeSet
             return array();
         }
         $exclude = array(
-            'id', 'tnguser', 'headpersonid', 'cause', 'personevent',
+            'id', 'tnguser', 'headpersonid', 'personevent',
             'datemodified', 'birthdatetr', 'deathdatetr', 'marrdatetr'
         );
+        
         $newRecord = array();
         foreach ($record as $key => $value) {
             $key = strtolower($key);
@@ -309,6 +314,7 @@ class Upavadi_Update_ChangeSet
     public function applyChange($entity, $id, $key, $value, $updates)
     {
         $type = $this->getDiffType($entity, $id, $key);
+
         if ($type === 'edit') {
             $updates[] = array('update', $entity, $id, array($key => $value));
         }
@@ -415,6 +421,10 @@ class Upavadi_Update_ChangeSet
                     }
                     $newId = $this->repo->addNote($fields);
                     break;
+                case 'events':
+                    $fields['gedcom'] = $headPerson['gedcom'];
+                    $newId = $this->repo->addEvent($fields);
+                    break;
             }
             $ids[$id] = $newId;
         }
@@ -443,6 +453,9 @@ class Upavadi_Update_ChangeSet
                         unset($fields['persfamID']);
                         $this->repo->updateNote($id, $fields);
                         break;
+                    case 'events':
+                        $this->repo->updateEvent($id, $fields);
+                    break;
                 }
             }
         }
@@ -538,6 +551,10 @@ class Upavadi_Update_ChangeSet
                     $table = $this->wpdb->prefix . 'tng_notes';
                     $pk = 'xnoteID';
                     break;
+                case 'events':
+                    $table = $this->wpdb->prefix . 'tng_events';
+                    $pk = 'eventID';
+                    break;
             }
             
             foreach ($entities as $id => $fields) {
@@ -620,6 +637,37 @@ class Upavadi_Update_ChangeSet
     {
         $ids = array();
         foreach ($this->changes['notes'] as $id => $note) {
+            if ($note['persfamID'] !== $personId) {
+                continue;
+            }
+            $ids[] = $id;
+        }
+        return $ids;
+    }
+
+    public function loadEventsChanges()
+    {
+        $events = array();
+        $rows = $this->wpdb->get_results("SELECT * FROM wp_tng_events where " . $this->getKey(), ARRAY_A);
+        foreach ($rows as $row) {
+            $events[$row['eventID']] = $row;
+        }
+        return $events;
+    }
+
+    public function loadEventsOriginals()
+    {
+        $events = array();
+        foreach ($this->changes['events'] as $id => $person) {
+            $events[$id] = $this->repo->getEvent($id);
+        }
+        return $events;
+    }
+
+    public function getEventIds($personId)
+    {
+        $ids = array();
+        foreach ($this->changes['events'] as $id => $note) {
             if ($note['persfamID'] !== $personId) {
                 continue;
             }
