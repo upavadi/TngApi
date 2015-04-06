@@ -629,7 +629,7 @@ class Upavadi_Update_Admin
     public function showEvent($changeSet, $eventId, $title)
     {
         $changes = $changeSet->getChangesFor('events', $eventId);
-        $eventTypeId = intval($changes['new']['eventtypeID']);
+        $eventTypeId = intval($changes['new']['eventtypeid']);
         $events = $this->content->getEventList();
         $eventEnum = array(
             0 => 'Cause of death'
@@ -637,6 +637,7 @@ class Upavadi_Update_Admin
         foreach ($events as $event) {
             $eventEnum[intval($event['eventtypeID'])] = $event['display'];
         }
+        
         $field = 'cause';
         $fieldName = 'Cause of Death';
         if ($eventTypeId > 0) {

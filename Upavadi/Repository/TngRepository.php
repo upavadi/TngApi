@@ -220,6 +220,8 @@ class Upavadi_Repository_TngRepository
         $sql .= '(' . join(', ', $sets) . ') VALUES';
         $sql .= '(' . join(', ', $vals) . ')';
         $this->execute($sql, $args);
+        $db = $this->content->getDbLink();
+        $newId = $db->insert_id;
         return $newId;
     }
 

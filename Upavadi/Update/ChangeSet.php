@@ -423,6 +423,9 @@ class Upavadi_Update_ChangeSet
                     break;
                 case 'events':
                     $fields['gedcom'] = $headPerson['gedcom'];
+                    if (isset($fields['persfamID'])) {
+                        unset($fields['persfamid']);
+                    }
                     $newId = $this->repo->addEvent($fields);
                     break;
             }
