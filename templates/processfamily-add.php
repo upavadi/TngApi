@@ -55,16 +55,17 @@ $info = '';
 //Insert CauseOfDeath - Spouse
 $wpdb->insert(
     $events_table, array(
-    headpersonid => $headpersonid,
-    tnguser => $tnguser,
-    persfamID => $persfamID,
-    gedcom => $gedcom,
-    eventtypeID => $eventtypeID,
-    eventdatetr => $eventdateter,
-    cause => $cause,
-    parenttag => $parenttag,
-    info => $info,
-    datemodified => $datemodified,
+    'headpersonid' => $headpersonid,
+    'tnguser' => $tnguser,
+    'persfamID' => $persfamID,
+    'gedcom' => $gedcom,
+    'eventtypeID' => $eventtypeID,
+    'eventdatetr' => $eventdateter,
+    'cause' => $cause,
+    'eventID' => 'NewSpouseEvent',
+    'parenttag' => $parenttag,
+    'info' => $info,
+    'datemodified' => $datemodified,
     )
 );
 
@@ -88,16 +89,17 @@ foreach ($child as $array2):
 //Insert CauseOfDeath - Child
         $wpdb->insert(
             $events_table, array(
-            headpersonid => $headpersonid,
-            tnguser => $tnguser,
-            persfamID => $persfamID,
-            gedcom => $gedcom,
-            eventtypeID => $eventtypeID,
-            eventdatetr => $eventdateter,
-            cause => $cause,
-            parenttag => $parenttag,
-            info => $info,
-            datemodified => $datemodified,
+            'headpersonid' => $headpersonid,
+            'tnguser' => $tnguser,
+            'persfamID' => $persfamID,
+            'gedcom' => $gedcom,
+            'eventtypeID' => $eventtypeID,
+            'eventdatetr' => $eventdateter,
+            'cause' => $cause,
+            'eventID' => 'NewChildEvent' . $ordernum,
+            'parenttag' => $parenttag,
+            'info' => $info,
+            'datemodified' => $datemodified,
             )
         );
 

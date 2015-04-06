@@ -300,7 +300,7 @@ $spousehusband = $spouseID;
 		<input type="hidden" name="spouse[personID]" value="<?php echo $spouseID ?>" />
 		<input type="hidden" name="spouse[husband]" value="<?php echo $spousehusband ?>" />
 		<input type="hidden" name="spouse[wife]" value="<?php echo $spousewife ?>" />
-		<input type="hidden" name="spouse[husbandorder]" value="<?php echo $spousehusbandorder ?>" />
+		<input type="hidden" name="spouse[husborder]" value="<?php echo $spousehusbandorder ?>" />
 		<input type="hidden" name="spouse[wifeorder]" value="<?php echo $spousewifeorder ?>" />
 		<input type="hidden" name="husband[event]" value="<?php echo $husbandSpEvent ?>" />
 	
