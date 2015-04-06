@@ -38,11 +38,11 @@
 //get Person Special Event
 				$personRow = $tngcontent->getSpEvent($person['personID'], $tree);
 				$person_SpEvent = $personRow['info'];
-				
+				$person_SpEventId = $personRow['eventID'];
 //get Description of Event type
 				$EventRow = $tngcontent->getEventDisplay($event['display']);	
 				$EventDisplay = $EventRow['display'];
-	
+                                $EventTypeID = $EventRow['eventtypeID'];
 
 				
 // title for page	
@@ -136,6 +136,8 @@
 <input type="hidden" name="person[sex]" value="<?php echo $person_sex; ?>" />
 <input type="hidden" name="person[famc]" value="<?php echo $person_famc; ?>" />
 <input type="hidden" name="person[causeEventID]" value="<?php echo $cause_of_death_id; ?>" />
+<input type="hidden" name="person[eventTypeID]" value="<?php echo $EventTypeID; ?>" />
+<input type="hidden" name="person[eventID]" value="<?php echo $person_SpEventId; ?>" />
 
 <div id="wizard-update" class="swMain">
   <ul>
@@ -181,7 +183,7 @@
 			<?php if ($EventDisplay != "") {  ?>
 			<td valign="bottom" class="tdback"><?php echo $EventDisplay; ?></td>
 			<td valign="bottom" class="tdfront"><input type="text" name="person[event]" value="<?php echo $person_SpEvent;?>" /></td></tr>
-			<?php } else { ?><td class="tdback"></td><class="tdfront"></td><?php }?>
+			<?php } else { ?><td class="tdback"></td><?php }?>
 			
 		<tr>
 			
@@ -277,6 +279,7 @@
 				{
 				$fatherRow = $tngcontent->getSpEvent($father['personID'], $tree);
 				$father_SpEvent = $fatherRow['info'];
+				$father_SpEventId = $fatherRow['eventID'];
 				} else {
 				$father_SpEvent = "";
 				}
@@ -316,6 +319,7 @@
 				{
 				$motherRow = $tngcontent->getSpEvent($mother_ID, $tree);
 				$mother_SpEvent = $motherRow['info'];	
+				$mother_SpEventId = $motherRow['eventID'];	
 				
 				} else {
 				$mother_SpEvent = "";
@@ -339,7 +343,9 @@
 			<input type="hidden" name="father[famc]" value="<?php echo $father_famc; ?>" />
 			<input type="hidden" name="father[living]" value="<?php echo $father_living; ?>" />
 			<input type="hidden" name="father[causeEventID]" value="<?php echo $father_cause_of_death_id; ?>" />
-
+                        <input type="hidden" name="father[eventTypeID]" value="<?php echo $EventTypeID; ?>" />
+                        <input type="hidden" name="father[eventID]" value="<?php echo $father_SpEventId; ?>" />
+                        
 			<td valign="bottom" class="tdback">Father</td>
 			<td class="tdfront"><span style="color:#777777">(Name - 2nd name or Father's Name)<br/></span><input type="text" name="father[firstname]" value="<?php echo $father_firstname;?>"></td>
 			<?php if ($EventDisplay != "") {  ?>
@@ -390,7 +396,7 @@
 			<?php if ($EventDisplay != "") {  ?>
 			<td valign="bottom" class="tdback"><?php echo $EventDisplay; ?></td>
 			<td valign="bottom" class="tdfront"><input type="text" name="mother[event]" value="<?php echo $mother_SpEvent;?>" /></td></tr>
-			<?php } else { ?><td class="tdback"></td><class="tdfront"></td><?php }?>
+			<?php } else { ?><td class="tdback"></td><?php }?>
 		<tr>	
 			<td class="tdback"></td>
 			<td class="tdfront"><span style="color:#777777">(Surname)<br/></span><input type="text" name="mother[surname]" value="<?php echo $mother_lastname;?>" size="30"/></td>
@@ -450,6 +456,8 @@
 <input type="hidden" name="mother[sex]" value="<?php echo $mother_sex; ?>" />
 <input type="hidden" name="mother[famc]" value="<?php echo $mother_famc; ?>" />
 <input type="hidden" name="mother[causeEventID]" value="<?php echo $mother_cause_of_death_id; ?>" />
+<input type="hidden" name="mother[eventTypeID]" value="<?php echo $EventTypeID; ?>" />
+<input type="hidden" name="mother[eventID]" value="<?php echo $mother_SpEventId; ?>" />
 <input type="hidden" name="parents[husborder]" value="<?php echo $parenthusborder; ?>" />
 <input type="hidden" name="parents[wifeorder]" value="<?php echo $parentwifeorder; ?>" />
 <input type="hidden" name="parents[living]" value="<?php echo $parents['parents_living']; ?>" />
@@ -491,6 +499,7 @@
 				//$spousemarrdate = $family['marrdate'];
 				$spouseRow = $tngcontent->getSpEvent($spouse['personID'], $tree);
 				$spouseSpEvent = $spouseRow['info'];
+				$spouseSpEventId = $spouseRow['eventID'];
 				$spouseName = $spouse['firstname'] . $spouse['lastname'];
 								
 				$children = $tngcontent->getchildren($family['familyID'], $tree);
@@ -607,6 +616,8 @@
 			<input type="hidden" name="family[<?php echo $order; ?>][spouse][<?php echo $index; ?>][husborder]" value="<?php echo $spousehusborder ?>" />
 			<input type="hidden" name="family[<?php echo $order; ?>][spouse][<?php echo $index; ?>][wifeorder]" value="<?php echo $spousewifeorder ?>" />
 			<input type="hidden" name="family[<?php echo $order; ?>][spouse][<?php echo $index; ?>][causeEventID]" value="<?php echo $spouse_cause_of_death_id ?>" />
+                        <input type="hidden" name="family[<?php echo $order; ?>][spouse][<?php echo $index; ?>][eventTypeID]" value="<?php echo $EventTypeID; ?>" />
+                        <input type="hidden" name="family[<?php echo $order; ?>][spouse][<?php echo $index; ?>][eventID]" value="<?php echo $spouseSpEventId; ?>" />
 			
 		</table>
 			

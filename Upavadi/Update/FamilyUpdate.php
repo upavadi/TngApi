@@ -142,7 +142,7 @@ class Upavadi_Update_FamilyUpdate
 
     public function extractParentsFamily($data)
     {
-        $familyID = $this->extractFamilyId($data);
+        $familyID = $this->extractFamilyId($data['person']);
 
         $father = $data['father'];
         $husband = $father['personID'];
