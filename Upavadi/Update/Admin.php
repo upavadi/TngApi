@@ -370,6 +370,8 @@ class Upavadi_Update_Admin
         }
         $changes = $changeSet->getChangesFor('family', $familyId);
         $names = array(
+            'husband' => array('name' => 'Husband', 'disabled' => true),
+            'wife' => array('name' => 'Wife', 'disabled' => true),
             'marrdate' => array('name' => 'Marriage Date', 'type' => 'date'),
             'marrplace' => array('name' => 'Marriage Place'),
             'husborder' => array('name' => 'Husband Order'),
