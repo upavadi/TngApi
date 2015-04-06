@@ -1,32 +1,15 @@
 <!-- FAMILY PAGE -->
 
-
-<!doctype html>
-<html lang="en">
-    <head>
-    <meta charset="utf-8">
-
-    </head>
     <a name="Family"></a>
     
     <?php
     $tngcontent = Upavadi_TngContent::instance();
-/********************************************************************************************/	
-/** In the Family page there are three links to TNG. Ancestors, Genealogy and Descendents **/
-/** Value of $genealogy controls the links. Enter value you use to navigate to tng page **/
-/** Such as mysite.com/genealogy OR mysite.com/tng/
-/** Enter $genealogy = "genealogy" OR $genealogy = "tng"
-/** If you leave blank, $genealogy = "", links will not be shown.
-*********************************************/
-	
-	$genealogy = "tng";  
-	
-/********************************************/	
+	$genealogy = $tngcontent->getTngIntegrationPath();
 	
     //get and hold current user
     $currentperson = $tngcontent->getCurrentPersonId($person['personID']);
     $currentperson = $tngcontent->getPerson($currentperson);
-    $currentuser = ($currentperson['firstname'] . $currentperson['lastname']);
+    $currentuser = ($currentperson['firstname'] ." ". $currentperson['lastname']);
     // user for upload photo
     $current_user = wp_get_current_user();
     $User = $current_user->user_firstname;
@@ -40,7 +23,7 @@
     $deathdate = $person['deathdate'];
     $deathdatetr = ($person['deathdatetr']);
     $deathplace = $person['deathplace'];
-    $name = $person['firstname'] . $person['lastname'];
+    $name = $person['firstname'] ." ".  $person['lastname'];
     //get default media
     $defaultmedia = $tngcontent->getDefaultMedia($personId, $tree);
     //$mediaID = "../tng/photos/". $defaultmedia['thumbpath'];
@@ -77,17 +60,17 @@
                         </td>
                         <td>
 		<?php
-		$linkPerson = $person['personID'];
-		$tree = $person['gedcom'];
-		if ($genealogy != "") {
-			echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '../$genealogy/getperson.php?personID=$linkPerson&tree=$tree' \" />";
-			echo '</td>';
-			echo '</tr><tr><td>';
-			echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '../$genealogy/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
-			echo '</td><td>';                        
-			echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '../$genealogy/descend.php?personID=$linkPerson&tree=$tree'\" />";
-		}
-		?>	                      
+                    $linkPerson = $person['personID'];
+                    $tree = $person['gedcom'];
+                    if (!empty($genealogy)) {
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '../$genealogy/getperson.php?personID=$linkPerson&tree=$tree' \" />";
+                        echo '</td>';
+                        echo '</tr><tr><td>';
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '../$genealogy/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
+                        echo '</td><td>';
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '../$genealogy/descend.php?personID=$linkPerson&tree=$tree'\" />";
+                    }
+                ?>	                      
 
 					   </td>
                     </tr>
@@ -102,7 +85,7 @@
 //Check person details
     $currentmonth = date("m");
 //person Birthdate & Place
-		if ($birthdatetr == '0000-00-00') {
+		if (($birthdatetr == '0000-00-00') and ($birthdate == ''))  {
 			$birthmonth = null;
 			$birthdate = "Date unknown";
 		} else {
@@ -129,12 +112,12 @@
 		}
 		
 //person Death date & Place
-		if ($deathdatetr == "0000-00-00") {
+		if (($deathdatetr == "0000-00-00") and ($deathdate == '')) {
 			$deathmonth = null;
 		} else {
 			$deathmonth = substr($deathdatetr, -5, 2);
 		}
-		if ($person['living'] == '0' AND $person['deathdatetr'] !== '0000-00-00') {
+		if ($person['living'] == '0' AND $person['deathdate'] !== '') {
 			$deathdate = " died: " . $person['deathdate'];
 		} else {
 			$deathdate = " died: Date unknown";
@@ -244,7 +227,7 @@
                     $bornClass = "";
                 }
 
-				if ($father['living'] == '0' AND $father['deathdatetr'] !== '0000-00-00') {
+				if ($father['living'] == '0' AND $father['deathdate'] !== '') {
                     $fatherdeathdate = " died: " . $father['deathdate'];
                 } else { if ($person['famc'] == null) { 
 					$fatherdeathdate = "Unknown";
@@ -271,7 +254,7 @@
                 }
 
                 if ($father['personID'] !== null) {
-					$fathername = $father['firstname']. $father['lastname'];
+					$fathername = $father['firstname']. " ". $father['lastname'];
 					} else {
 					$fathername = "Unknown";
 					}
@@ -348,7 +331,7 @@
                     $bornClass = "";
                 }
 				
-				if ($mother['living'] == '0' AND $mother['deathdatetr'] !== '0000-00-00') {
+				if ($mother['living'] == '0' AND $mother['deathdate'] !== '') {
                     $motherdeathdate = " died: ". $mother['deathdate'];
                 } else { if ($person['famc'] == null) { 
 					$motherdeathdate = "Unknown";
@@ -387,7 +370,7 @@
 					
                 }
 				if ($mother['personID'] !== null) {
-					$mothername = $mother['firstname']. $mother['lastname'];
+					$mothername = $mother['firstname']. " ". $mother['lastname'];
 					} else {
 					$mothername = "Unknown";
 					}
@@ -500,18 +483,14 @@
                     $spouse = $tngcontent->getPerson($family['wife'], $tree);
                 }
             }
-			 if ($family['marrdate'] == '') {
-                $spousemarrdate = "Date unknown";
-            } else {
-                $spousemarrdate = $family['marrdate'];
-            }
+			 
             if ($family['marrplace'] == '') {
                 $marrplace = "unknown";
             } else {
                 $marrplace = $family['marrplace'];
             }
 
-            if ($spouse['birthdatetr'] == '0000-00-00') {
+            if (($spouse['birthdatetr'] == '0000-00-00') and ($spouse['birthdate'] == ''))  {
                 $spousebirthdate = "date unknown";
             } else {
                 $spousebirthdate = $spouse['birthdate'];
@@ -522,7 +501,7 @@
                     $spousebirthplace = $spouse['birthplace'];
                 }
 
-            if ($spouse['living'] == '0' AND $spouse['deathdatetr'] !== '0000-00-00') {
+            if ($spouse['living'] == '0' AND $spouse['deathdate'] !== '') {
                 $spousedeathdate = " died: " . $spouse['deathdate'];
             } else {
                 $spousedeathdate = " died: date unknown";
@@ -541,7 +520,7 @@
             if ($spouse['personID'] == '') {
                 $spousename = "Unknown";
             } else {
-                $spousename = $spouse['firstname'] . $spouse['lastname'] . $deathdate;
+                $spousename = $spouse['firstname']. " ". $spouse['lastname'] . $deathdate;
             }
 // Spouse - Special Event
 				if ($EventDisplay !== null)
@@ -579,7 +558,7 @@
                         <?php
                         echo $spousename;
                     } else {
-                        $spousename = $spouse['firstname'] . $spouse['lastname'];
+                        $spousename = $spouse['firstname']. " ". $spouse['lastname'];
                         ?>
                         <a href="?personId=<?php echo $spouse['personID']; ?>&amp;tree=<?php echo $spouse['gedcom']; ?>">
                             <?php
@@ -615,7 +594,7 @@
                 } else {
                     $bornClass = "";
                 }
-                if ($family['marrdatetr'] == "0000-00-00") {
+                if (($family['marrdatetr'] == "0000-00-00") and ($family['marrdate'] == '')){
                     $marrdate = "date unknown";
                 } else {
                     $marrdate = $family['marrdate'];
@@ -655,14 +634,14 @@
 				foreach ($children as $child):
 					$classes = array('child');
 					$childPerson = $tngcontent->getPerson($child['personID'], $tree);
-					$childName = $childPerson['firstname'] . $childPerson['lastname'];
+					$childName = $childPerson['firstname']. " ". $childPerson['lastname'];
 					$childdeathdate = $childPerson['deathdate'];
 
 					if ($child['haskids']) {
 						$classes[] = 'haskids';
 					}
 					$class = join(' ', $classes);
-					if ($childPerson['living'] == '0' AND $childPerson['deathdatetr'] !== '0000-00-00') {
+					if ($childPerson['living'] == '0' AND $childPerson['deathdate'] !== '') {
 						$childdeathdate = (" died: " . $childPerson['deathdate']);
 					} else {
 						$childdeathdate = " died: date unknown";

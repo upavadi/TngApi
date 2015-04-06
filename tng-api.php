@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: 1-tng api 1.3
+ * Plugin Name: 1-tng api 1.3*
  * Description: This plugin allows access to the TNG database. For access to TNG pages, tng-wordpress-plugin must be installed and activated 
  *
  * Plugin URI: https://github.com/upavadi/TngApi
@@ -148,9 +148,28 @@ function create_tng_tables()
 	echo $wpdb->show_errors();
 	
 }
+function droptables() {
+		global $wpdb;
+		$tngDeactivate = esc_attr(get_option('tng-api-drop-table'));
+		if ($tngDeactivate == '1') { 
+		$droppeople = $wpdb->prefix . "tng_people";
+		$dropfamilies = $wpdb->prefix . "tng_families";
+		$dropchildren = $wpdb->prefix . "tng_children";
+		$add_notes = $wpdb->prefix . "tng_notes";
+		$dropevents = $wpdb->prefix . "tng_events";
+		$wpdb->query("DROP TABLE IF EXISTS $droppeople");
+		$wpdb->query("DROP TABLE IF EXISTS $dropfamilies");
+		$wpdb->query("DROP TABLE IF EXISTS $dropchildren");
+		$wpdb->query("DROP TABLE IF EXISTS $add_notes");
+		$wpdb->query("DROP TABLE IF EXISTS $dropevents");
+		}
+
+}
+
 
 // this hook will cause our 'create_tng_tables()' function to run when the plugin is activated
 register_activation_hook( __FILE__, 'create_tng_tables' );
+register_deactivation_hook( __FILE__, 'droptables' );
 /***********************************************/
 $dir = dirname(__FILE__);
 $customDir = $dir . "/../tng-api-custom";

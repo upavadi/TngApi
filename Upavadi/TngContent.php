@@ -31,6 +31,15 @@ class Upavadi_TngContent
         return self::$instance;
     }
 
+    public function setCustom($custom)
+    {
+        $this->custom = $custom;
+    }
+    
+    public function getCustom()
+    {
+        return $this->custom;
+    }
     /**
      * Add shortcodes
      */
@@ -149,11 +158,13 @@ class Upavadi_TngContent
         register_setting('tng-api-options', 'tng-api-tng-event');
         register_setting('tng-api-options', 'tng-api-tng-page-id');
         register_setting('tng-api-options', 'tng-api-tng-path');
+        register_setting('tng-api-options', 'tng-base-tng-path');
         register_setting('tng-api-options', 'tng-api-tng-photo-upload');
         register_setting('tng-api-options', 'tng-api-db-host');
         register_setting('tng-api-options', 'tng-api-db-user');
         register_setting('tng-api-options', 'tng-api-db-password');
         register_setting('tng-api-options', 'tng-api-db-database');
+		register_setting('tng-api-options', 'tng-api-drop-table');
 
         add_settings_section('general', 'General', function() {
             
@@ -169,6 +180,10 @@ class Upavadi_TngContent
         add_settings_field('tng-path', 'TNG Path', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
             echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
+        }, 'tng-api', 'tng');
+        add_settings_field('tng-base-path', 'TNG Integration Path', function () {
+            $tngPath = esc_attr(get_option('tng-base-tng-path'));
+            echo "<input type='text' name='tng-base-tng-path' value='$tngPath' />";
         }, 'tng-api', 'tng');
         add_settings_field('tng-photo-upload', 'TNG Collection ID for Photo Uploads', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-photo-upload'));
@@ -212,7 +227,30 @@ class Upavadi_TngContent
             $dbName = esc_attr(get_option('tng-api-db-database'));
             echo "<input type='text' name='tng-api-db-database' value='$dbName' />";
         }, 'tng-api', 'db');
-    }
+ 
+		add_settings_section('table', 'Deactivate', function() {
+            echo "On Deactivation, Remove ALL temporary tables storing User submissions.<br /> You may want to do this if you are upgrading or permanently removing TngApi plugin.";
+        }, 'tng-api');
+		add_settings_field('table-keep', 'Do not Remove. Keep data for future use', function () {
+            $drop = esc_attr(get_option('tng-api-drop-table'));
+        if (empty($drop)) { $drop = '0'; }
+		?>
+		<input type='radio' name='tng-api-drop-table' value='0'
+		<?php checked('0', $drop); ?>
+		/> 
+		<?php
+		}, 'tng-api', 'table');
+        add_settings_field('table-drop', 'Remove User Submitted data', function () {
+            $drop = esc_attr(get_option('tng-api-drop-table'));
+		if ($drop == null) { $drop = '0'; }
+		?>
+		<input type='radio' name='tng-api-drop-table' value='1'
+		<?php checked('1', $drop); ?>
+		/> 
+		<?php 
+        }, 'tng-api', 'table'); 
+		$result = get_option('tng-api-drop-table');
+        }
 
     public function adminMenu()
     {
@@ -321,8 +359,7 @@ SQL;
         $rows = array();
         while ($row = $result->fetch_assoc()) {
             $eventrows[] = $row;
-            //var_dump($eventrows);
-        }
+         }
 
         return $eventrows;
     }
@@ -721,6 +758,7 @@ SELECT personid,
        lastname,
        birthdate,
        birthplace,
+	   private,
        gedcom
 FROM   {$this->tables['people_table']}
 WHERE  Month(birthdatetr) = {$month}
@@ -865,14 +903,14 @@ SQL;
         $sql = <<<SQL
 SELECT
     h.gedcom,
-    h.private,
+    h.private AS private1,
     h.personid AS personid1,
     h.firstname AS firstname1,
     h.lastname AS lastname1,
     w.personid AS personid2,
     w.firstname AS firstname2,
     w.lastname AS lastname2,
-    w.private,
+    w.private AS private2,
     w.gedcom,
     f.gedcom,
     f.private,
@@ -882,9 +920,9 @@ SELECT
     Year(Now()) - Year(marrdatetr) AS Years
 FROM {$this->tables['families_table']} as f
     LEFT JOIN {$this->tables['people_table']} AS h
-    ON (f.husband = h.personid AND f.gedcom = h.gedcom AND f.private = 0)
+    ON (f.husband = h.personid AND f.gedcom = h.gedcom)
     LEFT JOIN {$this->tables['people_table']} AS w
-    ON (f.wife = w.personid AND f.gedcom = w.gedcom AND w.private = 0)
+    ON (f.wife = w.personid AND f.gedcom = w.gedcom)
 WHERE  Month(f.marrdatetr) = {$month} 
 {$treeWhere}
 ORDER  BY Day(f.marrdatetr)
