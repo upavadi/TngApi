@@ -1,12 +1,5 @@
 <!-- FAMILY PAGE -->
 
-
-<!doctype html>
-<html lang="en">
-    <head>
-    <meta charset="utf-8">
-
-    </head>
     <a name="Family"></a>
     
     <?php
@@ -19,7 +12,7 @@
 /** If you leave blank, $genealogy = "", links will not be shown.
 *********************************************/
 	
-	$genealogy = "tng";  
+	$genealogy = $tngcontent->getTngIntegrationPath();
 	
 /********************************************/	
 	
@@ -77,17 +70,17 @@
                         </td>
                         <td>
 		<?php
-		$linkPerson = $person['personID'];
-		$tree = $person['gedcom'];
-		if ($genealogy != "") {
-			echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '../$genealogy/getperson.php?personID=$linkPerson&tree=$tree' \" />";
-			echo '</td>';
-			echo '</tr><tr><td>';
-			echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '../$genealogy/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
-			echo '</td><td>';                        
-			echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '../$genealogy/descend.php?personID=$linkPerson&tree=$tree'\" />";
-		}
-		?>	                      
+                    $linkPerson = $person['personID'];
+                    $tree = $person['gedcom'];
+                    if (!empty($genealogy)) {
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '../$genealogy/getperson.php?personID=$linkPerson&tree=$tree' \" />";
+                        echo '</td>';
+                        echo '</tr><tr><td>';
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '../$genealogy/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
+                        echo '</td><td>';
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '../$genealogy/descend.php?personID=$linkPerson&tree=$tree'\" />";
+                    }
+                ?>	                      
 
 					   </td>
                     </tr>
