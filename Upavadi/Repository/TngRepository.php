@@ -121,6 +121,7 @@ class Upavadi_Repository_TngRepository
 
     public function addPerson($fields)
     {
+        $version = $this->content->guessVersion();
         $db = $this->content->getDbLink();
         $tables = $this->content->getTngTables();
         $db->query("LOCK TABLES {$tables['people_table']}");
@@ -140,6 +141,14 @@ class Upavadi_Repository_TngRepository
             "baptdatetr",
             "endldatetr"
         );
+        if ($version > 9) {
+            $fields['burialtype'] = 0;
+            $fields['confdate'] = '';
+            $dates[] = 'confdatetr';
+            $fields['initdate'] = '';
+            $dates[] = 'initdatetr';
+            $fields['initplace'] = '';
+        }
         foreach ($dates as $date) {
             if (!isset($fields[$date])) {
                 $fields[$date] = '0000-00-00';
