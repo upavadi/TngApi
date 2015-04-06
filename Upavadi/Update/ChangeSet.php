@@ -385,6 +385,7 @@ class Upavadi_Update_ChangeSet
     public function apply($changes)
     {
         $ids = array();
+        $skip = array();
         list($inserts, $updates) = $changes;
         $headPerson = $this->originals['people'][$this->getHeadPersonId()];
 
@@ -396,7 +397,8 @@ class Upavadi_Update_ChangeSet
             switch ($entity) {
                 case 'people':
                     if (!$fields['firstname']) {
-                        continue;
+                        $newId = null;
+                        break;
                     }
                     $fields['changedate'] = $this->userSubmission['datemodified'];
                     $fields['changedby'] = $this->userSubmission['tnguser'];
@@ -432,11 +434,18 @@ class Upavadi_Update_ChangeSet
                     $newId = $this->repo->addEvent($fields);
                     break;
             }
-            $ids[$id] = $newId;
+            if ($newId) {
+                $ids[$id] = $newId;
+            } else {
+                $skip[$id] = true;
+            }
         }
 
         foreach ($updates as $entity => $update) {
             foreach ($update as $id => $fields) {
+                if (isset($skip[$id])) {
+                    continue;
+                }
                 if (isset($ids[$id])) {
                     $id = $ids[$id];
                 }
@@ -551,7 +560,7 @@ class Upavadi_Update_ChangeSet
                     break;
                 case 'children':
                     $table = $this->wpdb->prefix . 'tng_children';
-                    $pk = 'personID';
+                    $pk = 'ID';
                     break;
                 case 'notes':
                     $table = $this->wpdb->prefix . 'tng_notes';
@@ -580,6 +589,7 @@ class Upavadi_Update_ChangeSet
                 }
             }
         }
+        
         foreach ($updates as $table => $records) {
             foreach ($records as $id => $fields) {
                 list($pk, $id) = unserialize($id);
