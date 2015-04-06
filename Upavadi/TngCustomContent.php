@@ -12,13 +12,14 @@ class Upavadi_TngCustomContent
     public function __construct(Upavadi_TngContent $content, $path)
     {
         $this->content = $content;
+        $content->setCustom($this);
         $this->dir = dirname($path);
         $this->initShortcodes();
     }
 
     public function initShortcodes()
     {
-        $templatePath = $this->dir . '/templates/';
+        $templatePath = $this->getTemplatePath();
         $templates = new Upavadi_Templates($templatePath);
 
         foreach ($this->shortCodes as $shortCodeName) {
@@ -33,4 +34,8 @@ class Upavadi_TngCustomContent
         return $this->content->query($sql);
     }
 
+    public function getTemplatePath()
+    {
+        return $this->dir . '/templates/';
+    }
 }

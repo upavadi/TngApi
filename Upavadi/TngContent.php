@@ -9,7 +9,7 @@ class Upavadi_TngContent
     protected $tables = array();
     protected $sortBy = null;
     protected $tree;
-
+    protected $custom;
     /**
      * @var Upavadi_Shortcode_AbstractShortcode[]
      */
@@ -52,6 +52,11 @@ class Upavadi_TngContent
         return esc_attr(get_option('tng-api-tng-path'));
     }
 
+    public function getTngIntegrationPath()
+    {
+        return esc_attr(get_option('tng-base-tng-path'));
+    }
+    
     public function getTngTables()
     {
         return $this->tables;
