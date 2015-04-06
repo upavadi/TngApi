@@ -395,6 +395,9 @@ class Upavadi_Update_ChangeSet
             $fields = $this->replaceIds($fields, $ids);
             switch ($entity) {
                 case 'people':
+                    if (!$fields['firstname']) {
+                        continue;
+                    }
                     $fields['changedate'] = $this->userSubmission['datemodified'];
                     $fields['changedby'] = $this->userSubmission['tnguser'];
                     $fields['gedcom'] = $headPerson['gedcom'];

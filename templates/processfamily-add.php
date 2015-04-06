@@ -23,20 +23,22 @@ $persfamID = $Spouse[0]['personID'];
 $eventtypeID = $_POST['EventID'];
 $eventdatetr = 0000 - 00 - 00;
 $info = $Spouse[0]['event'];
+$eventID = 'NewSpouseSpEvent';
 
 //Insert Special Events
 $wpdb->insert(
     $events_table, array(
-    headpersonid => $headpersonid,
-    tnguser => $tnguser,
-    persfamID => $persfamID,
-    gedcom => $gedcom,
-    eventtypeID => $eventtypeID,
-    eventdatetr => $eventdateter,
-    cause => '',
-    parenttag => '',
-    info => $info,
-    datemodified => $datemodified,
+    'headpersonid' => $headpersonid,
+    'tnguser' => $tnguser,
+    'persfamID' => $persfamID,
+    'gedcom' => $gedcom,
+    'eventtypeID' => $eventtypeID,
+    'eventID' => $eventID,
+    'eventdatetr' => $eventdateter,
+    'cause' => '',
+    'parenttag' => '',
+    'info' => $info,
+    'datemodified' => $datemodified,
     )
 );
 //CauseOfDeath - Spouse Identifiers
