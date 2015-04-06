@@ -19,20 +19,20 @@ class Upavadi_Update_FamilyUpdate
     public function process($data)
     {
         $gedcom = $data['gedcom'];
-		$user = $data['User'];
+        $user = $data['User'];
         $headPersonId = $data['personID'];
         $date = date('Y-m-d H:i:s');
         $keys = array(
             'headpersonid' => $headPersonId,
             'tnguser' => $user,
             'datemodified' => $date,
-			'gedcom' => $gedcom
+            'gedcom' => $gedcom
         );
-       
+
         $people = array_filter($this->extractPeople($data));
         $families = $this->extractFamilies($data);
         $children = $this->extractChildrenFamily($data);
-        
+
         $people = $this->addFields($people, $keys);
         $families = $this->addFields($families, $keys);
         $children = $this->addFields($children, $keys);
@@ -63,10 +63,10 @@ class Upavadi_Update_FamilyUpdate
 
     public function extractFamilyId($data)
     {
-        if (empty($data['personfamc'])) {
+        if (empty($data['famc'])) {
             $famc = "NewParents";
         } else {
-            $famc = $data['personfamc'];
+            $famc = $data['famc'];
         }
 
         return $famc;
@@ -241,7 +241,7 @@ class Upavadi_Update_FamilyUpdate
         $hasKids = $data['haskids'];
         $orderNum = $data['order'];
         $parentOrder = $data['parentorder'];
-        
+
         $child = array(
             'personid' => $personID,
             'familyID' => $familyId,
@@ -255,11 +255,11 @@ class Upavadi_Update_FamilyUpdate
     public function addFields($records, $fields)
     {
         $newRecords = array();
-        
+
         foreach ($records as $record) {
             $newRecords[] = array_merge($record, $fields);
         }
-        
+
         return $newRecords;
     }
 
