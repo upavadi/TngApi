@@ -21,7 +21,7 @@
 				$deathdate = $person['deathdate'];
 				$deathdatetr = ($person['deathdatetr']);
 				$deathplace = $person['deathplace'];
-				$name = $person['firstname']. $person['lastname'];
+				$name = $person['firstname']." ". $person['lastname'];
 				$firstname = $person['firstname'];
 				$lastname = $person['lastname'];
 				
