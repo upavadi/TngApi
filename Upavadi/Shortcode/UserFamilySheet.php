@@ -15,6 +15,7 @@ class Upavadi_Shortcode_UserFamilySheet extends Upavadi_Shortcode_AbstractShortc
         $context = array();
         $context['personId'] = $personId;
         $context['changeSets'] = $changeSets;
+        $context['tree'] = $tree;
         return $this->templates->render('user-familysheet.html', $context);
     }
 

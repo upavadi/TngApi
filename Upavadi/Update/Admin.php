@@ -77,8 +77,9 @@ class Upavadi_Update_Admin
         echo "<tbody>";
         foreach ($submissions as $submission) {
             $person = $repo->getPerson($submission['personid']);
-            $name = $person['firstname'] . ' ' . $person['lastname'];
-            $viewUrl = admin_url('admin.php?page=tng_api_submission_view&id=' . $submission['id']);
+			$name = $person['firstname'] . ' ' . $person['lastname'];
+            //var_dump($name);
+			$viewUrl = admin_url('admin.php?page=tng_api_submission_view&id=' . $submission['id']);
             $this->row(array(
                 $submission['id'],
                 $submission['tnguser'],
@@ -113,23 +114,22 @@ class Upavadi_Update_Admin
                         <div class="meta-box-sortables">
                             <form method="POST">
                                 <?php
-                                $personId = $changeSet->getHeadPersonId();
+                               	$personId = $changeSet->getHeadPersonId();
                                 $this->showPerson($changeSet, $personId, 'Person (' . $personId . ')');
                                 $eventIds = $changeSet->getEventIds($personId);
                                 foreach ($eventIds as $eventId) {
-                                    $this->showEvent($changeSet, $eventId, 'Person (' . $personId . ') - Event');
+                                    $this->showEvent($changeSet, $eventId, 'Person (' . $personId . ') - Event - Accept ALL to Update');
                                 }
                                 $noteIds = $changeSet->getNoteIds($personId);
                                 foreach ($noteIds as $noteId) {
                                     $this->showNotes($changeSet, $noteId, 'Person (' . $personId . ') - Notes');
                                 }
-                                
                                 $personId = $changeSet->getFatherId();
                                 $this->showPerson($changeSet, $personId, 'Father (' . $personId . ')');
                                 
                                 $eventIds = $changeSet->getEventIds($personId);
                                 foreach ($eventIds as $eventId) {
-                                    $this->showEvent($changeSet, $eventId, 'Father (' . $personId . ') - Event');
+                                    $this->showEvent($changeSet, $eventId, 'Father (' . $personId . ') - Event - Accept ALL to Update');
                                 }
                                 
                                 $personId = $changeSet->getMotherId();
@@ -137,7 +137,7 @@ class Upavadi_Update_Admin
                                 
                                 $eventIds = $changeSet->getEventIds($personId);
                                 foreach ($eventIds as $eventId) {
-                                    $this->showEvent($changeSet, $eventId, 'Mother (' . $personId . ') - Event');
+                                    $this->showEvent($changeSet, $eventId, 'Mother (' . $personId . ') - Event - Accept ALL to Update');
                                 }
                                 
                                 $familyId = $changeSet->getHeadPersonFamC();
@@ -148,7 +148,7 @@ class Upavadi_Update_Admin
                                     $this->showPerson($changeSet, $personId, 'Spouse ' . $index . ' (' . $personId . ')');
                                     $eventIds = $changeSet->getEventIds($personId);
                                     foreach ($eventIds as $eventId) {
-                                        $this->showEvent($changeSet, $eventId, 'Spouse ' . $index . ' (' . $personId . ') - Event');
+                                        $this->showEvent($changeSet, $eventId, 'Spouse ' . $index . ' (' . $personId . ') - Event - Accept ALL to Update');
                                     }
                                     $noteIds = $changeSet->getNoteIds($personId);
                                     foreach ($noteIds as $noteId) {
@@ -162,7 +162,7 @@ class Upavadi_Update_Admin
                                         $this->showChildFamily($changeSet, $childId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (' . $childId . ') (cont)');
                                         $eventIds = $changeSet->getEventIds($childId);
                                         foreach ($eventIds as $eventId) {
-                                            $this->showEvent($changeSet, $eventId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (' . $childId . ') - Event');
+                                            $this->showEvent($changeSet, $eventId, 'Spouse ' . $index . ' - Child ' . $cIndex . ' (' . $childId . ') - Event - Accept ALL to Update');
                                         }
                                     }
                                 }
@@ -625,7 +625,7 @@ class Upavadi_Update_Admin
                 $title .= ' Birth';
                 break;
         }
-        $this->showChanges($changes, $names, $title, 'notes', $noteId);
+        $this->showChanges($changes, $names, $title. " - Accept ALL To Update ", 'notes', $noteId);
     }
 
     public function showEvent($changeSet, $eventId, $title)

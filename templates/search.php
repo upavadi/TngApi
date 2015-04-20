@@ -41,11 +41,16 @@ if (!count($results)): ?>
 		$age = $result['Age'];
 		}
 	$tree = $result['gedcom'];
-
+	$firstname = $result['firstname'];
+	$lastname = $result['lastname'];
+	if ($result['private'] == '1') {
+		$firstname = "Private:";
+		$lastname = " Details withheld";
+	}
 	?>
 	<tr>
 		<td class="tdfront">
-			<a href="/family/?personId=<?php echo $result['personID']?>&amp;tree=<?php echo $tree; ?> "><?php echo $result['firstname'] . ' ' . $result['lastname']; ?></a>
+			<a href="/family/?personId=<?php echo $result['personID']?>&amp;tree=<?php echo $tree; ?> "><?php echo $firstname . ' ' . $lastname; ?></a>
 		</td>
 		<td  class="tdfront">
 			<?php echo $result['birthdate']; ?>
@@ -56,8 +61,8 @@ if (!count($results)): ?>
 			<td class="tdfront"><?php echo $result['gedcom']; ?></td>
         </tr>
     <?php
-	
-			}
+	}
+
 	endforeach; ?> 
 </tbody>
 </table>

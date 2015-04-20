@@ -4,7 +4,21 @@
     
     <?php
     $tngcontent = Upavadi_TngContent::instance();
+
 	$genealogy = $tngcontent->getTngIntegrationPath();
+
+/********************************************************************************************/	
+/** In the Family page there are three links to TNG. Ancestors, Genealogy and Descendents **/
+/** Value of $genealogy controls the links. Enter value you use to navigate to tng page **/
+/** Such as mysite.com/genealogy OR mysite.com/tng/
+/** Enter $genealogy = "genealogy" OR $genealogy = "tng"
+/** If you leave blank, $genealogy = "", links will not be shown.
+*********************************************/
+	
+	$genealogy = $tngcontent->getTngIntegrationPath();
+	
+/********************************************/	
+
 	
     //get and hold current user
     $currentperson = $tngcontent->getCurrentPersonId($person['personID']);

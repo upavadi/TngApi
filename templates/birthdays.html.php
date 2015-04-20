@@ -69,10 +69,16 @@ Clicking on a name takes you to the Individual's Family Page
 	<?php } ?>	
     <?php foreach ($birthdays as $birthday):
 	$tree = $birthday['gedcom'];
+	$firstname = $birthday['firstname'];
+	$lastname = $birthday['lastname'];
+	if ($birthday['private'] == '1') {
+		$firstname = "Private:";
+		$lastname = " Details withheld";
+	}
 	?>
         <tr>
             <td class="tdfront"><a href="/family/?personId=<?php echo $birthday['personid'];?>&amp;tree=<?php echo $tree; ?>">
-                    <?php echo $birthday['firstname'] . " "; ?><?php echo $birthday['lastname']; ?></a></td>
+                    <?php echo $firstname . " "; ?><?php echo $lastname; ?></a></td>
             <td class="tdfront"><?php echo $birthday['birthdate']; ?></td>
             <td class="tdfront"><?php echo $birthday['birthplace']; ?></td>
             <td class="tdfront"><?php echo $birthday['age']; ?></td>
