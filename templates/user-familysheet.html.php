@@ -13,10 +13,7 @@ foreach ($changeSets as $index => $change):
         *** Submission <?php echo ($numChanges - $index) . "  of " . $numChanges; ?>
     </strong>
     <?php
-    //$head1 = ($change);
-	//$head2 = array($head1);
-	//var_dump(($head1));
-	$diff = $change->getDiff();
+    $diff = $change->getDiff();
 	//var_dump($changeSets);
 	foreach ($diff as $entityName => $entities):
         ?>
