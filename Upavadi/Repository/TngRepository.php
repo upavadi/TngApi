@@ -17,26 +17,26 @@ class Upavadi_Repository_TngRepository
         $this->content = $content;
     }
 
-    public function getPerson($id, $gedcom)
+    public function getPerson($id, $tree = null)
     {
         if (!isset($this->people[$id])) {
-            $this->people[$id] = $this->content->getPerson($id, $gedcom);
+            $this->people[$id] = $this->content->getPerson($id, $tree);
         }
         return $this->people[$id];
     }
 
-    public function getFamily($id)
+    public function getFamily($id, $tree = null)
     {
         if (!isset($this->families[$id])) {
-            $this->families[$id] = $this->content->getFamilyById($id);
+            $this->families[$id] = $this->content->getFamilyById($id, $tree);
         }
         return $this->families[$id];
     }
 
-    public function getChildFamily($personID, $familyID)
+    public function getChildFamily($personID, $familyID, $tree = null)
     {
         if (!isset($this->childFamilies[$personID]) || (isset($this->childFamilies[$personID]) && !isset($this->childFamilies[$personID][$familyID]))) {
-            $this->childFamilies[$personID][$familyID] = $this->content->getChildFamily($personID, $familyID);
+            $this->childFamilies[$personID][$familyID] = $this->content->getChildFamily($personID, $familyID, $tree);
         }
         return $this->childFamilies[$personID][$familyID];
     }
@@ -234,10 +234,10 @@ class Upavadi_Repository_TngRepository
         return $newId;
     }
 
-    public function getNote($personId, $id)
+    public function getNote($personId, $id, $tree = null)
     {
         if (!isset($this->notes[$personId][$id])) {
-            $notes = $this->content->getNotes($personId);
+            $notes = $this->content->getNotes($personId, $tree);
             foreach ($notes as $note) {
                 $xid = $note['xnoteID'];
                 $this->notes[$xid] = array(
@@ -329,10 +329,10 @@ class Upavadi_Repository_TngRepository
         return $newId;
     }
 
-    public function getEvent($id)
+    public function getEvent($id, $tree = null)
     {
         if (!isset($this->events[$id])) {
-            $this->events[$id] = $this->content->getEvent($id);
+            $this->events[$id] = $this->content->getEvent($id, $tree);
         }
         return $this->events[$id];
     }

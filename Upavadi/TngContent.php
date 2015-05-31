@@ -489,7 +489,7 @@ SQL;
         return $row;
     }
 
-    public function getChildFamily($personId, $familyId)
+    public function getChildFamily($personId, $familyId, $tree = null)
     {
         $user = $this->getTngUser();
         $gedcom = $user['gedcom'];

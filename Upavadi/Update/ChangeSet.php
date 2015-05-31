@@ -129,8 +129,8 @@ class Upavadi_Update_ChangeSet
     {
         $people = array();
         foreach ($this->changes['people'] as $id => $person) {
-            $gedcom = $person['gedcom'];
-            $people[$id] = $this->repo->getPerson($id, $gedcom);
+            $tree = $person['gedcom'];
+            $people[$id] = $this->repo->getPerson($id, $tree);
         }
         return $people;
     }
@@ -139,7 +139,8 @@ class Upavadi_Update_ChangeSet
     {
         $families = array();
         foreach ($this->changes['family'] as $id => $family) {
-            $families[$id] = $this->repo->getFamily($id);
+            $tree = $family['gedcom'];
+            $families[$id] = $this->repo->getFamily($id, $tree);
         }
         return $families;
     }
@@ -148,7 +149,8 @@ class Upavadi_Update_ChangeSet
     {
         $children = array();
         foreach ($this->changes['children'] as $id => $child) {
-            $children[$id] = $this->repo->getChildFamily($id, $child['familyID']);
+            $tree = $child['gedcom'];
+            $children[$id] = $this->repo->getChildFamily($id, $child['familyID'], $tree);
         }
         return $children;
     }
@@ -645,7 +647,8 @@ class Upavadi_Update_ChangeSet
         $notes = array();
         foreach ($this->changes['notes'] as $id => $note) {
             $personId = $note['persfamID'];
-            $originalNote = $this->repo->getNote($personId, $id);
+            $tree = $note['gedcom'];
+            $originalNote = $this->repo->getNote($personId, $id, $tree);
             if ($originalNote) {
                 $notes[$id] = $originalNote;
             }
@@ -678,8 +681,9 @@ class Upavadi_Update_ChangeSet
     public function loadEventsOriginals()
     {
         $events = array();
-        foreach ($this->changes['events'] as $id => $person) {
-            $events[$id] = $this->repo->getEvent($id);
+        foreach ($this->changes['events'] as $id => $event) {
+            $tree = $event['gedcom'];
+            $events[$id] = $this->repo->getEvent($id, $tree);
         }
         return $events;
     }
