@@ -112,6 +112,9 @@ class Upavadi_Update_FamilyUpdate
 
     public function extractSpouses($people, $data)
     {
+        if (!isset($data['family'])) {
+            return $people;
+        }
         foreach ($data['family'] as $family) {
             foreach ($family['spouse'] as $spouse) {
                 $people[] = $this->extractPerson($spouse);
@@ -123,6 +126,9 @@ class Upavadi_Update_FamilyUpdate
 
     public function extractChildren($people, $data)
     {
+        if (!isset($data['family'])) {
+            return $people;
+        }
         foreach ($data['family'] as $family) {
             foreach ($family['child'] as $child) {
                 $people[] = $this->extractPerson($child);
@@ -174,6 +180,9 @@ class Upavadi_Update_FamilyUpdate
 
     public function extractSpousesFamily($families, $data)
     {
+        if (!isset($data['family'])) {
+            return $people;
+        }
         foreach ($data['family'] as $family) {
             foreach ($family['spouse'] as $spouse) {
                 $families[] = $this->extractSpouseFamily($data, $spouse);
@@ -220,6 +229,9 @@ class Upavadi_Update_FamilyUpdate
 
     public function extractChildrenFamily($data)
     {
+        if (!isset($data['family'])) {
+            return $people;
+        }
         $children = array();
 
         foreach ($data['family'] as $family) {

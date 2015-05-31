@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: 1-tng api 1.3*
+ * Plugin Name: 1-tng api 1.3
  * Description: This plugin allows access to the TNG database. For access to TNG pages, tng-wordpress-plugin must be installed and activated 
  *
  * Plugin URI: https://github.com/upavadi/TngApi

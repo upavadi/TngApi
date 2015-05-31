@@ -1,8 +1,6 @@
 <?php
 $tngcontent = Upavadi_TngContent::instance();
 $person = $tngcontent->getPerson($personId, $tree);
-//$new_firstname = $person['firstname'];
-//$new_lastname = $person['lastname'];
 $numChanges = count($changeSets);
 	if ($numChanges == 0) { 
 	echo "<br /> There are no Pending Submissions";
@@ -15,7 +13,10 @@ foreach ($changeSets as $index => $change):
         *** Submission <?php echo ($numChanges - $index) . "  of " . $numChanges; ?>
     </strong>
     <?php
-    $diff = $change->getDiff();
+    //$head1 = ($change);
+	//$head2 = array($head1);
+	//var_dump(($head1));
+	$diff = $change->getDiff();
 	//var_dump($changeSets);
 	foreach ($diff as $entityName => $entities):
         ?>

@@ -17,10 +17,10 @@ class Upavadi_Repository_TngRepository
         $this->content = $content;
     }
 
-    public function getPerson($id)
+    public function getPerson($id, $gedcom)
     {
         if (!isset($this->people[$id])) {
-            $this->people[$id] = $this->content->getPerson($id);
+            $this->people[$id] = $this->content->getPerson($id, $gedcom);
         }
         return $this->people[$id];
     }

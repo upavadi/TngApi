@@ -129,7 +129,8 @@ class Upavadi_Update_ChangeSet
     {
         $people = array();
         foreach ($this->changes['people'] as $id => $person) {
-            $people[$id] = $this->repo->getPerson($id);
+            $gedcom = $person['gedcom'];
+            $people[$id] = $this->repo->getPerson($id, $gedcom);
         }
         return $people;
     }
@@ -319,8 +320,12 @@ class Upavadi_Update_ChangeSet
             $updates[] = array('update', $entity, $id, array($key => $value));
         }
         if ($type === 'add') {
-            $updates[] = array('insert', $entity, $id, array($key => $value));
-            $newIds = $this->updateIds($id, $entity);
+            $update = array('insert', $entity, $id, array($key => $value));
+            if (in_array($update, $updates)) {
+                return $updates;
+            }
+            $updates[] = $update;
+            $newIds = $this->updateIds($id, $entity, $updates);
             foreach ($newIds as $update) {
                 $updates[] = $update;
             }
@@ -478,9 +483,8 @@ class Upavadi_Update_ChangeSet
         $this->updateChangeIds($ids);
     }
 
-    public function updateIds($newId, $entity)
+    public function updateIds($newId, $entity, $updates)
     {
-        $updates = array();
         foreach ($this->changes as $type => $entities) {
             foreach ($entities as $id => $fields) {
                 if ($id === $newId && $type === $entity) {
