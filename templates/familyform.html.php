@@ -275,7 +275,7 @@
 				$parenthusborder = "1";
 				}
 // Father - Special Event
-				if ($father_name !== '')
+				if ($father_name !== ' ')
 				{
 				$fatherRow = $tngcontent->getSpEvent($father['personID'], $tree);
 				$father_SpEvent = $fatherRow['info'];
@@ -283,6 +283,7 @@
 				} else {
 				$father_SpEvent = "";
 				}
+				
 //get Cause of Death for Father
 				$fatherRow = $tngcontent->getCause($father['personID'], $tree);
 				if ($fatherRow['eventtypeID'] == "0") {
