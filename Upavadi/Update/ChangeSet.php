@@ -36,7 +36,7 @@ class Upavadi_Update_ChangeSet
         $children = $this->loadChildrenFamilyChanges();
         $notes = $this->loadNotesChanges();
         $events = $this->loadEventsChanges();
-        
+
         $this->changes = array(
             'people' => $people,
             'family' => $family,
@@ -53,7 +53,7 @@ class Upavadi_Update_ChangeSet
         $children = $this->loadChildrenFamilyOriginals();
         $notes = $this->loadNotesOriginals();
         $events = $this->loadEventsOriginals();
-        
+
         $this->originals = array(
             'people' => $people,
             'family' => $family,
@@ -209,7 +209,7 @@ class Upavadi_Update_ChangeSet
             'id', 'tnguser', 'headpersonid', 'personevent',
             'datemodified', 'birthdatetr', 'deathdatetr', 'marrdatetr'
         );
-        
+
         $newRecord = array();
         foreach ($record as $key => $value) {
             $key = strtolower($key);
@@ -349,140 +349,100 @@ class Upavadi_Update_ChangeSet
         return $this->diff[$entity][$id][$key]['type'];
     }
 
-    public function simplifyChanges($updates)
-    {
-        $additions = array();
-        $edits = array();
-        foreach ($updates as $update) {
-            list($op, $entity, $id, $fields) = $update;
-            if ($op !== 'insert') {
-                continue;
-            }
-            if (!isset($additions[$entity])) {
-                $additions[$entity] = array();
-            }
-            if (!isset($additions[$entity][$id])) {
-                $additions[$entity][$id] = array();
-            }
-            $additions[$entity][$id] = array_merge($additions[$entity][$id], $fields);
-        }
-
-        foreach ($updates as $update) {
-            list($op, $entity, $id, $fields) = $update;
-            if ($op !== 'update') {
-                continue;
-            }
-            if (isset($additions[$entity][$id])) {
-                $additions[$entity][$id] = array_merge($additions[$entity][$id], $fields);
-                continue;
-            }
-            if (!isset($edits[$entity])) {
-                $edits[$entity] = array();
-            }
-            if (!isset($edits[$entity][$id])) {
-                $edits[$entity][$id] = array();
-            }
-
-            $edits[$entity][$id] = array_merge($edits[$entity][$id], $fields);
-        }
-
-        return array($additions, $edits);
-    }
-
     public function apply($changes)
     {
-        $ids = array();
-        $skip = array();
-        list($inserts, $updates) = $changes;
         $headPerson = $this->originals['people'][$this->getHeadPersonId()];
-
-        $inserts = $this->sortInserts($inserts);
-
-        foreach ($inserts as $insert) {
-            list($entity, $id, $fields) = $insert;
-            $fields = $this->replaceIds($fields, $ids);
-            switch ($entity) {
-                case 'people':
-                    if (!$fields['firstname']) {
-                        $newId = null;
-                        break;
-                    }
-                    $fields['changedate'] = $this->userSubmission['datemodified'];
-                    $fields['changedby'] = $this->userSubmission['tnguser'];
-                    $fields['gedcom'] = $headPerson['gedcom'];
-                    $newId = $this->repo->addPerson($fields);
-                    break;
-                case 'family':
-                    $fields['changedate'] = $this->userSubmission['datemodified'];
-                    $fields['changedby'] = $this->userSubmission['tnguser'];
-                    $fields['gedcom'] = $headPerson['gedcom'];
-                    $newId = $this->repo->addFamily($fields);
-                    break;
-                case 'children':
-                    $fields['gedcom'] = $headPerson['gedcom'];
-                    $newId = $this->repo->addChildren($fields);
-                    break;
-                case 'notes':
-                    $fields['gedcom'] = $headPerson['gedcom'];
-                    $fields['ordernum'] = 999;
-                    if (!isset($fields['secret'])) {
-                        $fields['secret'] = 0;
-                    }
-                    if (isset($fields['persfamID'])) {
-                        unset($fields['persfamid']);
-                    }
-                    $newId = $this->repo->addNote($fields);
-                    break;
-                case 'events':
-                    $fields['gedcom'] = $headPerson['gedcom'];
-                    if (isset($fields['persfamID'])) {
-                        unset($fields['persfamid']);
-                    }
-                    $newId = $this->repo->addEvent($fields);
-                    break;
+        $ids = array();
+        while (count($changes)) {
+            $change = array_shift($changes);
+            if ($change['op'] === 'update') {
+                $this->applyUpdate($change, $headPerson, $ids);
+                continue;
             }
-            if ($newId) {
-                $ids[$id] = $newId;
-            } else {
-                $skip[$id] = true;
-            }
+            $newId = $this->applyInsert($change, $headPerson, $ids);
+            $ids[$change['id']] = $newId;
         }
-
-        foreach ($updates as $entity => $update) {
-            foreach ($update as $id => $fields) {
-                if (isset($skip[$id])) {
-                    continue;
-                }
-                if (isset($ids[$id])) {
-                    $id = $ids[$id];
-                }
-                $fields = $this->replaceIds($fields, $ids);
-                switch ($entity) {
-                    case 'people':
-                        $fields['changedate'] = $this->userSubmission['datemodified'];
-                        $fields['changedby'] = $this->userSubmission['tnguser'];
-                        $this->repo->updatePerson($id, $fields);
-                        break;
-                    case 'family':
-                        $fields['changedate'] = $this->userSubmission['datemodified'];
-                        $fields['changedby'] = $this->userSubmission['tnguser'];
-                        $this->repo->updateFamily($id, $fields);
-                        break;
-                    case 'children':
-                        $this->repo->updateChildren($id, $fields);
-                        break;
-                    case 'notes':
-                        unset($fields['persfamID']);
-                        $this->repo->updateNote($id, $fields);
-                        break;
-                    case 'events':
-                        $this->repo->updateEvent($id, $fields);
-                    break;
-                }
-            }
-        }
-
         $this->updateChangeIds($ids);
+    }
+
+    public function applyUpdate($change, $headPerson, $ids)
+    {
+        $id = $change['id'];
+        if (isset($ids[$id])) {
+            $id = $ids[$id];
+        }
+        $entity = $change['type'];
+        $fields = $this->replaceIds($change['entity'], $ids);
+        switch ($entity) {
+            case 'people':
+                $fields['changedate'] = $this->userSubmission['datemodified'];
+                $fields['changedby'] = $this->userSubmission['tnguser'];
+                $this->repo->updatePerson($id, $fields);
+                break;
+            case 'family':
+                $fields['changedate'] = $this->userSubmission['datemodified'];
+                $fields['changedby'] = $this->userSubmission['tnguser'];
+                $this->repo->updateFamily($id, $fields);
+                break;
+            case 'children':
+                $this->repo->updateChildren($id, $fields);
+                break;
+            case 'notes':
+                unset($fields['persfamID']);
+                $this->repo->updateNote($id, $fields);
+                break;
+            case 'events':
+                $this->repo->updateEvent($id, $fields);
+                break;
+        }
+    }
+
+    public function applyInsert($change, $headPerson, $ids)
+    {
+        $id = $change['id'];
+        $entity = $change['type'];
+        $fields = $this->replaceIds($change['entity'], $ids);
+        switch ($entity) {
+            case 'people':
+                if (!$fields['firstname']) {
+                    $newId = null;
+                    break;
+                }
+                $fields['changedate'] = $this->userSubmission['datemodified'];
+                $fields['changedby'] = $this->userSubmission['tnguser'];
+                $fields['gedcom'] = $headPerson['gedcom'];
+                $newId = $this->repo->addPerson($fields);
+                break;
+            case 'family':
+                $fields['changedate'] = $this->userSubmission['datemodified'];
+                $fields['changedby'] = $this->userSubmission['tnguser'];
+                $fields['gedcom'] = $headPerson['gedcom'];
+                $newId = $this->repo->addFamily($fields);
+                break;
+            case 'children':
+                $fields['gedcom'] = $headPerson['gedcom'];
+                $newId = $this->repo->addChildren($fields);
+                break;
+            case 'notes':
+                $fields['gedcom'] = $headPerson['gedcom'];
+                $fields['ordernum'] = 999;
+                if (!isset($fields['secret'])) {
+                    $fields['secret'] = 0;
+                }
+                if (isset($fields['persfamID'])) {
+                    unset($fields['persfamid']);
+                }
+                $newId = $this->repo->addNote($fields);
+                break;
+            case 'events':
+                $fields['gedcom'] = $headPerson['gedcom'];
+                if (isset($fields['persfamID'])) {
+                    unset($fields['persfamid']);
+                }
+                $newId = $this->repo->addEvent($fields);
+                break;
+        }
+        return $newId;
     }
 
     public function updateIds($newId, $entity, $updates)
@@ -502,59 +462,31 @@ class Upavadi_Update_ChangeSet
         return $updates;
     }
 
-    public function replaceIds($fields, $ids, $id = null)
+    public function replaceIds($fields, $ids)
     {
         foreach ($fields as $key => $value) {
-            if (preg_match('/^::(.*)$/', $value, $m)) {
-                if ($m[1] !== $id && !isset($ids[$m[1]])) {
-                    return null;
-                } else {
-                    $fields[$key] = $ids[$m[1]];
+            if (preg_match('/^[^\s]+::[^\s]+$/', $value)) {
+                if (!isset($ids[$value])) {
+                    throw new RuntimeException('Id not found for ' . $value);
                 }
+                $fields[$key] = $ids[$value];
             }
         }
         return $fields;
     }
 
-    public function sortInserts($inserts)
+    public function updateChangeIds($newIds)
     {
-        $orderedInserts = array();
-        $unorderedInserts = array();
+        var_dump($newIds);
         $ids = array();
-        foreach ($inserts as $entity => $insert) {
-            foreach ($insert as $id => $fields) {
-                $unorderedInserts[] = array($entity, $id, $fields);
-            }
+        foreach ($newIds as $id => $newId) {
+            list($entity, $id) = explode('::', $id);
+            $ids[$id] = $newId;
         }
-        $attempts = 5 * count($unorderedInserts);
-
-        while (count($unorderedInserts) && --$attempts) {
-            $insert = array_shift($unorderedInserts);
-            list($entity, $id, $fields) = $insert;
-            $pk = null;
-            if (in_array($entity, array('people', 'family'))) {
-                $pk = $id;
-            }
-            if ($this->replaceIds($fields, $ids, $pk)) {
-                $ids[$id] = '*' . $id;
-                $orderedInserts[] = $insert;
-            } else {
-                $unorderedInserts[] = $insert;
-            }
-        }
-        if (count($unorderedInserts) && $attempts <= 0) {
-            var_dump($unorderedInserts);
-            var_dump($orderedInserts);
-            var_dump($ids);
-            throw new RuntimeException('There is no good order to insert these records');
-        }
-        return $orderedInserts;
-    }
-
-    public function updateChangeIds($ids)
-    {
+        var_dump($ids);
         $updates = array();
         foreach ($this->changes as $entity => $entities) {
+            $pkId = null;
             switch ($entity) {
                 case 'people':
                     $table = $this->wpdb->prefix . 'tng_people';
@@ -566,7 +498,8 @@ class Upavadi_Update_ChangeSet
                     break;
                 case 'children':
                     $table = $this->wpdb->prefix . 'tng_children';
-                    $pk = 'ID';
+                    $pk = 'id';
+                    $pkId = 'id';
                     break;
                 case 'notes':
                     $table = $this->wpdb->prefix . 'tng_notes';
@@ -577,8 +510,11 @@ class Upavadi_Update_ChangeSet
                     $pk = 'eventID';
                     break;
             }
-            
+
             foreach ($entities as $id => $fields) {
+                if ($pkId) {
+                    $id = $fields[$pkId];
+                }
                 $id = serialize(array($pk, $id));
                 foreach ($fields as $key => $value) {
                     if (!isset($ids[$value])) {
@@ -595,7 +531,8 @@ class Upavadi_Update_ChangeSet
                 }
             }
         }
-        
+
+        var_dump($updates);
         foreach ($updates as $table => $records) {
             foreach ($records as $id => $fields) {
                 list($pk, $id) = unserialize($id);
