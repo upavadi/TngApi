@@ -13,7 +13,6 @@ class Upavadi_Shortcode_UserFamilySheet extends Upavadi_Shortcode_AbstractShortc
         $UserLogin = $currentuserLogin->user_login;
         $changeSets = $this->getSubmissions($UserLogin);
         $context = array();
-        $context['personId'] = $personId;
         $context['changeSets'] = $changeSets;
         return $this->templates->render('user-familysheet.html', $context);
     }

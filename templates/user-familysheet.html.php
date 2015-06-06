@@ -25,8 +25,10 @@ $excludeFields = array(
 );
 foreach ($changeSets as $index => $change):
     /* @var Upavadi_Update_ChangeSet $change  */
+    $tree = $change->getHeadPersonTree();
     $headPerson = $tngcontent->getPerson(
-        $change->getHeadPersonId()
+        $change->getHeadPersonId(),
+        $tree
     );
     ?>
     <br/>

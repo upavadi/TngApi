@@ -65,7 +65,7 @@ class Upavadi_Repository_TngRepository
         var_dump($db->error);
     }
 
-    public function updatePerson($id, $fields)
+    public function updatePerson($id, $fields, $tree)
     {
         $tables = $this->content->getTngTables();
         $sql = "UPDATE {$tables['people_table']} SET ";
@@ -77,13 +77,14 @@ class Upavadi_Repository_TngRepository
             $args[] = & $fields[$name];
         }
         $sql .= join(', ', $sets);
-        $sql .= ' WHERE personID = ?';
+        $sql .= ' WHERE personID = ? AND gedcom = ?';
         $args[] = & $id;
+        $args[] = & $tree;
         $this->execute($sql, $args);
         unset($this->people[$id]);
     }
 
-    public function updateFamily($id, $fields)
+    public function updateFamily($id, $fields, $tree)
     {
         $db = $this->content->getDbLink();
         $tables = $this->content->getTngTables();
@@ -95,13 +96,14 @@ class Upavadi_Repository_TngRepository
             $args[] = & $fields[$name];
         }
         $sql .= join(', ', $sets);
-        $sql .= ' WHERE familyID = ?';
+        $sql .= ' WHERE familyID = ? AND gedcom = ?';
         $args[] = & $id;
+        $args[] = & $tree;
         $this->execute($sql, $args);
         unset($this->family[$id]);
     }
 
-    public function updateChildren($id, $fields)
+    public function updateChildren($id, $fields, $tree)
     {
         $db = $this->content->getDbLink();
         $tables = $this->content->getTngTables();
@@ -113,8 +115,9 @@ class Upavadi_Repository_TngRepository
             $args[] = & $fields[$name];
         }
         $sql .= join(', ', $sets);
-        $sql .= ' WHERE personId = ?';
+        $sql .= ' WHERE personId = ? AND gedcom = ?';
         $args[] = & $id;
+        $args[] = & $tree;
         $this->execute($sql, $args);
         unset($this->childFamilies[$id]);
     }
@@ -266,7 +269,7 @@ class Upavadi_Repository_TngRepository
         return $xnoteId;
     }
 
-    public function updateNote($id, $fields)
+    public function updateNote($id, $fields, $tree)
     {
         if (!count($fields)) {
             return;
@@ -281,8 +284,9 @@ class Upavadi_Repository_TngRepository
             $args[] = & $fields[$name];
         }
         $sql .= join(', ', $sets);
-        $sql .= ' WHERE ID = ?';
+        $sql .= ' WHERE ID = ? AND gedcom = ?';
         $args[] = & $id;
+        $args[] = & $tree;
         $this->execute($sql, $args);
         unset($this->notes[$id]);
     }
@@ -358,7 +362,7 @@ class Upavadi_Repository_TngRepository
         return $newId;
     }
 
-    public function updateEvent($id, $fields)
+    public function updateEvent($id, $fields, $tree)
     {
         if (!count($fields)) {
             return;
@@ -373,8 +377,9 @@ class Upavadi_Repository_TngRepository
             $args[] = & $fields[$name];
         }
         $sql .= join(', ', $sets);
-        $sql .= ' WHERE eventID = ?';
+        $sql .= ' WHERE eventID = ? AND gedcom = ?';
         $args[] =& $id;
+        $args[] =& $tree;
         $this->execute($sql, $args);
         unset($this->events[$id]);
     }

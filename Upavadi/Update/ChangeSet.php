@@ -239,6 +239,11 @@ class Upavadi_Update_ChangeSet
         return $this->userSubmission['personID'];
     }
 
+    public function getHeadPersonTree()
+    {
+        return $this->userSubmission['gedcom'];
+    }
+    
     public function getFatherId()
     {
         $familyId = $this->userSubmission['famc'];
@@ -373,26 +378,27 @@ class Upavadi_Update_ChangeSet
         }
         $entity = $change['type'];
         $fields = $this->replaceIds($change['entity'], $ids);
+        $gedcom = $headPerson['gedcom'];
         switch ($entity) {
             case 'people':
                 $fields['changedate'] = $this->userSubmission['datemodified'];
                 $fields['changedby'] = $this->userSubmission['tnguser'];
-                $this->repo->updatePerson($id, $fields);
+                $this->repo->updatePerson($id, $fields, $gedcom);
                 break;
             case 'family':
                 $fields['changedate'] = $this->userSubmission['datemodified'];
                 $fields['changedby'] = $this->userSubmission['tnguser'];
-                $this->repo->updateFamily($id, $fields);
+                $this->repo->updateFamily($id, $fields, $gedcom);
                 break;
             case 'children':
-                $this->repo->updateChildren($id, $fields);
+                $this->repo->updateChildren($id, $fields, $gedcom);
                 break;
             case 'notes':
                 unset($fields['persfamID']);
-                $this->repo->updateNote($id, $fields);
+                $this->repo->updateNote($id, $fields, $gedcom);
                 break;
             case 'events':
-                $this->repo->updateEvent($id, $fields);
+                $this->repo->updateEvent($id, $fields, $gedcom);
                 break;
         }
     }
