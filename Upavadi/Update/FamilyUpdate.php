@@ -267,7 +267,9 @@ class Upavadi_Update_FamilyUpdate
     public function addFields($records, $fields)
     {
         $newRecords = array();
-
+        if (!is_array($records)) {
+            return $newRecords;
+        }
         foreach ($records as $record) {
             $newRecords[] = array_merge($record, $fields);
         }

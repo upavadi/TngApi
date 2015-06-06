@@ -18,6 +18,7 @@ class Upavadi_Update_FamilyAdd extends Upavadi_Update_FamilyUpdate
             $child['famc'] = 'NewSpouseFamily';
             $child['familyID'] = 'NewSpouseFamily';
             $child['order'] = ($index + 1);
+            $child['parentorder'] = 1;
             $data['family'][1]['child'][$index] = $child;
         }
 

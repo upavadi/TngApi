@@ -639,7 +639,7 @@ function initChildren(order) {
 		var rows=$('#children_' + order).find('tr.child');
 		var idx=rows.length;
 		if (idx) {
-			clone=rows[idx-1].cloneNode(true);
+                    clone=rows[idx-1].cloneNode(true);
 		}			
 	}
 	cloneRow();
@@ -662,6 +662,9 @@ function initChildren(order) {
                 i=0;
 		while(inp=inputs[i++]) {
 			inp.name=inp.name.replace(/\]\[\d\]/g, '][' + idx + ']');
+                        if (inp.name.match(/\[order\]/)) {
+                            $(inp).val(idx + 1);
+                        }
                         if ($(inp).prop('type') === 'hidden') {
                             continue;
                         }
@@ -673,8 +676,8 @@ function initChildren(order) {
 			sel.name=sel.name.replace(/\]\[\d\]/g, '][' + idx + ']');
 			sel.selectedItem = 0;
 		}
-	var tbo=document.getElementById('children_' + order).getElementsByTagName('tbody')[0];
-	tbo.appendChild(newclone);
+                var tbo=document.getElementById('children_' + order).getElementsByTagName('tbody')[0];
+                tbo.appendChild(newclone);
 	}
 	function deleteLastRow() {
 		var tbo=document.getElementById('children_' + order).getElementsByTagName('tbody')[0];
@@ -754,6 +757,7 @@ function initChildren(order) {
 	</thead>
 	<tbody>
 <?php
+        $childorder = -1;
 	foreach ($children as $index => $child):
 	
 		$classes = array('child');
@@ -768,7 +772,6 @@ function initChildren(order) {
 		$childorder = $child['ordernum'];
 		$childliving = $childPerson['living'];
 		$childsex = $childPerson['sex'];
-		
 		if ($child['haskids']) {
 			$classes[] = 'haskids';
 		}
@@ -787,6 +790,7 @@ function initChildren(order) {
 				$childRow = $tngcontent->getSpEvent($child['personID'], $tree);
 				
 				$childevent = $childRow['info'];
+                                $childeventId = $childRow['eventID'];
 				$childped = $tngcontent->getSpEvent($family['husband'], $tree);
 				$fatherChildevent = $childped['info'];
 				}
@@ -812,6 +816,8 @@ function initChildren(order) {
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][order]" value="<?php echo $child['ordernum'] ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][spouseorder]" value="<?php echo $family[$sortBy] ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][event]" value="<?php echo $childevent ?>" />
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][eventID]" value="<?php echo $childeventId ?>" />
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][eventTypeID]" value="<?php echo $EventTypeID ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][haskids]" value="<?php echo $child['haskids'] ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][parentorder]" value="<?php echo $child['parentorder'] ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][living]" value="<?php echo $child['living'] ?>" />
@@ -846,14 +852,17 @@ function initChildren(order) {
 		//echo $childID. "order=". $order;
 		?>
 	<script>
-initChildren(<?php echo $order; ?>);
-</script>	
+        $(function () {
+            initChildren(<?php echo $order; ?>);
+        });
+        </script>	
 		<tr class="child">
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][personID]" value="<?php echo $childID ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][familyID]" value="<?php echo $family['familyID'] ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][order]" value="<?php echo $childorder ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][spouseorder]" value="<?php echo $family[$sortBy] ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][event]" value="<?php echo $childevent ?>" />
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][eventTypeID]" value="<?php echo $EventTypeID ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][haskids]" value="0" size="12"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][parentorder]" value="<?php echo $child['parentorder'] ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][famc]" value="<?php echo $family['familyID'] ?>"/>

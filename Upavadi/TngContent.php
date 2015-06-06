@@ -10,6 +10,7 @@ class Upavadi_TngContent
     protected $sortBy = null;
     protected $tree;
     protected $custom;
+
     /**
      * @var Upavadi_Shortcode_AbstractShortcode[]
      */
@@ -35,11 +36,12 @@ class Upavadi_TngContent
     {
         $this->custom = $custom;
     }
-    
+
     public function getCustom()
     {
         return $this->custom;
     }
+
     /**
      * Add shortcodes
      */
@@ -65,7 +67,7 @@ class Upavadi_TngContent
     {
         return esc_attr(get_option('tng-base-tng-path'));
     }
-    
+
     public function getTngTables()
     {
         return $this->tables;
@@ -164,7 +166,7 @@ class Upavadi_TngContent
         register_setting('tng-api-options', 'tng-api-db-user');
         register_setting('tng-api-options', 'tng-api-db-password');
         register_setting('tng-api-options', 'tng-api-db-database');
-		register_setting('tng-api-options', 'tng-api-drop-table');
+        register_setting('tng-api-options', 'tng-api-drop-table');
 
         add_settings_section('general', 'General', function() {
             
@@ -227,30 +229,43 @@ class Upavadi_TngContent
             $dbName = esc_attr(get_option('tng-api-db-database'));
             echo "<input type='text' name='tng-api-db-database' value='$dbName' />";
         }, 'tng-api', 'db');
- 
-		add_settings_section('table', 'Deactivate', function() {
+
+        add_settings_section('table', 'Deactivate', function() {
             echo "On Deactivation, Remove ALL temporary tables storing User submissions.<br /> You may want to do this if you are upgrading or permanently removing TngApi plugin.";
         }, 'tng-api');
-		add_settings_field('table-keep', 'Do not Remove. Keep data for future use', function () {
+        add_settings_field('table-keep', 'Do not Remove. Keep data for future use', function () {
             $drop = esc_attr(get_option('tng-api-drop-table'));
-        if (empty($drop)) { $drop = '0'; }
-		?>
-		<input type='radio' name='tng-api-drop-table' value='0'
-		<?php checked('0', $drop); ?>
-		/> 
-		<?php
-		}, 'tng-api', 'table');
+            if (empty($drop)) {
+                $drop = '0';
+            }
+            $checked = checked('0', $drop, false);
+            $input = <<<HTML
+    <input
+        type='radio'
+        name='tng-api-drop-table' 
+        value='0' 
+        {$checked}
+    /> 
+HTML;
+            echo $input;
+        }, 'tng-api', 'table');
         add_settings_field('table-drop', 'Remove User Submitted data', function () {
             $drop = esc_attr(get_option('tng-api-drop-table'));
-		if ($drop == null) { $drop = '0'; }
-		?>
-		<input type='radio' name='tng-api-drop-table' value='1'
-		<?php checked('1', $drop); ?>
-		/> 
-		<?php 
-        }, 'tng-api', 'table'); 
-		$result = get_option('tng-api-drop-table');
-        }
+            if (empty($drop)) {
+                $drop = '0';
+            }
+            $checked = checked('1', $drop, false);
+            $input = <<<HTML
+    <input
+        type='radio'
+        name='tng-api-drop-table' 
+        value='1' 
+        {$checked}
+    /> 
+HTML;
+            echo $input;
+        }, 'tng-api', 'table');
+    }
 
     public function adminMenu()
     {
@@ -301,7 +316,7 @@ class Upavadi_TngContent
         }
         $treeWhere = null;
         if ($gedcom) {
-            $treeWhere = ' AND gedcom = "' . $gedcom . '" AND private = 0';
+            $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
 
         $sql = <<<SQL
@@ -312,6 +327,11 @@ WHERE personID = '{$personId}'
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
+//        $userPrivate = 1;
+//        $personPrivate = $row['private'];
+//        if ($personPrivate > $userPrivate) {
+//            $row['firstname'] = 'Private';
+//        }
         return $row;
     }
 
@@ -359,7 +379,7 @@ SQL;
         $rows = array();
         while ($row = $result->fetch_assoc()) {
             $eventrows[] = $row;
-         }
+        }
 
         return $eventrows;
     }

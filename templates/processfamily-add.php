@@ -10,7 +10,7 @@ $families_table = $wpdb->prefix . "tng_families";
 $children_table = $wpdb->prefix . "tng_children";
 $notes_table = $wpdb->prefix . "tng_notes";
 $events_table = $wpdb->prefix . "tng_events";
-$update = new \Upavadi_Update_FamilyAdd($wpdb, $people_table, $families_table, $children_table, $notes_table, $events_table);
+$update = new Upavadi_Update_FamilyAdd($wpdb, $people_table, $families_table, $children_table, $notes_table, $events_table);
 $datemodified = $update->process($_POST);
 
 //SpecialEvent Identifiers
@@ -41,6 +41,24 @@ $wpdb->insert(
     'datemodified' => $datemodified,
     )
 );
+foreach ($_POST['child'] as $index => $child) {
+    $childID = 'NewChild' . ($index + 1);
+    $wpdb->insert(
+        $events_table, array(
+        'headpersonid' => $headpersonid,
+        'tnguser' => $tnguser,
+        'persfamID' => $childID,
+        'gedcom' => $gedcom,
+        'eventtypeID' => $eventtypeID,
+        'eventID' => 'SpEvent' . $childID,
+        'eventdatetr' => '',
+        'cause' => '',
+        'parenttag' => '',
+        'info' => '',
+        'datemodified' => $datemodified,
+        )
+    );
+}
 //CauseOfDeath - Spouse Identifiers
 $Spouse = array($_POST['spouse']);
 $headpersonid = $_POST['personID'];

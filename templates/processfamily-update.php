@@ -13,7 +13,7 @@ $families_table = $wpdb->prefix . "tng_families";
 $children_table = $wpdb->prefix . "tng_children";
 $events_table = $wpdb->prefix . "tng_events";
 
-$update = new \Upavadi_Update_FamilyUpdate($wpdb, $people_table, $families_table, $children_table, $events_table);
+$update = new Upavadi_Update_FamilyUpdate($wpdb, $people_table, $families_table, $children_table, $events_table);
 
 $update->process($_POST);
 //header('Location: /thank-you');
@@ -123,12 +123,14 @@ $wpdb->insert(
 $family = array($_POST['family']);
 
 foreach ($family as $array1):
+    if (!is_array($array1)) {
+        continue;
+    }
     foreach ($array1 as $array2):
         foreach ($array2 as $personType => $array3):
             foreach ($array3 as $person):
-                if ($personType == 'spouse') {
-                    $people[] = $person;
-                }
+                $people[] = $person;
+                
                 // If (is_array($_POST['spouse'])) {
                 if (empty($person['firstname'])) {
                     continue;
