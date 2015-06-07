@@ -106,7 +106,6 @@ function create_tng_tables()
 		sex varchar(22),
 		famc varchar(22),
 		living varchar(22),
-		cause varchar(90),
 		datemodified datetime,
 		PRIMARY KEY  id (id));";		
 	dbDelta($sql_people);

@@ -92,7 +92,6 @@ class Upavadi_Update_FamilyUpdate
         $famc = $this->extractFamilyId($data);
         $living = $data['living'];
         $personevent = $data['event'];
-        $cause = $data['cause'];
 
         return array(
             'personid' => $personid,
@@ -106,7 +105,6 @@ class Upavadi_Update_FamilyUpdate
             'sex' => $sex,
             'famc' => $famc,
             'living' => $living,
-            'cause' => $cause,
         );
     }
 
