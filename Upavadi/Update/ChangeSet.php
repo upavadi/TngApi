@@ -395,6 +395,7 @@ class Upavadi_Update_ChangeSet
                 break;
             case 'notes':
                 unset($fields['persfamID']);
+                unset($fields['persfamid']);
                 $this->repo->updateNote($id, $fields, $gedcom);
                 break;
             case 'events':
