@@ -64,7 +64,7 @@ class Upavadi_Update_FamilyUpdate
     public function extractFamilyId($data)
     {
         if (empty($data['famc'])) {
-            $famc = "NewParents";
+            $famc = null;
         } else {
             $famc = $data['famc'];
         }
