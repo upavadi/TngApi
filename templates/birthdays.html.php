@@ -71,10 +71,6 @@ Clicking on a name takes you to the Individual's Family Page
 	$tree = $birthday['gedcom'];
 	$firstname = $birthday['firstname'];
 	$lastname = $birthday['lastname'];
-	if ($birthday['private'] == '1') {
-		$firstname = "Private:";
-		$lastname = " Details withheld";
-	}
 	?>
         <tr>
             <td class="tdfront"><a href="/family/?personId=<?php echo $birthday['personid'];?>&amp;tree=<?php echo $tree; ?>">

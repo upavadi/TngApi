@@ -327,11 +327,12 @@ WHERE personID = '{$personId}'
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
-//        $userPrivate = 1;
-//        $personPrivate = $row['private'];
-//        if ($personPrivate > $userPrivate) {
-//            $row['firstname'] = 'Private';
-//        }
+        $userPrivate = $user['allow_private'];
+        $personPrivate = $row['private'];
+        if ($personPrivate > $userPrivate) {
+            $row['firstname'] = 'Private:';
+			$row['lastname'] = ' Details withheld';	
+        }
         return $row;
     }
 
@@ -350,7 +351,7 @@ SQL;
 
         $treeWhere = null;
         if ($gedcom) {
-            $treeWhere = ' AND gedcom = "' . $gedcom . '" AND private = 0';
+            $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
         $sql = <<<SQL
 SELECT *
@@ -360,6 +361,12 @@ WHERE (husband = '{$personId}' or wife = '{$personId}') {$treeWhere}
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
+        $userPrivate = $user['allow_private'];
+        $familyPrivate = $row['private'];
+        if ($personPrivate > $userPrivate) {
+            $row['marrdate'] = 'Private';
+			$row['marrplace'] = ' Details withheld';	
+        }
         return $row;
     }
 
@@ -495,7 +502,7 @@ SQL;
         }
         $treeWhere = null;
         if ($gedcom) {
-            $treeWhere = ' AND gedcom = "' . $gedcom . '" AND private = 0';
+            $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
         $sql = <<<SQL
 SELECT *
@@ -539,6 +546,8 @@ SQL;
             $personId = $this->currentPerson;
         }
         $user = $this->getTngUser();
+        $userPrivate = $user['allow_private'];
+        
         $gedcom = $user['gedcom'];
         // If we are searching, enter $tree value
         if ($tree) {
@@ -548,6 +557,9 @@ SQL;
         if ($gedcom) {
             $treeWhere = ' AND n1.gedcom = "' . $gedcom . '"';
         }
+        $person = $this->getPerson($personId, $gedcom);
+        $personPrivate = $person['private'];
+        
         $sql = <<<SQL
 SELECT nl.ID as notelinkID, nl.*, xl.*
 FROM   {$this->tables['notelinks_table']} as nl
@@ -558,7 +570,13 @@ SQL;
         $result = $this->query($sql);
 
         $rows = array();
+        if ($personPrivate > $userPrivate) {
+            return $rows;
+        }
         while ($row = $result->fetch_assoc()) {
+            if ($row['secret']) {
+                continue;
+            }
             $rows[] = $row;
         }
         return $rows;
@@ -571,17 +589,25 @@ SQL;
             $personId = $this->currentPerson;
         }
         $user = $this->getTngUser();
+        $userPrivate = $user['allow_private'];
         $gedcom = $user['gedcom'];
         // If we are searching, enter $tree value
         if ($tree) {
             $gedcom = $tree;
         }
+        $person = $this->getPerson($personId, $gedcom);
+        $personPrivate = $person['private'];
+        
+        if ($personPrivate > $userPrivate) {
+            return array();
+        }
         $treeWhere = null;
         if ($gedcom) {
             $treeWhere = ' AND m.gedcom = "' . $gedcom . '"';
         }
-        $sql = <<<SQL
-		SELECT *
+        
+	$sql = <<<SQL
+SELECT *
 FROM   {$this->tables['medialinks_table']} as ml
     LEFT JOIN {$this->tables['media_table']} AS m
               ON ml.mediaID = m.mediaID
@@ -600,10 +626,20 @@ SQL;
             $personId = $this->currentPerson;
         }
         $user = $this->getTngUser();
+        $userPrivate = $user['allow_private'];
         $gedcom = $user['gedcom'];
         // If we are searching, enter $tree value
         if ($tree) {
             $gedcom = $tree;
+        }
+        $persFam = $this->getPerson($personId, $gedcom);
+        if (!$persFam) {
+            $persFam = $this->getFamilyById($personId, $gedcom);
+            
+        }
+        $persFamPrivate = $persFam['private'];
+        if ($persFamPrivate > $userPrivate) {
+            return array();
         }
         $treeWhere = null;
         if ($gedcom) {
@@ -626,6 +662,7 @@ SQL;
         while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
+        
         return $rows;
     }
 
@@ -723,7 +760,7 @@ SQL;
         }
         $treeWhere = null;
         if ($gedcom) {
-            $treeWhere = ' AND gedcom = "' . $gedcom . '" AND private = 0';
+            $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
 
         $sql = <<<SQL
@@ -738,13 +775,20 @@ SQL;
         $rows = array();
 
         while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
-        if ($sortBy) {
-            $this->sortBy = $sortBy;
-            usort($rows, array($this, 'sortRows'));
-        }
-        return $rows;
+			$userPrivate = $user['allow_private'];
+			$familyPrivate = $row['private'];
+			if ($familyPrivate > $userPrivate) {
+				$row['marrdate'] = 'Private';
+				$row['marrplace'] = ' Private';	
+			}
+			
+			if ($sortBy) {
+				$this->sortBy = $sortBy;
+				usort($rows, array($this, 'sortRows'));
+			}
+			$rows[] = $row;
+		}	
+		return $rows;
     }
 
     public function sortRows($a, $b)
@@ -769,7 +813,7 @@ SQL;
         }
         $treeWhere = null;
         if ($gedcom) {
-            $treeWhere = ' AND gedcom = "' . $gedcom . '" AND private = 0';
+            $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
 
         $sql = <<<SQL
@@ -790,9 +834,16 @@ SQL;
 
         $rows = array();
         while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
+            $userPrivate = $user['allow_private'];
+			$birthdayPrivate = $row['private'];
+			if ($birthdayPrivate > $userPrivate) {
+				$row['firstname'] = 'Private:';
+				$row['lastname'] = ' Details withheld';	
+			
+			}
+			$rows[] = $row;
         }
-        return $rows;
+		return $rows;
     }
 
     public function getDeathAnniversaries($month)
@@ -805,7 +856,7 @@ SQL;
         }
         $treeWhere = null;
         if ($gedcom) {
-            $treeWhere = ' AND gedcom = "' . $gedcom . '" AND private = 0';
+            $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
 
         $sql = <<<SQL
@@ -846,7 +897,7 @@ SQL;
         }
         $treeWhere = null;
         if ($gedcom) {
-            $treeWhere = ' AND gedcom = "' . $gedcom . '" AND private = 0';
+            $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
 
         $sql = <<<SQL
@@ -918,7 +969,7 @@ SQL;
         }
         $treeWhere = null;
         if ($gedcom) {
-            $treeWhere = ' AND f.gedcom = "' . $gedcom . '" AND f.private = 0';
+            $treeWhere = ' AND f.gedcom = "' . $gedcom . '"';
         }
         $sql = <<<SQL
 SELECT
@@ -952,8 +1003,20 @@ SQL;
 
         $rows = array();
         while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
+            $userPrivate = $user['allow_private'];
+			$manniversaryPrivate1 = $row['private1'];
+			$manniversaryPrivate2 = $row['private2'];
+			if ($manniversaryPrivate1 > $userPrivate) {
+				$row['firstname1'] = 'Private1:';
+				$row['lastname1'] = ' Details withheld';	
+			}			
+			if ($manniversaryPrivate2 > $userPrivate) {
+				$row['firstname2'] = 'Private2:';
+				$row['lastname2'] = ' Details withheld';	
+			}			
+		$rows[] = $row;
+		}
+		
         return $rows;
     }
 
@@ -982,7 +1045,7 @@ SQL;
             } else {
                 $where .= ' AND ';
             }
-            $where .= ' gedcom = "' . $gedcom . '" AND private = 0';
+            $where .= ' gedcom = "' . $gedcom . '"';
         }
 
         $sql = <<<SQL
@@ -996,8 +1059,15 @@ SQL;
         $result = $this->query($sql);
 
         while ($row = $result->fetch_assoc()) {
-            $rows[] = $row;
-        }
+            $userPrivate = $user['allow_private'];
+			$searchPrivate = $row['private'];
+			if ($searchPrivate > $userPrivate) {
+				$row['firstname'] = 'Private:';
+				$row['lastname'] = ' Details withheld';	
+			
+			}
+			$rows[] = $row;
+		}
         return $rows;
     }
 

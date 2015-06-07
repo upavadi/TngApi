@@ -75,14 +75,6 @@ Clicking on a name takes you to the Individual's Family Page.</br>
 		$lastname1 = $manniversary['lastname1'];
 		$firstname2 = $manniversary['firstname2'];
 		$lastname2 = $manniversary['lastname2'];
-	if ($manniversary['private1'] == '1') {
-		$firstname1 = "Private: ";
-		$lastname1 = "Details withheld";
-	}
-	if ($manniversary['private2'] == '1') {
-		$firstname2 = "Private: ";
-		$lastname2 = "Details withheld";
-	}
 	?>
 		<tr>
 			<td class="tdfront"><a href="/family/?personId=<?php echo $manniversary['personid1'];?>&amp;tree=<?php echo $tree; ?>">

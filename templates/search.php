@@ -43,10 +43,10 @@ if (!count($results)): ?>
 	$tree = $result['gedcom'];
 	$firstname = $result['firstname'];
 	$lastname = $result['lastname'];
-	if ($result['private'] == '1') {
-		$firstname = "Private:";
-		$lastname = " Details withheld";
-	}
+	//if ($result['private'] == '1') {
+	//	$firstname = "Private:";
+	//	$lastname = " Details withheld";
+	//}
 	?>
 	<tr>
 		<td class="tdfront">
