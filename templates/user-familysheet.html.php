@@ -63,8 +63,12 @@ foreach ($changeSets as $index => $change):
             if ($name == " ") {
                 $name = "New Ref: " . $id;
             }
+            $persFamID = null;
             $fields = array();
             foreach ($entity as $field => $update) {
+                if ($field === 'persfamid') {
+                    $persFamID = $update['new'];
+                }
                 if ($update['type'] == 'exclude') {
                     continue;
                 }
@@ -79,6 +83,13 @@ foreach ($changeSets as $index => $change):
             }
             if (!count($fields)) {
                 continue;
+            }
+            if ($persFamID) {
+                $persFam = $diff['people'][$persFamID];
+                $persFamName = $persFam['firstname']['new'] . ' ' . $persFam['lastname']['new'];
+                if ($persFamName !== ' ') {
+                    $name .= '<br />for ' . $persFamName;
+                }
             }
             ?>
             <table width="100%" class="form-table">
