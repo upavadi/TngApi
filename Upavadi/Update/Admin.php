@@ -439,7 +439,7 @@ class Upavadi_Update_Admin
         $changeSet->apply($updates);
 //        echo "</pre>";
         $url = admin_url('admin.php?page=tng_api_submission_view&id=' . $changeSet->getId());
-//        header('Location: ' . $url);
+        header('Location: ' . $url);
         exit;
     }
 

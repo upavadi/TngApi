@@ -3,7 +3,7 @@ require_once '../../../../wp-load.php';
 require_once __DIR__ . '/../autoload.php';
 require_once '../../../../wp-config.php';
 
-//header('Location: /thank-you');
+header('Location: /thank-you');
 //error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

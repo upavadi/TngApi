@@ -1,6 +1,6 @@
 <?php
 require_once '../../../../wp-load.php';
-//header('Location: /thank-you');
+header('Location: /thank-you');
 //this the original
 
 global $wpdb;
