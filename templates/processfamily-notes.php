@@ -45,7 +45,6 @@ $wpdb->insert(
     'sex' => $sex,
     'famc' => $famc,
     'living' => $living,
-    'cause' => $cause,
     'datemodified' => $datemodified,
     )
 );
