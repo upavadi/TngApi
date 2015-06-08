@@ -79,11 +79,8 @@ Here you'll need to specify:
  -	<b>TNG Integration Path:</b> If you would like to show links to TNG in Family page, enter
  the location of TNG directory here. Leave blank to hide the links. ( such as tng or genealogy)
  -	<b>TNG Collection ID for Photo Uploads:</b> Before you enter this, refer to the section, Image Upload, below
-<<<<<<< HEAD
- -	<b>TNG Event to Track:</b> If you would like to track a customized field or event, you may create this as a special event type (TNG Admin> Custom Event Types > Add New) or use an existing one. Select this event in the drop down list. This feature may be turned off by selecting ‘Do not Track’
-=======
- -	<b>TNG Event to Track:</b> If you would like to track a customized field or event, you may create this as a special event type (TNG Admin> Custom Event Types > Add New) or use an existing one. Select this event in the drop down list. This feature may be turned off by selecting â€˜Do not Trackâ€™
->>>>>>> d86db815e37e5f9fd05764c9ea373dd73f38d789
+
+ -	<b>TNG Event to Track:</b> If you would like to track a customized field or event, you may create this as a special event type (TNG Admin> Custom Event Types > Add New) or use an existing one. Select this event in the drop down list. This feature may be turned off by selecting <b>Do not track.</b>
  -	<b>Your Database connection settings:</b>
   -	Host Name
   -	User Name
@@ -111,11 +108,8 @@ There are a number of useful shortcodes for you to play with. You can find them 
 <tr>
 <td>3</td>
 <td>[upavadi_pages_familyform]</td>
-<<<<<<< HEAD
 <td>Update details of Person’s Family</td>
-=======
 <td>Update details of Personâ€™s Family</td>
->>>>>>> d86db815e37e5f9fd05764c9ea373dd73f38d789
 </tr>
 <tr>
 <td>4</td>
@@ -234,11 +228,7 @@ Pending submissions gives a list of submissions with User name, affected person 
 
  - The page is divided in sections. You will have to go through each section and Accept changes you approve.
   - Person - Events and Notes ( Events are special event and cause of death )
-<<<<<<< HEAD
   - Father – Mother and events
-=======
-  - Father â€“ Mother and events
->>>>>>> d86db815e37e5f9fd05764c9ea373dd73f38d789
   - Spouse - Events and Notes.
   - Family
   - Children
