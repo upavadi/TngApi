@@ -7,7 +7,7 @@ The code is licenced under the [MIT licence](http://opensource.org/licenses/MIT)
 
 ## Introduction
 The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly with [TNG ( The Next Generation of Genealogy Sitebuilding )](http://www.tngsitebuilding.com/)  to display genealogy data in Wordpress pages.
-#####The plugin has several useful features:
+####The plugin has several useful features:
  - Simple access to the TNG database from within Wordpress.
  - A convenient collection of shortcodes and functions for integrating TNG data into your Wordpress site.
  -	A convenient way for users to submit data-additions and data-changes
@@ -37,13 +37,13 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ##Change Log
- - #####3.0.2
+ - ####3.0.2
  - Update README.md
  - Update Version Number
 
- - #####3.0.1
+ - ####3.0.1
  - Bump up version number and tidy up
- - #####3.0
+ - ####3.0
  - Temporary Wordpress tables to hold User Submitted Data
  - User Submission Page to display User Data
  - Admin Submission Page to User Submissions
@@ -56,13 +56,13 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  - Option to remove wordpress temporary tables on deactivation
  - Bug fixes
 
- - #####1.3
+ - ####1.3
  - Tab Shortcode
  - Image Upload Shortcode
  - Default Image upload from Family Page
  - Date Selector for Event Reports
  - Bug fixes
- - #####Initial Release
+ - ####Initial Release
 
 ## Installation
 This plugin assumes that:
@@ -108,8 +108,7 @@ There are a number of useful shortcodes for you to play with. You can find them 
 <tr>
 <td>3</td>
 <td>[upavadi_pages_familyform]</td>
-<td>Update details of Person’s Family</td>
-<td>Update details of Personâ€™s Family</td>
+<td>Update details of Persons Family</td>
 </tr>
 <tr>
 <td>4</td>
@@ -234,7 +233,7 @@ Pending submissions gives a list of submissions with User name, affected person 
   - Children
     - A change is displayed with a flag. 
     - New data is displayed with a +. Here you have an opportunity to check and modify the submission. Accept>all will select this section for update.
-- #####IMPORTANT
+- ####IMPORTANT
 If you are selecting an event or Notes section for update, you must Accept ALL. As TNG stores this data differently, it is essential that all the data for the item is submitted.
 
  - Once you have checked the submission, you may Save Accepted Changes. 
