@@ -45,7 +45,7 @@ foreach ($changeSets as $index => $change):
         <?php
         // var_dump($diff);
         foreach ($entities as $id => $entity):
-            //var_dump($entity);
+            //var_dump($ent0ity);
             $empty = true;
             foreach ($entity as $field => $update):
                 if ($update['type'] != 'exclude') {
@@ -84,14 +84,26 @@ foreach ($changeSets as $index => $change):
             if (!count($fields)) {
                 continue;
             }
+            
+            $persFamName = null;
             if ($persFamID) {
                 $persFam = $diff['people'][$persFamID];
-                $persFamName = $persFam['firstname']['new'] . ' ' . $persFam['lastname']['new'];
+                $persFamName = join(' ', array(
+                    $persFam['firstname']['new'],
+                    $persFam['lastname']['new']
+                ));
                 if ($persFamName !== ' ') {
                     $name .= '<br />for ' . $persFamName;
                 }
             }
-            ?>
+            if (count($fields) == 1) {
+                $vals = array_values($fields);
+                if ($vals[0]['type'] == 'add' &&
+                    $persFamName === ' ') {
+                    continue;
+                }
+            }
+        ?>
             <table width="100%" class="form-table">
                 <thead>
                     <tr>
