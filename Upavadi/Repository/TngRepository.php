@@ -52,17 +52,19 @@ class Upavadi_Repository_TngRepository
                 $types .= 's';
             }
         }
-        var_dump($sql);
+        // var_dump($sql);
         $stmnt = $db->prepare($sql);
         if (!$stmnt) {
             var_dump($db->error);
             return;
         }
         array_unshift($args, $types);
-        var_dump(array($sql, $args));
+        // var_dump(array($sql, $args));
         call_user_func_array(array($stmnt, 'bind_param'), $args);
-        $stmnt->execute();
-        var_dump($db->error);
+        
+        if (!$stmnt->execute()) {
+            var_dump($db->error);
+        }
     }
 
     public function updatePerson($id, $fields, $tree)

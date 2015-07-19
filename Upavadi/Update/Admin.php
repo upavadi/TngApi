@@ -424,7 +424,15 @@ class Upavadi_Update_Admin
         if (isset($post['discard'])) {
             $changeSet->discard();
             $url = admin_url('admin.php?page=tng_api_submissions');
-            header('Location: ' . $url);
+            if (!headers_sent()) {
+                header('Location: ' . $url);
+            } else {
+            ?>
+<script>
+window.location.assign("<?php echo $url; ?>");
+</script>
+        <?php
+            }
             exit;
         }
         if (!isset($post['accept'])) {
@@ -439,7 +447,15 @@ class Upavadi_Update_Admin
         $changeSet->apply($updates);
 //        echo "</pre>";
         $url = admin_url('admin.php?page=tng_api_submission_view&id=' . $changeSet->getId());
-        header('Location: ' . $url);
+        if (!headers_sent()) {
+                header('Location: ' . $url);
+        } else {
+        ?>
+<script>
+window.location.assign("<?php echo $url; ?>");
+</script>
+    <?php
+        }
         exit;
     }
 

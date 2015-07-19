@@ -484,13 +484,13 @@ class Upavadi_Update_ChangeSet
 
     public function updateChangeIds($newIds)
     {
-        var_dump($newIds);
+        // var_dump($newIds);
         $ids = array();
         foreach ($newIds as $id => $newId) {
             list($entity, $id) = explode('::', $id);
             $ids[$id] = $newId;
         }
-        var_dump($ids);
+        // var_dump($ids);
         $updates = array();
         foreach ($this->changes as $entity => $entities) {
             $pkId = null;
@@ -539,7 +539,7 @@ class Upavadi_Update_ChangeSet
             }
         }
 
-        var_dump($updates);
+        // var_dump($updates);
         foreach ($updates as $table => $records) {
             foreach ($records as $id => $fields) {
                 list($pk, $id) = unserialize($id);
