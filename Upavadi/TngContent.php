@@ -20,7 +20,7 @@ class Upavadi_TngContent
 
     protected function __construct()
     {
-        
+
     }
 
     public static function instance()
@@ -77,6 +77,9 @@ class Upavadi_TngContent
     {
         $tngPath = $this->getTngPath();
         $configPath = $tngPath . DIRECTORY_SEPARATOR . "config.php";
+        if (!file_exists($configPath)) {
+            return;
+        }
         include $configPath;
         $vars = get_defined_vars();
         foreach ($vars as $name => $value) {
@@ -128,7 +131,6 @@ class Upavadi_TngContent
 
         // get_currentuserinfo();
 
-
         $dbHost = esc_attr(get_option('tng-api-db-host'));
         $dbUser = esc_attr(get_option('tng-api-db-user'));
         $dbPassword = esc_attr(get_option('tng-api-db-password'));
@@ -138,6 +140,10 @@ class Upavadi_TngContent
         mysqli_select_db($db, $dbName);
         $this->db = $db;
         $this->initTables();
+
+        if (!$this->tables['users_table']) {
+            return $this;
+        }
 
         $tng_user_name = $this->getTngUserName();
         $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
@@ -169,7 +175,7 @@ class Upavadi_TngContent
         register_setting('tng-api-options', 'tng-api-drop-table');
 
         add_settings_section('general', 'General', function() {
-            
+
         }, 'tng-api');
 
         add_settings_field('tng-email', 'Notification Email Address', function () {
@@ -242,10 +248,10 @@ class Upavadi_TngContent
             $input = <<<HTML
     <input
         type='radio'
-        name='tng-api-drop-table' 
-        value='0' 
+        name='tng-api-drop-table'
+        value='0'
         {$checked}
-    /> 
+    />
 HTML;
             echo $input;
         }, 'tng-api', 'table');
@@ -258,10 +264,10 @@ HTML;
             $input = <<<HTML
     <input
         type='radio'
-        name='tng-api-drop-table' 
-        value='1' 
+        name='tng-api-drop-table'
+        value='1'
         {$checked}
-    /> 
+    />
 HTML;
             echo $input;
         }, 'tng-api', 'table');
@@ -331,7 +337,7 @@ SQL;
         $personPrivate = $row['private'];
         if ($personPrivate > $userPrivate) {
             $row['firstname'] = 'Private:';
-			$row['lastname'] = ' Details withheld';	
+			$row['lastname'] = ' Details withheld';
         }
         return $row;
     }
@@ -365,7 +371,7 @@ SQL;
         $familyPrivate = $row['private'];
         if ($personPrivate > $userPrivate) {
             $row['marrdate'] = 'Private';
-			$row['marrplace'] = ' Details withheld';	
+			$row['marrplace'] = ' Details withheld';
         }
         return $row;
     }
@@ -375,11 +381,11 @@ SQL;
     function getEventList()
     {
         $sql = <<<SQL
-    
+
 SELECT *
 FROM {$this->tables['eventtypes_table']}
 ORDER BY display
-	
+
 SQL;
         $result = $this->query($sql);
 
@@ -411,7 +417,7 @@ SQL;
             $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
         $sql = <<<SQL
-		
+
 SELECT *
 FROM {$this->tables['events_table']}
 where persfamID = '{$personId}' AND eventtypeID = '$EventID' {$treeWhere}
@@ -428,7 +434,7 @@ SQL;
     {
         $EventID = esc_attr(get_option('tng-api-tng-event'));
         $sql = <<<SQL
-		
+
 SELECT *
 FROM {$this->tables['eventtypes_table']}
 where eventtypeID = "$EventID"
@@ -457,7 +463,7 @@ SQL;
             $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
         $sql = <<<SQL
-		
+
 SELECT *
 FROM {$this->tables['events_table']}
 where persfamID = '{$personId}' AND eventtypeID = "o" AND parenttag = "DEAT" {$treeWhere}
@@ -481,7 +487,7 @@ SQL;
             $treeWhere = ' AND gedcom = "' . $gedcom . '"';
         }
         $sql = <<<SQL
-		
+
 SELECT *
 FROM {$this->tables['events_table']}
 where eventID = '{$eventId}' {$treeWhere}
@@ -547,7 +553,7 @@ SQL;
         }
         $user = $this->getTngUser();
         $userPrivate = $user['allow_private'];
-        
+
         $gedcom = $user['gedcom'];
         // If we are searching, enter $tree value
         if ($tree) {
@@ -559,7 +565,7 @@ SQL;
         }
         $person = $this->getPerson($personId, $gedcom);
         $personPrivate = $person['private'];
-        
+
         $sql = <<<SQL
 SELECT nl.ID as notelinkID, nl.*, xl.*
 FROM   {$this->tables['notelinks_table']} as nl
@@ -597,7 +603,7 @@ SQL;
         }
         $person = $this->getPerson($personId, $gedcom);
         $personPrivate = $person['private'];
-        
+
         if ($personPrivate > $userPrivate) {
             return array();
         }
@@ -605,13 +611,13 @@ SQL;
         if ($gedcom) {
             $treeWhere = ' AND m.gedcom = "' . $gedcom . '"';
         }
-        
+
 	$sql = <<<SQL
 SELECT *
 FROM   {$this->tables['medialinks_table']} as ml
     LEFT JOIN {$this->tables['media_table']} AS m
               ON ml.mediaID = m.mediaID
-where personID = '{$personId}' AND defphoto = "1" 
+where personID = '{$personId}' AND defphoto = "1"
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
@@ -635,7 +641,7 @@ SQL;
         $persFam = $this->getPerson($personId, $gedcom);
         if (!$persFam) {
             $persFam = $this->getFamilyById($personId, $gedcom);
-            
+
         }
         $persFamPrivate = $persFam['private'];
         if ($persFamPrivate > $userPrivate) {
@@ -652,9 +658,9 @@ FROM   {$this->tables['medialinks_table']} as ml
     LEFT JOIN {$this->tables['media_table']} AS m
               ON ml.mediaID = m.mediaID
 where personID = '{$personId}' AND defphoto <> 1 {$treeWhere}
-       
+
 ORDER  BY ml.ordernum
-          
+
 SQL;
         $result = $this->query($sql);
 
@@ -662,7 +668,7 @@ SQL;
         while ($row = $result->fetch_assoc()) {
             $rows[] = $row;
         }
-        
+
         return $rows;
     }
 
@@ -704,7 +710,7 @@ SQL;
 	SELECT *
 FROM {$this->tables['children_table']}
 WHERE familyID = '{$familyId}' {$treeWhere}
-ORDER BY ordernum 
+ORDER BY ordernum
 SQL;
         $result = $this->query($sql);
 
@@ -765,8 +771,8 @@ SQL;
 
         $sql = <<<SQL
 SELECT*
-		
-	
+
+
 FROM {$this->tables['families_table']}
 
 WHERE (husband = '{$personId}' {$treeWhere}) or (wife = '{$personId}' {$treeWhere})
@@ -779,15 +785,15 @@ SQL;
 			$familyPrivate = $row['private'];
 			if ($familyPrivate > $userPrivate) {
 				$row['marrdate'] = 'Private';
-				$row['marrplace'] = ' Private';	
+				$row['marrplace'] = ' Private';
 			}
-			
+
 			if ($sortBy) {
 				$this->sortBy = $sortBy;
 				usort($rows, array($this, 'sortRows'));
 			}
 			$rows[] = $row;
-		}	
+		}
 		return $rows;
     }
 
@@ -838,8 +844,8 @@ SQL;
 			$birthdayPrivate = $row['private'];
 			if ($birthdayPrivate > $userPrivate) {
 				$row['firstname'] = 'Private:';
-				$row['lastname'] = ' Details withheld';	
-			
+				$row['lastname'] = ' Details withheld';
+
 			}
 			$rows[] = $row;
         }
@@ -994,10 +1000,10 @@ FROM {$this->tables['families_table']} as f
     ON (f.husband = h.personid AND f.gedcom = h.gedcom)
     LEFT JOIN {$this->tables['people_table']} AS w
     ON (f.wife = w.personid AND f.gedcom = w.gedcom)
-WHERE  Month(f.marrdatetr) = {$month} 
+WHERE  Month(f.marrdatetr) = {$month}
 {$treeWhere}
 ORDER  BY Day(f.marrdatetr)
-          
+
 SQL;
         $result = $this->query($sql);
 
@@ -1008,15 +1014,15 @@ SQL;
 			$manniversaryPrivate2 = $row['private2'];
 			if ($manniversaryPrivate1 > $userPrivate) {
 				$row['firstname1'] = 'Private1:';
-				$row['lastname1'] = ' Details withheld';	
-			}			
+				$row['lastname1'] = ' Details withheld';
+			}
 			if ($manniversaryPrivate2 > $userPrivate) {
 				$row['firstname2'] = 'Private2:';
-				$row['lastname2'] = ' Details withheld';	
-			}			
+				$row['lastname2'] = ' Details withheld';
+			}
 		$rows[] = $row;
 		}
-		
+
         return $rows;
     }
 
@@ -1063,8 +1069,8 @@ SQL;
 			$searchPrivate = $row['private'];
 			if ($searchPrivate > $userPrivate) {
 				$row['firstname'] = 'Private:';
-				$row['lastname'] = ' Details withheld';	
-			
+				$row['lastname'] = ' Details withheld';
+
 			}
 			$rows[] = $row;
 		}
