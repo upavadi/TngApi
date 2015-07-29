@@ -380,6 +380,10 @@ SQL;
 
     function getEventList()
     {
+        if (!$this->tables['eventtypes_table']) {
+            return array();
+        }
+
         $sql = <<<SQL
 
 SELECT *
