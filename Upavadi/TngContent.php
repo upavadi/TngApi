@@ -1038,7 +1038,6 @@ SQL;
 
         $user = $this->getTngUser();
         $gedcom = $user['gedcom'];
-        echo $user;
         if ($gedcom) {
             if (!$where) {
                 $where = ' WHERE ';
