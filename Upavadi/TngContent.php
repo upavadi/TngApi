@@ -1039,7 +1039,7 @@ SQL;
         if ($searchLastName) {
             $wheres[] = "lastname LIKE '{$searchLastName}%'";
         }
-
+	// echo $user; 
         $rows = array();
         $where = null;
         if (count($wheres)) {
