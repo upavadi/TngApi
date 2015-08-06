@@ -62,10 +62,22 @@ class Upavadi_TngContent
     {
         return esc_attr(get_option('tng-api-tng-path'));
     }
+	public function getTngUrl()
+    {
+        return esc_attr(get_option('tng-api-tng-url'));
+    }
 
     public function getTngIntegrationPath()
     {
         return esc_attr(get_option('tng-base-tng-path'));
+    }
+	public function getTngPhotoFolder()
+    {
+        return esc_attr(get_option('tng-api-tng-photo-folder'));
+    }
+	public function getTngShowButtons()
+    {
+        return esc_attr(get_option('tng-api-display-buttons'));
     }
 
     public function getTngTables()
@@ -166,14 +178,16 @@ class Upavadi_TngContent
         register_setting('tng-api-options', 'tng-api-tng-event');
         register_setting('tng-api-options', 'tng-api-tng-page-id');
         register_setting('tng-api-options', 'tng-api-tng-path');
+        register_setting('tng-api-options', 'tng-api-tng-url');
         register_setting('tng-api-options', 'tng-base-tng-path');
+        register_setting('tng-api-options', 'tng-api-tng-photo-folder');
         register_setting('tng-api-options', 'tng-api-tng-photo-upload');
         register_setting('tng-api-options', 'tng-api-db-host');
         register_setting('tng-api-options', 'tng-api-db-user');
         register_setting('tng-api-options', 'tng-api-db-password');
         register_setting('tng-api-options', 'tng-api-db-database');
         register_setting('tng-api-options', 'tng-api-drop-table');
-
+		register_setting('tng-api-options', 'tng-api-display-buttons');
         add_settings_section('general', 'General', function() {
 
         }, 'tng-api');
@@ -187,15 +201,32 @@ class Upavadi_TngContent
         }, 'tng-api');
         add_settings_field('tng-path', 'TNG Path', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-path'));
-            echo "<input type='text' name='tng-api-tng-path' value='$tngPath' />";
+            echo "<input type='text' name='tng-api-tng-path' value='$tngPath' /> <br />Root Path as set in TNG Admin>Setup";
         }, 'tng-api', 'tng');
-        add_settings_field('tng-base-path', 'TNG Integration Path', function () {
+        add_settings_field('tng-url', 'URL to TNG Folder', function () {
+            $tngPath = esc_attr(get_option('tng-api-tng-url'));
+            echo "<input type='text' name='tng-api-tng-url' value='$tngPath' /><br />This is the url to TNG folder.<br /> It will be of the form http://yoursite.com/TNG folder name/
+			";
+        }, 'tng-api', 'tng');
+       add_settings_field('tng-base-path', 'TNG Integration Path', function () {
             $tngPath = esc_attr(get_option('tng-base-tng-path'));
-            echo "<input type='text' name='tng-base-tng-path' value='$tngPath' />";
+            echo "<input type='text' name='tng-base-tng-path' value='$tngPath' /><br />Enter TNG folder name here. If you are using TNG Wordpress Integration by Mark Barnes, 
+			enter the name of the page you have specified to display TNG pages within Wordpress 
+			container.
+			";
+        }, 'tng-api', 'tng');
+        add_settings_field('tng-photo-folder', 'TNG Photo Folder', function () {
+            $tngphotofolder = esc_attr(get_option('tng-api-tng-photo-folder'));
+            if ($tngphotofolder == '') {
+			$tngphotofolder = "photos";
+			}
+			echo "<input type='text' name='tng-api-tng-photo-folder' value='$tngphotofolder' /><br />Enter the name of the folder to use to get media from TNG. Default is photos";
         }, 'tng-api', 'tng');
         add_settings_field('tng-photo-upload', 'TNG Collection ID for Photo Uploads', function () {
             $tngPath = esc_attr(get_option('tng-api-tng-photo-upload'));
-            echo "<input type='text' name='tng-api-tng-photo-upload' value='$tngPath' />";
+            echo "<input type='text' name='tng-api-tng-photo-upload' value='$tngPath' /><br />User images are uploaded in to one of TNG folders with the collection name specified by you in the 
+			admin set up. Enter the name for the collection you have set up in TNG admin > media. Mine is called “My Uploads”.
+			";
         }, 'tng-api', 'tng');
         $this->init();
         $events = $this->getEventList();
@@ -214,9 +245,34 @@ class Upavadi_TngContent
                 }
                 echo "<option value='$eventId' $selected>{$event['display']}</option>";
             }
-            echo '</select>';
+            echo '</select><br />';
+			echo "if you would like to track a customized field or event, you may create 
+			this as a special event type (TNG Admin>Custom Event Types > Add New) or use an existing 
+			one. <br />Select this event in the drop down list. This feature may be turned off by selecting <b>
+			Do not Track</b>";
+			}, 'tng-api', 'tng');
+		add_settings_field('display-buttons', 'Display Buttons', function () {
+            $display = esc_attr(get_option('tng-api-display-buttons'));
+            if (empty($display)) {
+                $display = '0';
+            }
+            $checked = checked('1', $display, false);
+            $input = <<<HTML
+    <input
+        type='checkbox'
+        name='tng-api-display-buttons'
+        value='1'
+        {$checked}
+    />
+HTML;
+            echo $input;
+			echo "<br />Three buttons, My Genealogy Page, My Ancestors and My Descendents are links to TNG pages for 
+			the person displayed on Family Page.";
         }, 'tng-api', 'tng');
-        add_settings_section('db', 'Database', function() {
+           
+	
+		            
+		add_settings_section('db', 'Database', function() {
             echo "We also need to know where the TNG database lives";
         }, 'tng-api');
         add_settings_field('db-host', 'Hostname', function () {
@@ -236,7 +292,8 @@ class Upavadi_TngContent
             echo "<input type='text' name='tng-api-db-database' value='$dbName' />";
         }, 'tng-api', 'db');
 
-        add_settings_section('table', 'Deactivate', function() {
+           
+	   add_settings_section('table', 'Deactivate', function() {
             echo "On Deactivation, Remove ALL temporary tables storing User submissions.<br /> You may want to do this if you are upgrading or permanently removing TngApi plugin.";
         }, 'tng-api');
         add_settings_field('table-keep', 'Do not Remove. Keep data for future use', function () {
