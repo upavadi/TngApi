@@ -8,7 +8,17 @@
 
 	
 	$genealogy = $tngcontent->getTngIntegrationPath();
-	
+	$url = $tngcontent->getTngUrl();
+	$tngDirectory = basename($url );
+	$IntegratedPath = dirname($url). "/". $genealogy;
+	$displayButtons = $tngcontent->getTngShowButtons();
+	$photos = $tngcontent->getTngPhotoFolder();
+	$photosPath = $url. $photos;
+	echo "tngDirectory=". $tngDirectory;
+	echo "<br />Integration name=". $genealogy;
+	echo "<br/>IntegratedPath=". $IntegratedPath;
+	echo "<br/>TNG URL=". $url;
+	echo "<br/>Photos path=". $photosPath. "<br />";
 /********************************************/	
 
 	
@@ -32,19 +42,18 @@
     $name = $person['firstname'] ." ".  $person['lastname'];
     //get default media
     $defaultmedia = $tngcontent->getDefaultMedia($personId, $tree);
-    //$mediaID = "../tng/photos/". $defaultmedia['thumbpath'];
-
-	
+    	
     if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "M") {
-        $mediaID = "../tng/img/male.jpg";
+        $mediaID = "./". $tngDirectory. "/img/male.jpg";
     }
     if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "F") {
-        $mediaID = "../tng/img/female.jpg";
+        $mediaID = "./". $tngDirectory. "/img/female.jpg"; 
     }
+	
     if ($defaultmedia['thumbpath'] !== null) {
-        $mediaID = "../tng/photos/" . $defaultmedia['thumbpath'];
-    }
-    ?>
+        $mediaID = $photosPath. "/" . $defaultmedia['thumbpath'];
+	}
+	?>
     <a href="?personId=<?php echo $currentperson['personID']; ?>">
         <span style="color:#D77600; font-size:14pt">			
             <?php echo "Welcome " . $currentuser; ?>
@@ -52,7 +61,7 @@
     </a>
     <table>
         <tr>
-            <td><img src="<?php echo "/$mediaID"; ?>" class='profile-image' /></td>
+            <td><img src="<?php echo "$mediaID"; ?>" class='profile-image' /></td>
             <td>
                 <table border="0">
                     <tr>
@@ -68,13 +77,13 @@
 		<?php
                     $linkPerson = $person['personID'];
                     $tree = $person['gedcom'];
-                    if (!empty($genealogy)) {
-                        echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '../$genealogy/getperson.php?personID=$linkPerson&tree=$tree' \" />";
+                    if ($displayButtons) {
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '$IntegratedPath/getperson.php?personID=$linkPerson&tree=$tree' \" />";
                         echo '</td>';
                         echo '</tr><tr><td>';
-                        echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '../$genealogy/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '$IntegratedPath/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
                         echo '</td><td>';
-                        echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '../$genealogy/descend.php?personID=$linkPerson&tree=$tree'\" />";
+                        echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '$IntegratedPath/descend.php?personID=$linkPerson&tree=$tree'\" />";
                     }
                 ?>	                      
 
@@ -747,9 +756,9 @@ if (count($images)) {
     <?php
 }
 foreach ($images AS $personmedia):
-    $mediaID = "../tng/photos/" . $personmedia['thumbpath'];
-    echo "<a href=\"/genealogy/showmedia.php?mediaID={$personmedia['mediaID']}&medialinkID={$personmedia['medialinkID']}\">";
-    echo "<img src=\"/$mediaID\" class='person-images' border='1' height='50' border-color='#000000' alt=>\n";
+    $mediaID = $photosPath. "/". $personmedia['thumbpath'];
+    echo "<a href=\"$IntegratedPath/showmedia.php?mediaID={$personmedia['mediaID']}&medialinkID={$personmedia['medialinkID']}\">";
+    echo "<img src=\"$mediaID\" class='person-images' border='1' height='50' border-color='#000000' alt=>\n";
     echo "</a>";
 endforeach;
 ?>
