@@ -740,13 +740,13 @@ SQL;
         //$mediaID = "../tng/photos/". $defaultmedia['thumbpath'];
 
         if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "M") {
-            $mediaID = "/img/male.jpg";
+             $mediaID = "./". $tngDirectory. "/img/male.jpg";
         }
         if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "F") {
-            $mediaID = "/img/female.jpg";
+             $mediaID = "./". $tngDirectory. "/img/female.jpg";
         }
         if ($defaultmedia['thumbpath'] !== null) {
-            $mediaID = "/photos/" . $defaultmedia['thumbpath'];
+            $mediaID = $photosPath. "/" . $defaultmedia['thumbpath'];
         }
         return $this->getDomain() . $mediaID;
     }
