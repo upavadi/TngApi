@@ -37,6 +37,9 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ##Change Log
+ - ####Current Modified settings and family template to cater for varying installations
+ - ####3.04 Accept blank settings page on Activation
+ - ####3.03 Bug fixes
  - ####3.0.2
  - Update README.md
  - Update Version Number
@@ -74,11 +77,14 @@ This plugin assumes that:
 You will need the connection settings for your TNG Database handy.<br />
 After installing the plugin you can find the settings page in the Wordpress>Admin Panel>settings>TngApi.<br />
 Here you'll need to specify:
- -	<b>Notification Email address:</b> 
+ - <b>Notification Email address:</b> 
  - <b>TNG Path:</b> The location of your TNG installation as it is on disk (i.e. /path/to/tng)
- -	<b>TNG Integration Path:</b> If you would like to show links to TNG in Family page, enter
- the location of TNG directory here. Leave blank to hide the links. ( such as tng or genealogy)
- -	<b>TNG Collection ID for Photo Uploads:</b> Before you enter this, refer to the section, Image Upload, below
+ 
+ - <b>URL to TNG Folder:</b> This is the url to TNG folder. It will be of the form http://yoursite.com/TNG folder name/ 
+ - <b>TNG Integration Path:</b> Enter TNG folder name here. If you are using TNG Wordpress Integration by Mark Barnes, enter the name of the page you have specified to display TNG pages within Wordpress container. 
+ - <b>TNG Photo Folder:</b> Enter the name of the folder to use to get media from TNG. Default is photos
+
+ - <b>TNG Collection ID for Photo Uploads:</b> User images are uploaded in to one of TNG folders with the collection name specified by you in the admin set up. Enter the name for the collection you have set up in TNG admin > media. Mine is called “My Uploads”.Before you enter this, refer to the section, Image Upload, below
 
  -	<b>TNG Event to Track:</b> If you would like to track a customized field or event, you may create this as a special event type (TNG Admin> Custom Event Types > Add New) or use an existing one. Select this event in the drop down list. This feature may be turned off by selecting <b>Do not track.</b>
  -	<b>Your Database connection settings:</b>
@@ -199,7 +205,7 @@ There are 3 shortcodes for displaying events for the current month. Place these 
  
 ## Upload User Images
 - Place shortcode `[upavadi_pages_submit-image]` in your Upload page .
-- User images are uploaded in to TNG/photos/ directory with the collection name specified by you. I have called my collection, uploads. 
+- User images are uploaded in to TNG Folder/photos/ directory with the collection name specified by you. I have called my collection, uploads. 
 - To set this up,
   - Enter the name for the collection in settings >TngApi > Photo Upload mediaID.
   - In TNG admin, go to media and create a collection with same name.
