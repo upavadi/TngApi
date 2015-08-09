@@ -5,12 +5,14 @@ require_once '../autoload.php';
 $content = Upavadi_TngContent::instance();
 $content->init();
 $email = esc_attr(get_option('tng-api-email'));
-$collection = esc_attr(get_option('tng-api-tng-photo-upload'));;
+$collection = esc_attr(get_option('tng-api-tng-photo-upload'));
 
 $tables = $content->getTngTables();
 $res = $content->query('select path from ' . $tables['mediatypes_table'] . ' WHERE mediatypeID = "' . $collection . '"');
 $row = $res->fetch_assoc();
-$uploadPath = $row['path'];
+//$uploadPath = $row['path'];
+$photos = esc_attr(get_option('tng-api-tng-photo-folder'));
+$uploadPath = $photos;
 $tngPath = $content->getTngPath();
 if (!preg_match("/" . DIRECTORY_SEPARATOR . "$/", $tngPath)) {
     $tngPath .= DIRECTORY_SEPARATOR;
@@ -25,7 +27,8 @@ if (isset($_POST)) {
     $BigImageMaxSize = 500; //Image Maximum height or width
     $ThumbPrefix = "thumb_"; //Normal thumb Prefix
     $DestinationDirectory = $tngPath . $uploadPath; //specify upload directory ends with / (slash)
-    $Quality = 90; //jpeg quality
+
+	$Quality = 90; //jpeg quality
     ##########################################
     //check if this is an ajax request
     if (!isset($_SERVER['HTTP_X_REQUESTED_WITH'])) {
