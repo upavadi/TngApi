@@ -14,12 +14,13 @@
 	$displayButtons = $tngcontent->getTngShowButtons();
 	$photos = $tngcontent->getTngPhotoFolder();
 	$photosPath = $url. $photos;
+/***********************************************	
 	echo "tngDirectory=". $tngDirectory;
 	echo "<br />Integration name=". $genealogy;
 	echo "<br/>IntegratedPath=". $IntegratedPath;
 	echo "<br/>TNG URL=". $url;
 	echo "<br/>Photos path=". $photosPath. "<br />";
-/********************************************/	
+***************************************************/	
 
 	
     //get and hold current user
@@ -44,10 +45,10 @@
     $defaultmedia = $tngcontent->getDefaultMedia($personId, $tree);
     	
     if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "M") {
-        $mediaID = "./". $tngDirectory. "/img/male.jpg";
+        $mediaID = $url. "/img/male.jpg";
     }
     if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "F") {
-        $mediaID = "./". $tngDirectory. "/img/female.jpg"; 
+        $mediaID = $url. "/img/female.jpg"; 
     }
 	
     if ($defaultmedia['thumbpath'] !== null) {
