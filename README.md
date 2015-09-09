@@ -39,6 +39,7 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
 ##Change Log
  - ####	1 - Current Modified settings and family template to cater for varying installations
 		2 - BugFix: Confused personID's when children added to person with multiple marriages.
+		3 - remove special event inheritance from father
  - ####3.04 Accept blank settings page on Activation
  - ####3.03 Bug fixes
  - ####3.0.2
