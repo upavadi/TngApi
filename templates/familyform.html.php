@@ -791,9 +791,10 @@ function initChildren(order) {
 				
 				$childevent = $childRow['info'];
                                 $childeventId = $childRow['eventID'];
-				$childped = $tngcontent->getSpEvent($family['husband'], $tree);
-				$fatherChildevent = $childped['info'];
+				} else {
+				$childevent = "";
 				}
+				
 				/* This is to parse father value to child
 				if ($childevent = "" OR $childevent = "Unknown") {
 				$childevent = $fatherChildevent;

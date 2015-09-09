@@ -16,7 +16,7 @@ $events_table = $wpdb->prefix . "tng_events";
 $update = new Upavadi_Update_FamilyUpdate($wpdb, $people_table, $families_table, $children_table, $events_table);
 
 $update->process($_POST);
-header('Location: /thank-you');
+//header('Location: /thank-you');
 
 /* ------Cause of Death -------------- */
 //Person Identifiers
@@ -97,7 +97,7 @@ $eventtypeID = 0;
 $eventdatetr = '0000-00-00';
 $cause = $mother[0]['cause'];
 $causeEventID = $mother[0]['causeEventID'];
-$parenttag = 'DEAT--';
+$parenttag = 'DEAT';
 $info = '';
 
 $people[] = $mother[0];
