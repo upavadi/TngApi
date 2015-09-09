@@ -93,6 +93,10 @@ class Upavadi_Update_FamilyUpdate
         $living = $data['living'];
         $personevent = $data['event'];
 
+		if (isset($data['order']) and ($personid == "NewChild-")) {
+
+		$personid = "NewChild-". $data['spouseorder']. ".". $data['order'];
+		}
         return array(
             'personid' => $personid,
             'firstname' => $firstname,
@@ -251,8 +255,14 @@ class Upavadi_Update_FamilyUpdate
         $hasKids = $data['haskids'];
         $orderNum = $data['order'];
         $parentOrder = $data['parentorder'];
+		$spouseorder = $data['spouseorder'];
 
-        $child = array(
+		if (isset($data['order']) and ($personID == "NewChild-")) {
+		$personID = "NewChild-". $spouseorder. ".". $orderNum;
+		}
+
+
+		$child = array(
             'personid' => $personID,
             'familyID' => $familyId,
             'haskids' => $hasKids,
@@ -261,8 +271,8 @@ class Upavadi_Update_FamilyUpdate
         );
         return $child;
     }
-
-    public function addFields($records, $fields)
+	
+	public function addFields($records, $fields)
     {
         $newRecords = array();
         if (!is_array($records)) {
