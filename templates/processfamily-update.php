@@ -3,7 +3,7 @@ require_once '../../../../wp-load.php';
 require_once __DIR__ . '/../autoload.php';
 require_once '../../../../wp-config.php';
 
-header('Location: /thank-you');
+//header('Location: /thank-you');
 //error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -16,7 +16,7 @@ $events_table = $wpdb->prefix . "tng_events";
 $update = new Upavadi_Update_FamilyUpdate($wpdb, $people_table, $families_table, $children_table, $events_table);
 
 $update->process($_POST);
-//header('Location: /thank-you');
+header('Location: /thank-you');
 
 /* ------Cause of Death -------------- */
 //Person Identifiers
@@ -32,7 +32,7 @@ $causeEventID = $person[0]['causeEventID'];
 $parenttag = 'DEAT';
 $info = '';
 $datemodified = date('Y-m-d H:i:s');
-print_r($headpersonid);
+
 
 $people = array();
 $people[] = $person[0];
@@ -46,7 +46,7 @@ $wpdb->insert(
     'persfamID' => $persfamID,
     'gedcom' => $gedcom,
     'eventtypeID' => $eventtypeID,
-    'eventdatetr' => $eventdateter,
+    'eventdatetr' => $eventdatetr,
     'cause' => $cause,
     'eventID' => $causeEventID,
     'parenttag' => $parenttag,
@@ -78,7 +78,7 @@ $wpdb->insert(
     'persfamID' => $persfamID,
     'gedcom' => $gedcom,
     'eventtypeID' => $eventtypeID,
-    'eventdatetr' => $eventdateter,
+    'eventdatetr' => $eventdatetr,
     'cause' => $cause,
     'eventID' => $causeEventID,
     'parenttag' => $parenttag,
@@ -97,7 +97,7 @@ $eventtypeID = 0;
 $eventdatetr = '0000-00-00';
 $cause = $mother[0]['cause'];
 $causeEventID = $mother[0]['causeEventID'];
-$parenttag = 'DEAT';
+$parenttag = 'DEAT--';
 $info = '';
 
 $people[] = $mother[0];
@@ -110,7 +110,7 @@ $wpdb->insert(
     'persfamID' => $persfamID,
     'gedcom' => $gedcom,
     'eventtypeID' => $eventtypeID,
-    'eventdatetr' => $eventdateter,
+    'eventdatetr' => $eventdatetr,
     'cause' => $cause,
     'eventID' => $causeEventID,
     'parenttag' => $parenttag,
@@ -135,17 +135,24 @@ foreach ($family as $array1):
                 if (empty($person['firstname'])) {
                     continue;
                 }
+				if (isset($person['order']) and ($person['personID'] == "NewChild-")) {
+
+				$personid = "NewChild-". $person['spouseorder']. ".". $person['order'];
+				$person['causeEventID'] = "NewEvent". $person['spouseorder']. ".". $person['order'];
+				} else {
+				$personid = $person['personID'];
+				}
                 $headpersonid = $_POST['personID'];
                 $tnguser = $_POST['User'];
                 $gedcom = $_POST['gedcom'];
-                $persfamID = $person['personID'];
+                $persfamID = $personid;
                 $eventtypeID = 0;
                 $eventdatetr = '0000-00-00';
                 $cause = $person['cause'];
                 $causeEventID = $person['causeEventID'];
                 $parenttag = 'DEAT';
                 $info = '';
-//var_dump($spouse);
+
 //Insert CauseOfDeath - Spouse
                 $wpdb->insert(
                     $events_table, array(
@@ -154,7 +161,7 @@ foreach ($family as $array1):
                     'persfamID' => $persfamID,
                     'gedcom' => $gedcom,
                     'eventtypeID' => $eventtypeID,
-                    'eventdatetr' => $eventdateter,
+                    'eventdatetr' => $eventdatetr,
                     'cause' => $cause,
                     'eventID' => $causeEventID,
                     'parenttag' => $parenttag,
@@ -170,22 +177,33 @@ endforeach;
 
 
 foreach ($people as $index => $person) {
-    if (empty($person['eventTypeID'])) {
+    if (isset($person['order']) and ($person['personID'] == "NewChild-")) {
+
+	$personid = "NewChild-". $person['spouseorder']. ".". $person['order'];
+
+	} else {
+	$personid = $person['personID'];
+	}
+
+	if (empty($person['eventTypeID'])) {
         continue;
     }
-    if (empty($person['eventID']) && empty($person['event'])) {
+/**   
+   if (empty($person['eventID']) && empty($person['event'])) {
         continue;
     }
+**/
     if (empty($person['eventID'])) {
-        $person['eventID'] = 'NewSpEvent' . $index; 
+        $person['eventID'] = 'NewSpEvent' . $person['spouseorder']. ".". $person['order']; 
     }
+
     $row = array(
         'headpersonid' => $headpersonid,
         'tnguser' => $tnguser,
-        'persfamID' => $person['personID'],
+        'persfamID' => $personid,
         'gedcom' => $gedcom,
         'eventtypeID' => $person['eventTypeID'],
-        'eventdatetr' => $eventdateter,
+        'eventdatetr' => $eventdatetr,
         'eventID' => $person['eventID'],
         'parenttag' => '',
         'info' => $person['event'],

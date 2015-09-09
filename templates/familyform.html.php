@@ -847,9 +847,8 @@ function initChildren(order) {
 		endforeach;
 		$index += 1;
 		$childorder += 1;
-		$childID = "NewChild-". $childorder;
-		$childCauseEventID = "NewEvent-". $childorder;
-		//echo $childID. "order=". $order;
+		$childID = "NewChild-";
+		$childCauseEventID = "NewEvent". $childorder;
 		?>
 	<script>
         $(function () {
@@ -884,12 +883,15 @@ function initChildren(order) {
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][deathplace]" value="" size="10"/></td>
 		<td><input type="checkbox" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][living]" value="1" checked /></td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][cause]" value="" size="10"/></td>
+
 		<?php 
+/**** added **
 		$childorder += 1;
 		$childID = "NewChild-". $childorder;
         $childCauseEventID = "NewEvent-". $childorder;
 		//echo $childCauseEventID. "order=". $order
-		?>
+added**/		
+?>
 		</tr>
 	</table>	
 

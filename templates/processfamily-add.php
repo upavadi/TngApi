@@ -1,7 +1,7 @@
 <?php
 require_once '../../../../wp-load.php';
 require_once '../../../../wp-config.php';
-header('Location: /thank-you');
+//header('Location: /thank-you');
 global $wpdb;
 $wpdb->show_errors();
 

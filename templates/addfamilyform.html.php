@@ -448,7 +448,8 @@ $spousehusband = $spouseID;
 </div>
 </form>
  <script>
-var clone;
+ 
+ var clone;
 function cloneRow()  { // create clone of empty child line for use during session
     var rows=$('#children').find('tr.child');
     var idx=rows.length;
