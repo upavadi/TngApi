@@ -664,8 +664,8 @@ function initChildren(order) {
 		while(inp=inputs[i++]) {
 			inp.name=inp.name.replace(/\]\[\d\]/g, '][' + (idx + 1) + ']');
                         
-			$(inp).val(inp.value.replace(/^NewChild-\d+$/g, 'NewChild-' + (idx + 1)));
-			$(inp).val(inp.value.replace(/^NewEvent\d+$/g, 'NewEvent' + (idx + 1)));
+			$(inp).val(inp.value.replace(/^(NewChild-\d+\.)\d+$/g, '$1' + (idx + 1)));
+			$(inp).val(inp.value.replace(/^(NewEvent-\d+\.)\d+$/g, '$1' + (idx + 1)));
                         if (inp.name.match(/\[order\]/)) {
                             $(inp).val(idx + 1);
                         }
@@ -855,7 +855,7 @@ function initChildren(order) {
 		$index += 1;
                 $childorder += 1;
 		$childID = "NewChild-";
-		$childCauseEventID = "NewEvent". $childorder;
+		$childCauseEventID = "NewEvent-". $order . "." .$childorder;
 		?>
 	<script>
         $(function () {
@@ -863,7 +863,7 @@ function initChildren(order) {
         });
         </script>	
 		<tr class="child">
-		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][personID]" value="<?php echo $childID.$order ?>"/>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][personID]" value="<?php echo $childID.$order.'.'.$childorder ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][familyID]" value="<?php echo $family['familyID'] ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][order]" value="<?php echo $childorder ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][spouseorder]" value="<?php echo $family[$sortBy] ?>"/>
