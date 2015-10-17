@@ -93,10 +93,10 @@ class Upavadi_Update_FamilyUpdate
         $living = $data['living'];
         $personevent = $data['event'];
 
-		if (isset($data['order']) and ($personid == "NewChild-")) {
+        if (isset($data['order']) and ( $personid == "NewChild-")) {
 
-		$personid = "NewChild-". $data['spouseorder']. ".". $data['order'];
-		}
+            $personid = "NewChild-" . $data['spouseorder'] . "." . $data['order'];
+        }
         return array(
             'personid' => $personid,
             'firstname' => $firstname,
@@ -183,7 +183,7 @@ class Upavadi_Update_FamilyUpdate
     public function extractSpousesFamily($families, $data)
     {
         if (!isset($data['family'])) {
-            return $people;
+            return $families;
         }
         foreach ($data['family'] as $family) {
             foreach ($family['spouse'] as $spouse) {
@@ -232,7 +232,7 @@ class Upavadi_Update_FamilyUpdate
     public function extractChildrenFamily($data)
     {
         if (!isset($data['family'])) {
-            return $people;
+            return array();
         }
         $children = array();
 
@@ -255,14 +255,14 @@ class Upavadi_Update_FamilyUpdate
         $hasKids = $data['haskids'];
         $orderNum = $data['order'];
         $parentOrder = $data['parentorder'];
-		$spouseorder = $data['spouseorder'];
+        $spouseorder = $data['spouseorder'];
 
-		if (isset($data['order']) and ($personID == "NewChild-")) {
-		$personID = "NewChild-". $spouseorder. ".". $orderNum;
-		}
+        if (isset($data['order']) and ( $personID == "NewChild-")) {
+            $personID = "NewChild-" . $spouseorder . "." . $orderNum;
+        }
 
 
-		$child = array(
+        $child = array(
             'personid' => $personID,
             'familyID' => $familyId,
             'haskids' => $hasKids,
@@ -271,8 +271,8 @@ class Upavadi_Update_FamilyUpdate
         );
         return $child;
     }
-	
-	public function addFields($records, $fields)
+
+    public function addFields($records, $fields)
     {
         $newRecords = array();
         if (!is_array($records)) {

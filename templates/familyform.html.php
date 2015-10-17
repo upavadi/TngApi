@@ -244,6 +244,7 @@
 			if ($person['famc'] !== ''and $parents['husband'] !== '') {
 			$father = $tngcontent->getPerson($parents['husband'], $tree);
 			}
+			$parents_familyID = $parents['familyID'];
 			if ($person['famc'] == '') {
 			$person_famc = "NewParents";
 			$parents_familyID = "NewParents";
@@ -461,7 +462,7 @@
 <input type="hidden" name="parents[husborder]" value="<?php echo $parenthusborder; ?>" />
 <input type="hidden" name="parents[wifeorder]" value="<?php echo $parentwifeorder; ?>" />
 <input type="hidden" name="parents[living]" value="<?php echo $parents['parents_living']; ?>" />
-
+<input type="hidden" name="parents[familyID]" value="<?php echo $parents_familyID; ?>" />
 
 	   
   </div>                      
@@ -661,7 +662,10 @@ function initChildren(order) {
 		var inputs=newclone.getElementsByTagName('input'), inp, i=0;
                 i=0;
 		while(inp=inputs[i++]) {
-			inp.name=inp.name.replace(/\]\[\d\]/g, '][' + idx + ']');
+			inp.name=inp.name.replace(/\]\[\d\]/g, '][' + (idx + 1) + ']');
+                        
+			$(inp).val(inp.value.replace(/^NewChild-\d+$/g, 'NewChild-' + (idx + 1)));
+			$(inp).val(inp.value.replace(/^NewEvent\d+$/g, 'NewEvent' + (idx + 1)));
                         if (inp.name.match(/\[order\]/)) {
                             $(inp).val(idx + 1);
                         }
@@ -673,7 +677,7 @@ function initChildren(order) {
 		var selects=newclone.getElementsByTagName('select'), sel, i=0;
                 i=0;
 		while(sel=selects[i++]) {
-			sel.name=sel.name.replace(/\]\[\d\]/g, '][' + idx + ']');
+			sel.name=sel.name.replace(/\]\[\d\]/g, '][' + (idx + 1) + ']');
 			sel.selectedItem = 0;
 		}
                 var tbo=document.getElementById('children_' + order).getElementsByTagName('tbody')[0];
@@ -757,7 +761,7 @@ function initChildren(order) {
 	</thead>
 	<tbody>
 <?php
-        $childorder = -1;
+        $childorder = 0;
 	foreach ($children as $index => $child):
 	
 		$classes = array('child');
@@ -791,6 +795,8 @@ function initChildren(order) {
 				
 				$childevent = $childRow['info'];
                                 $childeventId = $childRow['eventID'];
+				//$childped = $tngcontent->getSpEvent($family['husband'], $tree);
+				//$fatherChildevent = $childped['info'];
 				} else {
 				$childevent = "";
 				}
@@ -847,7 +853,7 @@ function initChildren(order) {
 	
 		endforeach;
 		$index += 1;
-		$childorder += 1;
+                $childorder += 1;
 		$childID = "NewChild-";
 		$childCauseEventID = "NewEvent". $childorder;
 		?>
@@ -857,7 +863,7 @@ function initChildren(order) {
         });
         </script>	
 		<tr class="child">
-		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][personID]" value="<?php echo $childID ?>"/>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][personID]" value="<?php echo $childID.$order ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][familyID]" value="<?php echo $family['familyID'] ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][order]" value="<?php echo $childorder ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][spouseorder]" value="<?php echo $family[$sortBy] ?>"/>
@@ -871,7 +877,7 @@ function initChildren(order) {
 		
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][firstname]" value="" size="10"/></td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][surname]" value="<?php echo $husbandname; ?>" size="10"/></td>	
-		<td> <select name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][sex]" size"3">
+		<td> <select name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][sex]" size="3">
 		
 		<option value="M">M</option>
 		<option value="F">F</option>

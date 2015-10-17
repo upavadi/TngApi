@@ -120,7 +120,10 @@ $wpdb->insert(
 );
 
 //Spouse Identifiers
-$family = array($_POST['family']);
+$family = array();
+if (isset($_POST['family'])) {
+    $family = array($_POST['family']);
+}
 
 foreach ($family as $array1):
     if (!is_array($array1)) {
@@ -188,13 +191,20 @@ foreach ($people as $index => $person) {
 	if (empty($person['eventTypeID'])) {
         continue;
     }
-/**   
+
+    if (empty($person['eventID']) and isset($person['order'])) {
+	$order = 1;
+        if (isset($person['spouseorder'])) {
+            $order = $person['spouseorder'];
+        }
+        $person['eventID'] = 'NewSpEvent' . $order . ".". $person['order']; 
+    }
+ if (empty($person['eventID'])) {
+        $person['eventID'] = 'NewSpEvent' . $index; 
+    }
+     
    if (empty($person['eventID']) && empty($person['event'])) {
         continue;
-    }
-**/
-    if (empty($person['eventID'])) {
-        $person['eventID'] = 'NewSpEvent' . $person['spouseorder']. ".". $person['order']; 
     }
 
     $row = array(

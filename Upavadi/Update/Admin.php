@@ -76,10 +76,9 @@ class Upavadi_Update_Admin
         echo "</thead>";
         echo "<tbody>";
         foreach ($submissions as $submission) {
-            $person = $repo->getPerson($submission['personid']);
+            $person = $repo->getPerson($submission['headpersonid']);
 			$name = $person['firstname'] . ' ' . $person['lastname'];
-            //var_dump($name);
-			$viewUrl = admin_url('admin.php?page=tng_api_submission_view&id=' . $submission['id']);
+            $viewUrl = admin_url('admin.php?page=tng_api_submission_view&id=' . $submission['id']);
             $this->row(array(
                 $submission['id'],
                 $submission['tnguser'],
