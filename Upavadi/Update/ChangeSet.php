@@ -358,15 +358,20 @@ class Upavadi_Update_ChangeSet
     {
         $headPerson = $this->originals['people'][$this->getHeadPersonId()];
         $ids = array();
-        while (count($changes)) {
-            $change = array_shift($changes);
-            if ($change['op'] === 'update') {
-                $this->applyUpdate($change, $headPerson, $ids);
+        foreach ($changes as $change) {
+            if ($change['op'] !== 'insert') {
                 continue;
             }
             $newId = $this->applyInsert($change, $headPerson, $ids);
             $ids[$change['id']] = $newId;
         }
+        foreach ($changes as $change) {
+            if ($change['op'] !== 'update') {
+                continue;
+            }
+            $this->applyUpdate($change, $headPerson, $ids);
+        }
+        
         $this->updateChangeIds($ids);
     }
 
@@ -378,6 +383,8 @@ class Upavadi_Update_ChangeSet
         }
         $entity = $change['type'];
         $fields = $this->replaceIds($change['entity'], $ids);
+//        print_r($id);
+//        print_r($fields);
         $gedcom = $headPerson['gedcom'];
         switch ($entity) {
             case 'people':
@@ -409,6 +416,8 @@ class Upavadi_Update_ChangeSet
         $id = $change['id'];
         $entity = $change['type'];
         $fields = $this->replaceIds($change['entity'], $ids);
+//        print_r($id);
+//        print_r($fields);
         switch ($entity) {
             case 'people':
                 if (!$fields['firstname']) {

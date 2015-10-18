@@ -32,7 +32,10 @@ class Upavadi_Update_FamilyUpdate
         $people = array_filter($this->extractPeople($data));
         $families = $this->extractFamilies($data);
         $children = $this->extractChildrenFamily($data);
-
+        $personChild = $this->extractPersonChild($data);
+        if ($personChild) {
+            $children[] = $personChild;
+        }
         $people = $this->addFields($people, $keys);
         $families = $this->addFields($families, $keys);
         $children = $this->addFields($children, $keys);
@@ -53,7 +56,10 @@ class Upavadi_Update_FamilyUpdate
     public function extractPeople($data)
     {
         $people = array();
-        $people[] = $this->extractPerson($data['person']);
+        $person = $this->extractPerson($data['person']);
+        $parsonFam = $this->extractParentsFamily($data);
+        $person['famc'] = $parsonFam['familyid'];
+        $people[] = $person;
         $people[] = $this->extractPerson($data['father']);
         $people[] = $this->extractPerson($data['mother']);
         $people = $this->extractSpouses($people, $data);
@@ -140,6 +146,25 @@ class Upavadi_Update_FamilyUpdate
         return $people;
     }
 
+    
+    public function extractPersonChild($data)
+    {
+        $person = $this->extractPerson($data['person']);
+        $personFam = $this->extractParentsFamily($data);
+        $children = $this->extractChildren(array(), $data);
+        if ($personFam['familyid'] !== 'NewParentFamily') {
+            return null;
+        }
+        
+        return array(
+            'personid' => $person['personid'],
+            'familyID' => $personFam['familyid'],
+            'haskids' => count($children) > 0,
+            'ordernum' => 1,
+            'parentorder' => 1
+        );
+    }
+    
     public function extractFamilies($data)
     {
         $families = array();
@@ -151,7 +176,7 @@ class Upavadi_Update_FamilyUpdate
     public function extractParentsFamily($data)
     {
         $familyID = $this->extractFamilyId($data['person']);
-
+        
         $father = $data['father'];
         $husband = $father['personID'];
 
@@ -166,6 +191,9 @@ class Upavadi_Update_FamilyUpdate
         $wifeOrder = $data['parents']['wifeorder'];
         $living = $data['parents']['living'];
 
+        if (!$familyID && ($husband || $wife)) {
+            $familyID = 'NewParentFamily';
+        } 
         $family = array(
             'familyid' => $familyID,
             'husband' => $husband,
@@ -293,5 +321,6 @@ class Upavadi_Update_FamilyUpdate
             }
         }
     }
+
 
 }

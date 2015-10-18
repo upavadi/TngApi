@@ -124,6 +124,7 @@ class Upavadi_Update_Admin
                                     $this->showNotes($changeSet, $noteId, 'Person (' . $personId . ') - Notes');
                                 }
                                 $personId = $changeSet->getFatherId();
+                                $fatherChildren = $changeSet->getChildrenIdsByParent($personId);
                                 $this->showPerson($changeSet, $personId, 'Father (' . $personId . ')');
                                 
                                 $eventIds = $changeSet->getEventIds($personId);
@@ -132,6 +133,7 @@ class Upavadi_Update_Admin
                                 }
                                 
                                 $personId = $changeSet->getMotherId();
+                                $motherChildren = $changeSet->getChildrenIdsByParent($personId);
                                 $this->showPerson($changeSet, $personId, 'Mother (' . $personId . ')');
                                 
                                 $eventIds = $changeSet->getEventIds($personId);
@@ -141,7 +143,14 @@ class Upavadi_Update_Admin
                                 
                                 $familyId = $changeSet->getHeadPersonFamC();
                                 $this->showPersonFamily($changeSet, $familyId, 'Family (' . $familyId . ')');
-
+                                
+                                $parentChildren = array_merge($fatherChildren, $motherChildren);
+                                array_unique($parentChildren);
+                                $parentChild = array_shift($parentChildren);
+                                if ($parentChild) {
+                                    $this->showChildFamily($changeSet, $parentChild, 'Family (' . $familyId . ') - Child (' . $parentChild . ')');
+                                }
+                                
                                 $spouses = $changeSet->getSpouseIds();
                                 foreach ($spouses as $index => $personId) {
                                     $this->showPerson($changeSet, $personId, 'Spouse ' . $index . ' (' . $personId . ')');

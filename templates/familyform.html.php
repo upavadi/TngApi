@@ -669,7 +669,8 @@ function initChildren(order) {
                         if (inp.name.match(/\[order\]/)) {
                             $(inp).val(idx + 1);
                         }
-                        if ($(inp).prop('type') === 'hidden') {
+                        var type = $(inp).prop('type');
+                        if (type === 'hidden' || type === 'checkbox') {
                             continue;
                         }
                         $(inp).val(null);
@@ -834,7 +835,8 @@ function initChildren(order) {
 		
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][firstname]" value="<?php echo $childFirstName;?>" size="10"/></td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][surname]" value="<?php echo $childLastName;?>" size="10"/></td>	
-		<td>           <select name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][sex]" size"3">
+		<td>           
+                    <select name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][sex]">
 		
 		<option value="M" <?php echo $Msex; ?>>M</option>
 		<option value="F" <?php echo $Fsex; ?>>F</option>
@@ -856,6 +858,10 @@ function initChildren(order) {
                 $childorder += 1;
 		$childID = "NewChild-";
 		$childCauseEventID = "NewEvent-". $order . "." .$childorder;
+                $parentOrder = $child['parentorder'];
+                if (!$parentOrder) {
+                    $parentOrder = 1;
+                }
 		?>
 	<script>
         $(function () {
@@ -870,25 +876,26 @@ function initChildren(order) {
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][event]" value="<?php echo $childevent ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][eventTypeID]" value="<?php echo $EventTypeID ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][haskids]" value="0" size="12"/>
-		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][parentorder]" value="<?php echo $child['parentorder'] ?>" />
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][parentorder]" value="<?php echo $parentOrder ?>" />
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][famc]" value="<?php echo $family['familyID'] ?>"/>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][living]" value="0" /></td>
 		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][causeEventID]" value="<?php echo $childCauseEventID; ?>" /></td>
 		
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][firstname]" value="" size="10"/></td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][surname]" value="<?php echo $husbandname; ?>" size="10"/></td>	
-		<td> <select name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][sex]" size="3">
-		
-		<option value="M">M</option>
-		<option value="F">F</option>
-		
-		</select>
-		</td>
+                <td> 
+                    <select name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][sex]">
+
+                        <option selected="selected" value="M">M</option>
+                        <option value="F">F</option>
+
+                    </select>
+                </td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][birthdate]" value="" size="08"/></td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][birthplace]" value="" size="10"/></td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][deathdate]" value="" size="08"/></td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][deathplace]" value="" size="10"/></td>
-		<td><input type="checkbox" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][living]" value="1" checked /></td>
+		<td><input type="checkbox" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][living]" value="1" checked="checked" /></td>
 		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][cause]" value="" size="10"/></td>
 
 		<?php 

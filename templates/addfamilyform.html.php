@@ -335,7 +335,7 @@ $spousehusband = $spouseID;
 		<tr class="child">
 		<td><input type="text" name="child[0][firstname]" value="" size="10"/></td>
 		<td><input type="text" name="child[0][surname]" value="<?php echo $husbandlastname; ?>" size="10"/></td>	
-		<td> <select name="child[0][sex]" size"3">
+		<td> <select name="child[0][sex]">
 		<option value="M">M</option>
 		<option value="F">F</option>
 		</select>
@@ -344,7 +344,7 @@ $spousehusband = $spouseID;
 		<td><input type="text" name="child[0][birthplace]" value="" size="10"/></td>
 		<td><input type="text" name="child[0][deathdate]" value="" size="08"/></td>
 		<td><input type="text" name="child[0][deathplace]" value="" size="10"/></td>
-		<td><input type="checkbox" name="child[0][living]" value="1" checked />
+		<td><input type="checkbox" name="child[0][living]" value="1" checked="checked" />
 		<td><input type="text" name="child[0][cause]" value="" size="10" />
 		</td>
 		</tr>
