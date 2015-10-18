@@ -178,11 +178,18 @@ class Upavadi_Update_FamilyUpdate
         $familyID = $this->extractFamilyId($data['person']);
         
         $father = $data['father'];
-        $husband = $father['personID'];
-
+        if ($father['firstname']) {
+            $husband = $father['personID'];
+        } else {
+            $husband = null;
+        }
+        
         $mother = $data['mother'];
-        $wife = $mother['personID'];
-
+        if ($mother['firstname']) {
+            $wife = $mother['personID'];
+        } else {
+            $wife = null;
+        }
         $marrInfo = $data['parents'];
         $marrDate = $marrInfo['marrdate'];
         $marrPlace = $marrInfo['marrplace'];
