@@ -38,8 +38,7 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ##Change Log
-
- - ####3.1.0
+ - #### 3.1.0
  - Changed plugin name to TngApi-V3
  - Modified settings and family template to cater for varying installations
  - Situation where only one of a new mother or father is added and then the head person would not be registered as a child - Fixed
