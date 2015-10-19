@@ -1,7 +1,8 @@
 TngApi Plugin for Wordpress
 =================================
 ## Download
-You can find the latest stable version (3.0.2) in the [releases](https://github.com/upavadi/TngApi/releases) section 
+You can find the latest stable version (3.1.0) in the [releases](https://github.com/upavadi/TngApi/releases) section 
+
 ## License
 The code is licenced under the [MIT licence](http://opensource.org/licenses/MIT)
 
@@ -37,18 +38,26 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ##Change Log
- - ####	1 - Current Modified settings and family template to cater for varying installations
-		2 - BugFix: Confused personID's when children added to person with multiple marriages.
-		3 - remove special event inheritance from father
-		4 - TNG Submit Header showed User name instead of head Person Name - fixed
+ - #### 3.1.0
+ - Changed plugin name to TngApi-V3
+ - Modified settings and family template to cater for varying installations
+ - Situation where only one of a new mother or father is added and then the head person would not be registered as a child - Fixed
+ - situation where new parents were added and then the head person would not be registered as a child - Fixed
+ - when children added to person with multiple marriages, incorrect personIDs were given. Fixed.
+ - remove special event inheritance from father.
+ - TNG Submit Header showed User name instead of head Person Name - fixed
+
  - ####3.04 Accept blank settings page on Activation
+
  - ####3.03 Bug fixes
+
  - ####3.0.2
  - Update README.md
  - Update Version Number
 
  - ####3.0.1
  - Bump up version number and tidy up
+
  - ####3.0
  - Temporary Wordpress tables to hold User Submitted Data
  - User Submission Page to display User Data
