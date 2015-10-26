@@ -55,15 +55,17 @@ Clicking on a name takes you to the Individual's Family Page
 -->
 <table class="form-table">
     <tbody>
-    <th class="theader">Name</th>
+    
+	<th class="theader" style="text-align: center">Name</th>
     <th class="theader">Date</th>
     <th class="theader">Birth Place</th>
-    <th class="theader">Age</th>
+    <th class="theader" style="text-align: center">Age</th>
     <!--
 	<th class="theader">Relationship</th>
 	-->
 	<?php 
-		if ($usertree == '') { ?>
+	$url = $tngcontent->getTngUrl();	
+	if ($usertree == '') { ?>
 	<th class="theader">Tree</th>
 			
 	<?php } ?>	
@@ -71,13 +73,28 @@ Clicking on a name takes you to the Individual's Family Page
 	$tree = $birthday['gedcom'];
 	$firstname = $birthday['firstname'];
 	$lastname = $birthday['lastname'];
+	//get default media
+		$photos = $tngcontent->getTngPhotoFolder();
+		$personId = $birthday['personid'];
+		//var_dump($personId);
+		$defaultmedia = $tngcontent->getDefaultMedia($personId, $tree);
+		 
+		$photosPath = $url. $photos;
+		//$mediaID = "";
+		if ($defaultmedia['thumbpath']) {
+		$mediaID = $photosPath."/". $defaultmedia['thumbpath'];
+		}
 	?>
         <tr>
-            <td class="tdfront"><a href="/family/?personId=<?php echo $birthday['personid'];?>&amp;tree=<?php echo $tree; ?>">
-                    <?php echo $firstname . " "; ?><?php echo $lastname; ?></a></td>
+            <td class="tdfront" style="text-align: center"><div>
+			<?php if ($defaultmedia['thumbpath']) { ?>
+			<img src="<?php 
+			echo "$mediaID";  ?>" border='1' height='50' border-color='#000000'/> <?php } ?><br /> 
+			<a href="/family/?personId=<?php echo $birthday['personid'];?>&amp;tree=<?php echo $tree; ?>">
+                    <?php echo $firstname . " "; ?><?php echo $lastname; ?></a></div></td>
             <td class="tdfront"><?php echo $birthday['birthdate']; ?></td>
             <td class="tdfront"><?php echo $birthday['birthplace']; ?></td>
-            <td class="tdfront"><?php echo $birthday['age']; ?></td>
+            <td class="tdfront" style="text-align: center"><?php echo $birthday['age']; ?></td>
 		<!--
 	   <td class="tdfront"><a href="../genealogy/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $birthday['personid']; ?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo "View" ?></td>
 		-->
