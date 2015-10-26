@@ -672,17 +672,15 @@ SQL;
         if ($gedcom) {
             $treeWhere = ' AND m.gedcom = "' . $gedcom . '"';
         }
-
 	$sql = <<<SQL
 SELECT *
-FROM   {$this->tables['medialinks_table']} as ml
-    LEFT JOIN {$this->tables['media_table']} AS m
+FROM   {$this->tables['media_table']} as ml
+    LEFT JOIN {$this->tables['medialinks_table']} AS m
               ON ml.mediaID = m.mediaID
-where personID = '{$personId}' AND defphoto = "1"
+where personID = '{$personId}' AND m.defphoto = "1" {$treeWhere}
 SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
-
         return $row;
     }
 
@@ -715,12 +713,12 @@ SQL;
 
         $sql = <<<SQL
 SELECT *
-FROM   {$this->tables['medialinks_table']} as ml
-    LEFT JOIN {$this->tables['media_table']} AS m
+FROM   {$this->tables['media_table']} as ml
+    LEFT JOIN {$this->tables['medialinks_table']} AS m
               ON ml.mediaID = m.mediaID
-where personID = '{$personId}' AND defphoto <> 1 {$treeWhere}
+where personID = '{$personId}' AND m.defphoto <> "1" {$treeWhere}
 
-ORDER  BY ml.ordernum
+ORDER  BY m.ordernum
 
 SQL;
         $result = $this->query($sql);
@@ -930,8 +928,11 @@ SQL;
 SELECT personid,
        firstname,
        lastname,
-       deathdate,
-       deathplace,
+       birthdate,
+	   birthdatetr,
+	   deathdate,
+       deathdatetr,
+	   deathplace,
        gedcom,
        Year(Now()) - Year(deathdatetr) AS Years
 FROM   {$this->tables['people_table']}
