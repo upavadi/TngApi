@@ -48,7 +48,7 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
   - when children added to person with multiple marriages, incorrect personIDs were given. Fixed.
   - remove special event inheritance from father.
   - TNG Submit Header showed User name instead of head Person Name - fixed
-  - Event Report: Death Anniversaries: Added default image if there is one; added Age at Death.
+  - Event Report: Death Anniversaries: Added default image if there is one.
   - Event Report: Birthdays: Added default image if there is one
   - Media for individual allocated to All Trees and individual allocated to one tree: media did not show for individual - Fixed  
 
