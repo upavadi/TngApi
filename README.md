@@ -38,45 +38,55 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ##Change Log
- - #### 3.1.0
- - Changed plugin name to TngApi-V3
- - Modified settings and family template to cater for varying installations
- - Situation where only one of a new mother or father is added and then the head person would not be registered as a child - Fixed
- - situation where new parents were added and then the head person would not be registered as a child - Fixed
- - when children added to person with multiple marriages, incorrect personIDs were given. Fixed.
- - remove special event inheritance from father.
- - TNG Submit Header showed User name instead of head Person Name - fixed
 
- - ####3.04 Accept blank settings page on Activation
 
- - ####3.03 Bug fixes
+ - ###3.1.0
+  - Changed plugin name to TngApi-V3
+  - Modified settings and family template to cater for varying installations
+  - Situation where only one of a new mother or father is added and then the head person would not be registered as a child - Fixed
+  - situation where new parents were added and then the head person would not be registered as a child - Fixed
+  - when children added to person with multiple marriages, incorrect personIDs were given. Fixed.
+  - remove special event inheritance from father.
+  - TNG Submit Header showed User name instead of head Person Name - fixed
+  - Event Report: Death Anniversaries: Added default image if there is one; added Age at Death.
+  - Event Report: Birthdays: Added default image if there is one
+  - Media for individual allocated to All Trees and individual allocated to one tree: media did not show for individual - Fixed  
+
+  - ####3.04
+  - Accept blank settings page on Activation
+
+ - ####3.03
+  - Bug fixes
 
  - ####3.0.2
- - Update README.md
- - Update Version Number
+  - Update README.md
+  - Update Version Number
 
  - ####3.0.1
- - Bump up version number and tidy up
+  - Bump up version number and tidy up
 
  - ####3.0
- - Temporary Wordpress tables to hold User Submitted Data
- - User Submission Page to display User Data
- - Admin Submission Page to User Submissions
- - Facility to update TNG database from submission page
- - Cater for multiple trees
- - Respect Privacy flag for individual, family and notes
- - Specify whether a (customized) special event is to be tracked
- - Specify path to TNG from TNG links
+  - Temporary Wordpress tables to hold User Submitted Data
+  - User Submission Page to display User Data
+  - Admin Submission Page to User Submissions
+  - Facility to update TNG database from submission page
+  - Cater for multiple trees
+  - Respect Privacy flag for individual, family and notes
+  - Specify whether a (customized) special event is to be tracked
+  - Specify path to TNG from TNG links
   - Path dependent on whether TNG Page Integration is used or not
- - Option to remove wordpress temporary tables on deactivation
+  - Option to remove wordpress temporary tables on deactivation
  - Bug fixes
 
+ - ####2.0
+  - Not released
+  
  - ####1.3
- - Tab Shortcode
- - Image Upload Shortcode
- - Default Image upload from Family Page
- - Date Selector for Event Reports
- - Bug fixes
+  - Tab Shortcode
+  - Image Upload Shortcode
+  - Default Image upload from Family Page
+  - Date Selector for Event Reports
+  - Bug fixes
  - ####Initial Release
 
 ## Installation
