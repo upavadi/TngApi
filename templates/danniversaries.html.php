@@ -62,9 +62,8 @@ Clicking on a name takes you to the Individual's FAMILY Page</br>
 			<th class="theader">Date</th>
 			<th class="theader">Death Place</th>
 			<th class="theader" style="text-align: center">Years</th>
-			<!-- Age Calculation: To be reworked for birthdate before 1912
 			<th class="theader" style="text-align: center">Age at Death</th>
-			-->
+			
 			<!-- Removed Relationship
 			<th class="theader">Relationship</th>
 			-->
@@ -81,13 +80,30 @@ Clicking on a name takes you to the Individual's FAMILY Page</br>
 		$danniversarydate = strtotime($danniversary['deathdate']);
 		$Years = $year - date('Y', $danniversarydate);
 		$tree = $danniversary['gedcom'];
-		/** Age Calculation: To be reworked for birthdate before 1912
-		$birthdate = strtotime($danniversary['birthdate']);
-		$ageAtDeath = date('Y', $danniversarydate) - date('Y', $birthdate);
-		//var_dump($ageAtDeath);
-		//get default media
-		**/
-		 $photos = $tngcontent->getTngPhotoFolder();
+		//get age at death
+			if ($danniversary['birthdatetr'] !== "0000-00-00") {
+			$d_birtharray = explode("-", ($danniversary['birthdatetr']));
+			$d_birthyear = $d_birtharray[0];
+			$d_birthmonth = $d_birtharray[1];
+			$d_birthday = $d_birtharray[2];
+
+			$deatharray = explode("-", ($danniversary['deathdatetr']));
+			$deathyear = $deatharray[0];
+			$deathmonth = $deatharray[1];
+			$deathday = $deatharray[2];
+			$setBirthdate = new DateTime();
+			$setBirthdate->setDate($d_birthyear, $d_birthmonth, $d_birthday);
+			
+			$setDeathdate = new DateTime();
+			$setDeathdate->setDate($deathyear, $deathmonth, $deathday);
+			$setBirthdate->format('c') . "<br / >\n";
+			$setDeathdate->format('c') . "<br / >\n";
+			$i = $setBirthdate->diff($setDeathdate);
+			$i->format("%Y");
+			$ageAtDeath = $i->format("%Y");
+			}	else { 	$ageAtDeath = "";
+			}	
+		$photos = $tngcontent->getTngPhotoFolder();
 		$personId = $danniversary['personid'];
 		$defaultmedia = $tngcontent->getDefaultMedia($personId, $tree);
 		 
@@ -105,10 +121,8 @@ Clicking on a name takes you to the Individual's FAMILY Page</br>
 			<td class="tdfront"><?php echo $danniversary['deathdate']; ?></td>
 			<td class="tdfront"><?php echo $danniversary['deathplace']; ?></td>
 			<td class="tdfront" style="text-align: center"><?php echo $Years ?></td>
-			<!-- Age Calculation: To be reworked for birthdate before 1912
 			<td class="tdfront" style="text-align: center"><?php echo $ageAtDeath; ?> </td>
-			End of age at death display-->
-			
+						
 			<!-- Removed Relationship column -------
 			<td class="tdfront"><a href="../genealogy/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $danniversary['personid'];?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo "View"?></td>
 			-->
