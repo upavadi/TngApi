@@ -38,7 +38,6 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ##Change Log
-
  - ###current
   - remove typo in update family (line 788)
   - Allow display of completed changes submitted by user on 'thank-you' page
