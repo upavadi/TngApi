@@ -785,7 +785,7 @@ function initChildren(order) {
 		$Msex = $Fsex = $Usex = "";
 		
 		if( $childsex == 'M' ) $Msex = "selected=\"selected\"";
-		elseif( $childsex['sex'] == 'F' ) $Fsex = "selected=\"selected\"";
+		elseif( $childsex == 'F' ) $Fsex = "selected=\"selected\"";
 		else $Usex = "selected=\"selected\"";
 // Child - Special Event
 				$fathereventRow = $tngcontent->getSpEvent($family['husband'], $tree);
