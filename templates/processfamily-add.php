@@ -1,7 +1,7 @@
 <?php
 require_once '../../../../wp-load.php';
 require_once '../../../../wp-config.php';
-//header('Location: /thank-you');
+header('Location: /thank-you');
 global $wpdb;
 $wpdb->show_errors();
 
@@ -409,7 +409,7 @@ New Person Added ({$date}):
 
 MSG;
 $msg .= print_r($_REQUEST, true);
-echo "<pre>{$msg}</pre>";
+//echo "<pre>{$msg}</pre>";
 mail($email, 'New data', $msg);
 ?>
 <html>
