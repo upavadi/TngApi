@@ -18,7 +18,7 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	A custom shortcode directory, with a sample shortcode, to help you create and store your own custom shortcodes.
 
 
-#### Whatís New in TngApi Version 3
+#### What‚Äôs New in TngApi Version 3
 
  -	In previous versions, user submissions were emailed to the administrator. In Version 3, user submissions are stored in temporary Wordpress tables and email is sent to the administrator as before.
  -	Once checked, the administrator has one-click facility to transfer user-submissions to TNG database.
@@ -38,8 +38,9 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ##Change Log
-
-
+ - ###Current
+  - remove typo in update family (line 788)
+  - Allow display of completed changes submitted by user on 'thank-you' page
  - ###3.1.0
   - Changed plugin name to TngApi-V3
   - Modified settings and family template to cater for varying installations
@@ -106,7 +107,7 @@ Here you'll need to specify:
  - <b>TNG Integration Path:</b> Enter TNG folder name here. If you are using TNG Wordpress Integration by Mark Barnes, enter the name of the page you have specified to display TNG pages within Wordpress container. 
  - <b>TNG Photo Folder:</b> Enter the name of the folder to use to get media from TNG. Default is photos
 
- - <b>TNG Collection ID for Photo Uploads:</b> User images are uploaded in to one of TNG folders with the collection name specified by you in the admin set up. Enter the name for the collection you have set up in TNG admin > media. Mine is called ìMy Uploadsî.Before you enter this, refer to the section, Image Upload, below
+ - <b>TNG Collection ID for Photo Uploads:</b> User images are uploaded in to one of TNG folders with the collection name specified by you in the admin set up. Enter the name for the collection you have set up in TNG admin > media. Mine is called ‚ÄúMy Uploads‚Äù.Before you enter this, refer to the section, Image Upload, below
 
  -	<b>TNG Event to Track:</b> If you would like to track a customized field or event, you may create this as a special event type (TNG Admin> Custom Event Types > Add New) or use an existing one. Select this event in the drop down list. This feature may be turned off by selecting <b>Do not track.</b>
  -	<b>Your Database connection settings:</b>
@@ -255,7 +256,7 @@ Pending submissions gives a list of submissions with User name, affected person 
 
  - The page is divided in sections. You will have to go through each section and Accept changes you approve.
   - Person - Events and Notes ( Events are special event and cause of death )
-  - Father ñ Mother and events
+  - Father ‚Äì Mother and events
   - Spouse - Events and Notes.
   - Family
   - Children
