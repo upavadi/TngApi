@@ -829,3 +829,10 @@
     display: inline-block;
     margin:1em 1em 0 0;
 }
+li.child {
+	list-style: none;
+}
+
+li.haskids {
+	list-style: square;
+}
