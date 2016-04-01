@@ -190,7 +190,6 @@ echo $husbandlastname;
        </a></li>
     
   </ul>
-
   <div id="step-1">   
        <!-- step content -->
 	<?php
