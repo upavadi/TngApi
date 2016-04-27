@@ -1,4 +1,27 @@
-/* Styles for Family and profile page */
+/* override bootstrap default **/
+html { 
+	font-size: 100%;
+		display: block;
+} 
+@-moz-document url-prefix() {
+  fieldset { display: table-cell; }
+}
+.table {
+	border: 1px;
+	}
+	
+.container {
+  //margin: 0 auto;
+  //width: 100%;
+  padding: 0px !important;
+} 
+@media (max-width: 797px) {
+    body { 
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+/* bootstrap override above */
 .form-table {
     background-color: #FFFFFF;
     width: 100%;
@@ -40,7 +63,7 @@
 .tdfront {
     padding: 8px 10px;
     line-height: 15px;
-    width: 65%;
+    width: 100%;
     background-color: #FFFFFF;
     border-bottom: 1px solid #bbbbbb;
     border-right: 1px solid #bbbbbb;
@@ -74,14 +97,16 @@
 
 .tdback {
     //margin-bottom: 9px;
-    padding: 8px 10px;
+   border-bottom: 1px solid #ffffff !important;
+    border-right: 1px solid #ffffff !important;
+   padding: 8px 10px;
     line-height: 15px;
-    width: 15%;
+    //width: 15%;
     background-color: #CACACA;
     color: #005689;
-    border-bottom: 1px solid #ffffff;
-    border-right: 1px solid #ffffff;
     //font-size: large;
+	position: static; // added to show borders in firefox
+	
 }
 .theader {
     background-color: #EDEDED;
@@ -402,18 +427,19 @@
     float:left;
     margin: 0;
     padding:5px;    
-    border: 1px solid #CCC; 
+    //border: 1px solid #CCC; 
     font: normal 12px Verdana, Arial, Helvetica, sans-serif; 
-    color:#5A5655;   
-    background-color:#F8F8F8;  
+    //color:#5A5655;   
+    //background-color:#F8F8F8;  
     height: 500px; 
     text-align:left;
     overflow:visible;    
     z-index:88; 
     -webkit-border-radius: 5px;
     -moz-border-radius  : 5px;
-    width:99%;
+    //width:99%;
     clear:both;
+	width: 100%;
 }
 
 .swMain div.actionBar {
@@ -425,7 +451,7 @@
     padding:            0;    
     color:              #5A5655;   
     background-color:   #F8F8F8;
-    height:40px;
+    height:auto;
     text-align:left;
     overflow:auto;    
     z-index:88; 
@@ -596,7 +622,7 @@
 .swMain .buttonFinish {
     display:block;
     float:right;
-    margin:5px 10px 0 3px;
+    margin:5px 4px 0 5px;
     padding:5px;
     text-decoration: none;
     text-align: center;
@@ -678,9 +704,10 @@
 
 #upload-wrapper {
     //width: 90%;
-    margin-right: auto;
-    margin-left: auto;
-    margin-top: 20px;
+	margin: 0 1em 0;
+   //margin-right: auto;
+   // margin-left: auto;
+    //margin-top: 10px;
     background: #F5F5F5;
     padding: 50px;
     font-family: Arial, Helvetica, sans-serif;
@@ -829,9 +856,47 @@
     display: inline-block;
     margin:1em 1em 0 0;
 }
+#link-btn {
+    //text-align: right;
+    //display: inline-block;
+    margin: .5em 0.5em .5em 0;
+	
+}
+.bordered-div {
+border: 1px solid #ccc;
+    border: 1px solid #ccc;
+    //font-size: 0.8em;
+    padding: .75em .5em 0.5em .75em;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    -webkit-transition: 0.3s linear border;
+    -moz-transition: 0.3s linear border;
+    -ms-transition: 0.3s linear border;
+    -o-transition: 0.3s linear border;
+    transition: 0.3s linear border;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    box-shadow: inset 0 1px 3px #ddd;
+    border-radius: 4px;
+    -webkit-transition: 0.3s linear border;
+    -moz-transition: 0.3s linear border;
+    -ms-transition: 0.3s linear border;
+    -o-transition: 0.3s linear border;
+    transition: 0.3s linear border;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+	 margin: 0 0 1em 0;
+}
+.add-padding {
+	padding: 0em 1em 0.75em 1.2em;
+}
 li.child {
 	list-style: none;
 }
+
 li.haskids {
 	list-style: square;
 }
+	
