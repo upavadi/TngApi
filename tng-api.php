@@ -1,9 +1,10 @@
 <?php
-/*current
+/*
+ * Plugin Name: TngApi-V3 with bootstrap
  * Description: This plugin allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated 
  *
  * Plugin URI: https://github.com/upavadi/TngApi
- * Version: 3.1.1
+ * Version: 3.2.0
  *         
  * Author: Neel Upadhyaya & Mahesh Upadhyaya
  * Author URI: http://www.upavadi.net/
@@ -13,10 +14,10 @@
  * <?php echo plugins_url('subdirectory/file', dirname(__FILE__)); ?>
  *
  */
-
 require_once __DIR__ . '/autoload.php';
 include_once __DIR__. '/tabs.php';
-
+//wp_enqueue_style('upavadi-styles', plugins_url( 'css/bootstrap.css',__FILE__) );
+//wp_enqueue_style('upavadi-styles', plugins_url( 'css/upavadi.css',__FILE__) );
 $content = Upavadi_TngContent::instance();
 
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
@@ -163,7 +164,13 @@ function droptables() {
 		}
 
 }
-
+add_action( 'wp_enqueue_scripts', 'add_upavadi_stylesheets' );
+function add_upavadi_stylesheets() {
+		wp_register_style( 'register-tngapi_bootstrap', plugins_url('css/bootstrap.css', __FILE__) );
+		wp_enqueue_style( 'register-tngapi_bootstrap' );
+		wp_register_style( 'register-tngapi_upavadi', plugins_url('css/upavadi.css', __FILE__) );
+		wp_enqueue_style( 'register-tngapi_upavadi' );
+} 
 
 // this hook will cause our 'create_tng_tables()' function to run when the plugin is activated
 register_activation_hook( __FILE__, 'create_tng_tables' );
@@ -174,5 +181,4 @@ $customDir = $dir . "/../tng-api-custom";
 if (is_dir($customDir)) {
     $customContent = new TngApiCustom_TngCustom($content);
 }
-
-	
+?>
