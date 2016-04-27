@@ -1,7 +1,7 @@
 TngApi Plugin for Wordpress
 =================================
 ## Download
-You can find the latest stable version (3.1.0) in the [releases](https://github.com/upavadi/TngApi/releases) section 
+You can find the latest stable version (3.1.1) in the [releases](https://github.com/upavadi/TngApi/releases) section 
 
 ## License
 The code is licenced under the [MIT licence](http://opensource.org/licenses/MIT)
@@ -39,6 +39,7 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
 
 ##Change Log
  - ###Current
+ - ###3.1.1
   - Fixed inconsistent display of 'hasKids' flag
   - remove typo in update family (line 788)
   - Allow display of completed changes submitted by user on 'thank-you' page
