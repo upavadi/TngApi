@@ -39,6 +39,8 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
 
 ##Change Log
  - ###Current
+  - In Development Mode 
+  - In process of adding Tweeter Bootstrap
  - ###3.1.1
   - Fixed inconsistent display of 'hasKids' flag
   - remove typo in update family (line 788)

@@ -1,4 +1,4 @@
-/* override bootstrap default **/
+/** override bootstrap default **/
 html { 
 	font-size: 100%;
 		display: block;
@@ -21,7 +21,7 @@ html {
         padding-right: 0px;
     }
 }
-/* bootstrap override above */
+/*** bootstrap override above ***/
 .form-table {
     background-color: #FFFFFF;
     width: 100%;
