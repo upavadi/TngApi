@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: TngApi-V3 with Bootstrap
- * Description: This is a stand-alone plugin, allowing access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated 
+ * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated 
  *
  * Plugin URI: https://github.com/upavadi/TngApi
  * Version: 3.2.0
