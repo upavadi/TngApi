@@ -1,25 +1,18 @@
-<!-- FAMILY PAGE -->
-			
-	
+<!-- Upload images Modified for BootStrap March 2016-->
 <!doctype html>
 <html lang="en">
-
 <meta charset="utf-8">
-
-		<script type="text/javascript" src="<?php echo plugins_url('js/jquery-1.10.2.min.js', dirname(__FILE__)); ?>"></script>
-		<script type="text/javascript" src="<?php echo plugins_url('js/jquery.form.min.js', dirname(__FILE__)); ?>"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload photos</title>
+	<script type="text/javascript" src="<?php echo plugins_url('js/jquery-1.10.2.min.js', dirname(__FILE__)); ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url('js/jquery.form.min.js', dirname(__FILE__)); ?>"></script>
 
 	<?php 	$current_user = wp_get_current_user();
 				$User = $current_user->user_firstname;
 				$UserID = $User->ID;
-		
 		?>
-<?php 
-//echo "Temp prompt= ". content_url('/uploads/temp/', dirname(__FILE__));
-//echo plugins_url('/uploads/temp/', dirname(__FILE__));  
-?>
 <head>
-
 <script type="text/javascript">
 $(document).ready(function() { 
 	var options = { 
@@ -98,41 +91,65 @@ function bytesToSize(bytes) {
 
 
 </script>
-
 </head>
 <body>
-<div id="upload-wrapper" style="width: 90%">
-<div align="left">
-<p>
-<b><?php echo $User; ?>,</b> you may upload photos of you and your family.</br> If you wish to upload a profile image for a person, it is easier for you ( and me ) if you submit from <a href="/family"> Family page.</a>
-</p>
-Select image to upload by clicking on Browse Button. There is a limit of 5Mb for the picture size. If size is greater, there will be an error message. 
+<div class="container">
+        <div class="row">   
+            <div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1">
+              <h4><?php echo $User; ?>, <br />you may upload photos of you and your family.</h4> 
+             <p>If you wish to upload a profile image for a person, it is easier for you ( and me ) if you submit from Family page.
+			 </div>
+             <div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1">
+             Select image to upload by clicking on Browse Button. There is a limit of 5Mb for the picture size. If size is greater, there will be an error message.
+             </p>
+			</div>
+		</div>
+</div>
+<!-- Input Form -->
+<div class="container">	
+    <form class="form-horizontal" id="upload-wrapper" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
+        <div class="form-group">
+            <label for="Image"class="control-label col-sm-3 col-md-3">Select Image</label>
+            <div class="control-label col-sm-6 col-md-6">
+                <input name="ImageFile" id="imageInput" class="form-control" type="file" placeholder="no file selected">
+            </div>
+			<div class="col-sm-3 col-md-3">Maximum size 5Mb</div>
+		</div>
+        
+		<div class="form-group upload-control-group">
+            <label for="title"class="control-label col-sm-3">Title or Full Name</label>
+            <div class="col-sm-6">
+                <input name="title" id="title" class="form-control" type="text" placeholder="Title / Person Name">
+            </div>
+			<div class="col-sm-3 col-md-3"> Enter a title or Name of the person</div>
+		</div>
 
-<!-- Input Form -->
-<form class="upload-wrapper upload-wrapper-aligned"action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm"><fieldset>
-<div class="upload-control-group">
-            <label for="Image">Select Image</label>
-            <input name="ImageFile" id="imageInput" type="file" placeholder="no file selected">  Maximum size 5Mb
+		<div class="form-group upload-control-group">
+            <label for="Description" class="control-label col-sm-3">Description</label>
+            <div class="col-sm-6">
+              <input name="Desc" id="Description" class="form-control" type="text" placeholder="Description">
+            </div>
+			<div class="col-sm-3 col-md-3"> Short description about the image</div>
+		</div>
+
+		<div class="form-group upload-control-group">
+            <label for="Notes" class="textarea control-label col-sm-3">Additional Notes</label> 
+			<div class="col-sm-6">
+                <textarea rows="4" cols="50" name="Notes" class="form-control" placeholder="Tell Me More..."></textarea>
+			</div>
+			<div class="col-sm-3 col-md-3">Notes about the event - If group photograph, people in the photograh</div>
+		</div>
+
+		<div class="form-group upload-control-group">
+            <label for="Notes" class="textarea control-label col-sm-3"></label> 
+			<div class="col-sm-6">
+			<input type="submit"  id="submit-btn" value="Upload Photo"/><br />
+			<img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
+            </div>
+		</div>
+	</form>
+
+<div id="output"></div>        
 </div>
-<div class="upload-control-group">
-            <label for="title">Title or Full Name</label>
-            <input name="title" id="title" type="text" placeholder="Title / Person Name"> Enter a title or Name of the person
-</div>
-<div class="upload-control-group">
-            <label for="Description">Description</label>
-            <input name="Desc" id="Description" type="text" placeholder="Description"> Short description about the image
-</div>
-<div class="upload-control-group">
-            <label for="Notes" class="textarea">Additional Notes</label> 
-               <textarea rows="4" cols="50" name="Notes" placeholder="Tell Me More..."></textarea> Notes about the event - If group photograph, people in the photograh
-</div>
-<p>
-<input type="submit"  id="submit-btn" value="Upload Photo" style="position: absolute; left: 228px;"/><br />
-<img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
-</p>
-</div>
-<fieldset></form>
-<!-- Input Form -->
-<div id="output"></div>
-</div>
-</div>
+
+</body> 
