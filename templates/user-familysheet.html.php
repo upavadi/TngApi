@@ -1,3 +1,5 @@
+
+
 <?php
 $tngcontent = Upavadi_TngContent::instance();
 $numChanges = count($changeSets);
@@ -30,7 +32,7 @@ foreach ($changeSets as $index => $change):
         $change->getHeadPersonId(),
         $tree
     );
-    ?>
+?>
     <br/>
     <strong>Changes for the Family of <?php echo $headPerson['firstname'] . " " . $headPerson['lastname']; ?>
         <br>Submission <?php echo ($numChanges - $index) . "  of " . $numChanges; ?>
@@ -104,20 +106,21 @@ foreach ($changeSets as $index => $change):
                 }
             }
         ?>
-            <table width="100%" class="form-table">
+         <div class="container-fluid col-sm-12 table-responsive">
+			<table class="table table-bordered"> 
                 <thead>
-                    <tr>
-                        <th class="theader" width="20%">Name: <?php echo $name; ?></th>
-                        <th class="theader" width="10%">change</th>
-                        <th class="theader" width="40%">old value</th>
-                        <th class="theader" width="40%">new value</th>
+                    <tr class="row">
+                        <th class="theader">Name: <?php echo $name; ?></th>
+                        <th class="theader">change</th>
+                        <th class="theader">old value</th>
+                        <th class="theader">new value</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
                     foreach ($fields as $field => $update):
                         ?>
-                        <tr>
+                        <tr class="row">
                             <?php
                             $oldUpdate = $update['old'];
                             $newUpdate = $update['new'];
@@ -163,17 +166,20 @@ foreach ($changeSets as $index => $change):
                                 }
                                 ?> 
 
-                                <td class="tdback"><?php echo $field; ?></td>
-                                <td><?php echo $update['type']; ?></td>
-                                <td><?php echo $oldUpdate; ?></td>
-                                <td><?php echo $newUpdate; ?></td>
+                                <td class="tdback col-sm-3"><?php echo $field; ?></td>
+                                <td class="col-sm-1"><?php echo $update['type']; ?></td>
+                                <td class="col-sm-4"><?php echo $oldUpdate; ?></td>
+                                <td class="col-sm-4"><?php echo $newUpdate; ?></td>
                         </tr>
                             <?php
                         endforeach;
                         ?>
                 </tbody>
             </table>
+		</div>
             <?php
         endforeach;
     endforeach;
 endforeach;
+?>
+	
