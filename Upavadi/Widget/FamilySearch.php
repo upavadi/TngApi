@@ -45,8 +45,8 @@ class Upavadi_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
             $url_parts = parse_url(get_bloginfo('home'));
             ?>
             <div><form action="/search" style="display: inline-block;" method="get">
-                    <label for="top-search-lastname">Last Name: <input style="width: 100px; height: 14px; font-family: Arial, Helvetica, Tahoma" type="text" value="<?php echo $lastName; ?>" name="lastName" id="top-search-lastname"></label> 
-                    <label for="top-search-firstname">First Name: <input  style="width: 100px; height: 14px; font-family: Arial, Helvetica, Tahoma" type="text" value="<?php echo $firstName; ?>" name="firstName" id="top-search-firstname"></label>
+                    <label for="top-search-lastname">Last Name: <input style="width: 100px; height: 20px; font-family: Arial, Helvetica, Tahoma" type="text" value="<?php echo $lastName; ?>" name="lastName" id="top-search-lastname"></label> 
+                    <label for="top-search-firstname">First Name: <input  style="width: 100px; height: 20px; font-family: Arial, Helvetica, Tahoma" type="text" value="<?php echo $firstName; ?>" name="firstName" id="top-search-firstname"></label>
                     <input type="submit" style="margin: 4px 0 5px;" value="Search Tree">
                 </form></div>
 
