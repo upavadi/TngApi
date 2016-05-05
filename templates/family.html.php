@@ -271,9 +271,9 @@
     </span></a>
 <table border="0">
         <tr>
-            <td>
+            <td class="col-md-1 col-xs-4">
 				<div>
-				<img src="<?php echo "$mediaID"; ?>" class='profile-image' />
+				<img src="<?php echo "$mediaID"; ?>" class='img-responsive' />
 				</div>
 			</td>
 			<td>
