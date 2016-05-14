@@ -4,7 +4,7 @@
  * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated 
  *
  * Plugin URI: https://github.com/upavadi/TngApi
- * Version: 3.2.0
+ * Version: 3.2.1
  *         
  * Author: Neel Upadhyaya & Mahesh Upadhyaya
  * Author URI: http://www.upavadi.net/
