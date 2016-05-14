@@ -9,6 +9,13 @@
 </head>
 <?php
 	$tngcontent = Upavadi_tngcontent::instance()->init();
+ //get and hold current user
+	$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
+	$person = $tngcontent->getPerson($currentperson);
+	$currentuser = ($person['firstname']. " ". $person['lastname']);
+	$currentuserLogin = wp_get_current_user();
+	$UserLogin = $currentuserLogin->user_login;
+				//echo $UserLogin;	
 //get and hold current user
 	$person = $tngcontent->getPerson($personId, $tree);
 	$personID = $person['personID'];
@@ -383,6 +390,19 @@
 			</tr>
 		</tbody>
 		</table>
+		<input type="hidden" name="father[personID]" value="<?php echo $father_ID; ?>" />
+<input type="hidden" name="father[sex]" value="<?php echo $father_sex; ?>" />
+<input type="hidden" name="father[famc]" value="<?php echo $father_famc; ?>" />
+<input type="hidden" name="mother[personID]" value="<?php echo $mother_ID; ?>" />
+<input type="hidden" name="mother[sex]" value="<?php echo $mother_sex; ?>" />
+<input type="hidden" name="mother[famc]" value="<?php echo $mother_famc; ?>" />
+<input type="hidden" name="mother[causeEventID]" value="<?php echo $mother_cause_of_death_id; ?>" />
+<input type="hidden" name="mother[eventTypeID]" value="<?php echo $EventTypeID; ?>" />
+<input type="hidden" name="mother[eventID]" value="<?php echo $mother_SpEventId; ?>" />
+<input type="hidden" name="parents[husborder]" value="<?php echo $parenthusborder; ?>" />
+<input type="hidden" name="parents[wifeorder]" value="<?php echo $parentwifeorder; ?>" />
+<input type="hidden" name="parents[living]" value="<?php echo $parents['parents_living']; ?>" />
+
 		</div>
 	</div>                     
 	<div id="step-3">
@@ -700,6 +720,7 @@ function initChildren(order) {
 				$classes[] = 'haskids';
 			}
 		?>
+		
 			<tr class="child">
 			<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][personID]" value="<?php echo $child['personID'] ?>"/>
 			<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][familyID]" value="<?php echo $family['familyID'] ?>" />
@@ -746,7 +767,37 @@ function initChildren(order) {
         $(function () {
             initChildren(<?php echo $order; ?>);
         });
-        </script>
+        </script>	
+		<tr class="child">
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][personID]" value="<?php echo $childID.$order.'.'.$childorder ?>"/>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][familyID]" value="<?php echo $family['familyID'] ?>"/>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][order]" value="<?php echo $childorder ?>"/>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][spouseorder]" value="<?php echo $family[$sortBy] ?>"/>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][event]" value="<?php echo $childevent ?>" />
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][eventTypeID]" value="<?php echo $EventTypeID ?>" />
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][haskids]" value="0" size="12"/>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][parentorder]" value="<?php echo $parentOrder ?>" />
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][famc]" value="<?php echo $family['familyID'] ?>"/>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][living]" value="0" /></td>
+		<input type="hidden" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][causeEventID]" value="<?php echo $childCauseEventID; ?>" /></td>
+		
+		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][firstname]" value="" size="10"/></td>
+		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][surname]" value="<?php echo $husbandname; ?>" size="10"/></td>	
+                <td> 
+                    <select name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][sex]">
+
+                        <option selected="selected" value="M">M</option>
+                        <option value="F">F</option>
+
+                    </select>
+                </td>
+		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][birthdate]" value="" size="08"/></td>
+		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][birthplace]" value="" size="10"/></td>
+		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][deathdate]" value="" size="08"/></td>
+		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][deathplace]" value="" size="10"/></td>
+		<td><input type="checkbox" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][living]" value="1" checked="checked" /></td>
+		<td><input type="text" name="family[<?php echo $order; ?>][child][<?php echo $index; ?>][cause]" value="" size="10"/></td>
+
 	<?php
 	endforeach;
 	?>	
