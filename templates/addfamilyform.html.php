@@ -211,8 +211,10 @@
        <!-- step content -->
 		</br>
 		<p><span style="color:#D77600; font-size:10pt"><?php echo "Enter Details of the First Child of ". $person_name." ".$person_surname;?>, below. Click on <b>Add Child</b> to add children. Click on NEXT below when done.</span></p>
-		<div class="row col-md-12 add-padding">
+		<div class="row">
+		<div class="col-sm-4 add-padding">
 		<button class="js-addChild">Add Child</button>	   
+		</div>
 		</div>
 		<div class="table-responsive" style="overflow: auto">
 		<table class="table table-bordered" id="children" >	
