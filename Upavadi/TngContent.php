@@ -174,6 +174,9 @@ class Upavadi_TngContent
 
     public function initAdmin()
     {
+      // To covert to multisite, read here: Neel
+	// 	http://wordpress.stackexchange.com/questions/166484/get-option-compatible-with-wordpress-network-multisite
+     	// Register tng option here and then add settings field
         register_setting('tng-api-options', 'tng-api-email');
         register_setting('tng-api-options', 'tng-api-tng-event');
         register_setting('tng-api-options', 'tng-api-tng-page-id');
@@ -191,7 +194,7 @@ class Upavadi_TngContent
         add_settings_section('general', 'General', function() {
 
         }, 'tng-api');
-
+//add settings field for the name / personID you are going to use for TNG
         add_settings_field('tng-email', 'Notification Email Address', function () {
             $tngEmail = esc_attr(get_option('tng-api-email'));
             echo "<input type='text' name='tng-api-email' value='$tngEmail' />";
