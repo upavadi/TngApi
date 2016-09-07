@@ -94,62 +94,62 @@ function bytesToSize(bytes) {
 </head>
 <body>
 <div class="container">
-        <div class="row">   
-            <div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1">
-              <h4><?php echo $User; ?>, <br />you may upload photos of you and your family.</h4> 
-             <p>If you wish to upload a profile image for a person, it is easier for you ( and me ) if you submit from Family page.
-			 </div>
-             <div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1">
-             Select image to upload by clicking on Browse Button. There is a limit of 5Mb for the picture size. If size is greater, there will be an error message.
-             </p>
-			</div>
+    <div class="row">   
+        <div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1">
+         <h4><?php echo $User; ?>, <br />you may upload photos of you and your family.</h4> 
+        <p>If you wish to upload a profile image for a person, it is easier for you ( and me ) if you submit from Family page.
 		</div>
+        <div class="col-md-8 col-md-offset-1 col-sm-8 col-sm-offset-1">
+         Select image to upload by clicking on Browse Button. There is a limit of 5Mb for the picture size. If size is greater, there will be an error message.
+        </p>
+		</div>
+	</div>
 </div>
 <!-- Input Form -->
-<div class="container">	
-    <form class="form-horizontal" id="upload-wrapper" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
-        <div class="form-group">
-            <label for="Image"class="control-label col-sm-3 col-md-3">Select Image</label>
-            <div class="control-label col-sm-6 col-md-6">
-                <input name="ImageFile" id="imageInput" class="form-control" type="file" placeholder="no file selected">
+<div id="upload-wrapper" style="width: 90%">
+
+<form class="form-horizontal" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
+<fieldset>
+	<div class="form-group upload-control-group">
+            <label for="Image" class="control-label col-sm-3">Select Image</label>
+            <div class="control-label col-sm-6">
+            <input name="ImageFile" id="imageInput" class="form-control" type="file" placeholder="no file selected">
             </div>
 			<div class="col-sm-3 col-md-3">Maximum size 5Mb</div>
-		</div>
-        
-		<div class="form-group upload-control-group">
+	</div>
+	<div class="form-group upload-control-group">
             <label for="title"class="control-label col-sm-3">Title or Full Name</label>
             <div class="col-sm-6">
                 <input name="title" id="title" class="form-control" type="text" placeholder="Title / Person Name">
             </div>
 			<div class="col-sm-3 col-md-3"> Enter a title or Name of the person</div>
-		</div>
-
-		<div class="form-group upload-control-group">
+	</div>
+	<div class="form-group upload-control-group">
             <label for="Description" class="control-label col-sm-3">Description</label>
             <div class="col-sm-6">
               <input name="Desc" id="Description" class="form-control" type="text" placeholder="Description">
             </div>
 			<div class="col-sm-3 col-md-3"> Short description about the image</div>
-		</div>
-
-		<div class="form-group upload-control-group">
+	</div>
+	<div class="form-group upload-control-group">
             <label for="Notes" class="textarea control-label col-sm-3">Additional Notes</label> 
 			<div class="col-sm-6">
                 <textarea rows="4" cols="50" name="Notes" class="form-control" placeholder="Tell Me More..."></textarea>
 			</div>
 			<div class="col-sm-3 col-md-3">Notes about the event - If group photograph, people in the photograh</div>
-		</div>
-
-		<div class="form-group upload-control-group">
-            <label for="Notes" class="textarea control-label col-sm-3"></label> 
-			<div class="col-sm-6">
-			<input type="submit"  id="submit-btn" value="Upload Photo"/><br />
-			<img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
-            </div>
-		</div>
-	</form>
-
-<div id="output"></div>        
+	</div>
+	<div class="col-sm-3 col-sm-offset-3">
+	<input type="submit"  id="submit-btn" value="Upload Photo" style="position: center;"/><br />
+	<img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
+	</div>
 </div>
-
-</body> 
+<fieldset>
+</form>
+</div>
+<div class="row">
+<div id="output"></div>
+</div>
+</div>
+</div>
+</body>
+</html> 

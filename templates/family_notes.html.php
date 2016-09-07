@@ -48,7 +48,7 @@
 				
 				
  				
-	<form id="edit-family-form" action = "<?php echo plugins_url('templates/processfamily-notes.php', dirname(__FILE__)); ?>" method = "POST">
+	<form id="edit-family-form" action = "<?php echo plugins_url('templates/test.html', dirname(__FILE__)); ?>" method = "POST">
 	<input type="hidden" name="User" value="<?php echo $UserLogin; ?>" />
 	<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
 	<input type="hidden" name="personfirstname" value="<?php echo $firstname; ?>" />

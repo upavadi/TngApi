@@ -715,7 +715,7 @@ html {
     font-size: 14px;
     border-radius: 10px;
     box-shadow: 1px 1px 3px #AAA;
-
+	clear: both;
 }
 .upload-wrapper input[type="text"],
 .upload-wrapper input[type="file"],

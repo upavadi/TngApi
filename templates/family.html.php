@@ -747,7 +747,7 @@ foreach ($allnotes as $PersonNote):
 <?php endforeach; ?>
 </div>
 
-<div id="submit-profile-photo"></div>
+
 <!-- DO NOT MOVE the 2 files to top!! -->	
 <script type="text/javascript" src="<?php echo plugins_url('js/jquery-1.10.2.min.js', dirname(__FILE__)); ?>"></script>
 <script type="text/javascript" src="<?php echo plugins_url('js/jquery.form.min.js', dirname(__FILE__)); ?>"></script>
@@ -840,17 +840,17 @@ if (!$uploadPersonId) {
     $uploadPersonId = $tngcontent->getCurrentPersonId();
 }
 ?>
-
 	<div class="row-fluid col-md-offset-2">
 		<div id="upload-wrapper">
+		<div id="submit-profile-photo"></div>
 			<div align="center">
 				<input type="button" id="return-btn" value="Return" onclick="location.href = '#Family'"/>
 				<h3>Submit Profile Image for </br><?php echo $name; ?></h3>
 
 				<b>Profile image submitted by <?php echo $User; ?></b>
 				<form class="upload-wrapper upload-wrapper-aligned" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
-					<input type="hidden" name="title" value="<?php echo $uploadPersonId; ?>" />
-					<input type="hidden" name="Desc" value="Submit Profile Image for </br><?php echo $name; ?>" />
+					<input type="hidden" name="title" value="<?php echo "Person Profile ID=". $uploadPersonId; ?>" />
+					<input type="hidden" name="Desc" value='<?php echo "Submit Profile Image for <br />". $name; ?>' />
 					<fieldset>
 						<div class="upload-control-group">
 							<label for="Image">Select Image</label>

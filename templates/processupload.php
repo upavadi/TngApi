@@ -97,8 +97,9 @@ if (isset($_POST)) {
         $thumbPath = '/' . $uploadPath . '/' . basename($thumb_DestRandImageName);
         $thumbPath = str_replace('\\', '/', $thumbPath);
         $thumbPath = $domain . str_replace('//', '/', $thumbPath);
+		
         echo '<table width="80%" border="0" cellpadding="4" cellspacing="0">';
-        echo '<tr> Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this. </td></tr>';
+        echo '<tr><p> Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this.</p> </td></tr>';
 
 
         echo '<tr><td align="center"><img src="' . $thumbPath . '" alt="Thumbnail"></td>';
@@ -114,9 +115,9 @@ if (isset($_POST)) {
           VALUES ($DestRandImageName, $thumb_DestRandImageName, 'uploads/')");
          */
         
-        $basename = basename($DestRandImageName);
-        $fileLocation = preg_replace('|//|', '/', './' . $uploadPath . '/' . $basename);
-        $thumbLocation = basename($thumb_DestRandImageName);
+        $basename = $photos . '/' . basename($DestRandImageName);
+        $fileLocation = $photos . '/' . $basename;
+        $thumbLocation = $photos. "/". basename($thumb_DestRandImageName);
         $title = $_POST['title'];
         $desc = $_POST['Desc'] . "\n" . $_POST['Notes'];
         $date = date('r');
@@ -133,7 +134,7 @@ SQL;
         $stmnt->execute();
         $mediaID = $stmnt->insert_id;
         $personId = $content->getCurrentPersonId();
-        $sql = "INSERT into {$tables['medialinks_table']} (linktype, personID, mediaID) VALUES ('I', '{$personId}', {$mediaID})";
+        $sql = "INSERT into {$tables['medialinks_table']} (linktype, dontshow, personID, mediaID) VALUES ('I', '1', '{$personId}', {$mediaID})";
         $content->query($sql);
         
         $date = date('c');
@@ -142,10 +143,9 @@ New Image uploaded on {$date}:
 
 {$username}
 {$title}
-{$desc}
 
 MSG;
-        //echo "<pre>{$msg}</pre>";
+       //echo "<pre>{$msg}</pre>";
         mail($email, 'New photo', $msg);
     } else {
         die('Resize Error'); //output error
