@@ -157,11 +157,11 @@ class Upavadi_TngContent
             return $this;
         }
 
+		
         $tng_user_name = $this->getTngUserName();
         $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
         $result = mysqli_query($db, $query) or die("Cannot execute query: $query");
         $row = $result->fetch_assoc();
-
         $this->currentPerson = $row['personID'];
         return $this;
     }
@@ -174,6 +174,8 @@ class Upavadi_TngContent
 
     public function initAdmin()
     {
+	// To covert to multisite, read here:
+	// 	http://wordpress.stackexchange.com/questions/166484/get-option-compatible-with-wordpress-network-multisite
         register_setting('tng-api-options', 'tng-api-email');
         register_setting('tng-api-options', 'tng-api-tng-event');
         register_setting('tng-api-options', 'tng-api-tng-page-id');
@@ -746,7 +748,7 @@ SQL;
         if ($defaultmedia['thumbpath'] !== null) {
             $mediaID = $photosPath. "/" . $defaultmedia['thumbpath'];
         }
-        return $this->getDomain() . $mediaID;
+        return $mediaID;
     }
 
     public function getChildren($familyId = null, $tree = nullS)
@@ -1149,8 +1151,19 @@ SQL;
         if ($this->tngUser) {
             return $this->tngUser;
         }
-        $currentUser = wp_get_current_user();
-        $userName = $currentUser->user_login;
+		
+		$currentUser = wp_get_current_user();
+		$userName = $currentUser->user_login;
+		// Uncomment to allow for a configurable default user.
+		/*
+		$defaultUser = esc_attr(('tng-api-tng-default-user'));
+		if ($defaultUser) {
+			$userName = $defaultUser;
+		} else {		
+			$currentUser = wp_get_current_user();
+			$userName = $currentUser->user_login;
+		}
+		*/
         $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$userName}'";
         $result = $this->query($query);
         $row = $result->fetch_assoc();
