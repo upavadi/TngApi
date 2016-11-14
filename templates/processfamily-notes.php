@@ -1,5 +1,7 @@
 <?php
 require_once '../../../../wp-load.php';
+require_once __DIR__ . '/../autoload.php';
+require_once '../../../../wp-config.php';
 header('Location: /thank-you');
 //this the original
 
@@ -15,10 +17,10 @@ $personid = $_POST['personId'];
 $firstname = $_POST['personfirstname'];
 $lastname = $_POST['personsurname'];
 $birthdate = $_POST['B_day'];
-$birthdatetr = $birthdate;
+$birthdatetr = '0000-00-00';
 $birthplace = $_POST['B_Place'];
 $deathdate = $_POST['D_day'];
-$deathdatetr = $deathdate; // do we need this?
+$deathdatetr = '0000-00-00'; // do we need this?
 $deathplace = $_POST['D_Place'];
 $sex = $_POST['personsex'];
 $famc = $_POST['personfamc'];
@@ -89,7 +91,7 @@ Person Notes Added /Updated({$date}):
 
 MSG;
 $msg .= print_r($_REQUEST, true);
-echo "<pre>{$msg}</pre>";
+//echo "<pre>{$msg}</pre>";
 mail($email, 'New data', $msg);
 ?>
 <html>

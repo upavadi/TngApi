@@ -53,7 +53,8 @@ $tngcontent = Upavadi_tngcontent::instance()->init();
 $user = $tngcontent->getTngUser();
 $usertree = $user['gedcom'];
 ?>
-<div class="container-fluid col-md-12 table-responsive">
+<div class="container-fluid table-responsive">
+<div class="col-md-12">
 <table class="table table-bordered">   
     <tr class="row">
 	<td class="tdback col-md-6" style="text-align: center">Name</td>
@@ -107,6 +108,7 @@ $usertree = $user['gedcom'];
 	
 	</tbody>
 </table>
+</div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </html>	

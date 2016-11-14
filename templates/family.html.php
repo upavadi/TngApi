@@ -24,6 +24,11 @@
     $currentperson = $tngcontent->getCurrentPersonId($person['personID']);
     $currentperson = $tngcontent->getPerson($currentperson);
     $currentuser = ($currentperson['firstname'] ." ". $currentperson['lastname']);
+// Uncomment below to use the current wordpres display name instead of the TNG user
+/*
+	$current_user = wp_get_current_user();
+	$currentuser = $current_user->display_name;
+*/
 //user for upload photo
     $current_user = wp_get_current_user();
     $User = $current_user->user_firstname;
