@@ -38,8 +38,10 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ##Change Log
-
- - ###3.2.0
+ - ###3.2.2
+  - Bug fixes post bootstrap
+  
+ - ###3.2.1
   - Added Tweeter Bootstrap for responsive display
   - Minor bug fixes
  
