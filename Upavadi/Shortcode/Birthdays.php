@@ -9,9 +9,9 @@ class Upavadi_Shortcode_Birthdays extends Upavadi_Shortcode_AbstractShortcode
     {
         $this->content->init();
         $monthyear = filter_input(INPUT_GET, 'monthyear', FILTER_SANITIZE_SPECIAL_CHARS);
-
-        $currentPerson = $this->content->getCurrentPersonId();
-        if ($monthyear == "") {
+		$currentPerson = $this->content->getCurrentPersonId();
+        
+		if ($monthyear == "") {
             $month = date('m');
             $year = date('Y');
         } else {
@@ -32,6 +32,7 @@ class Upavadi_Shortcode_Birthdays extends Upavadi_Shortcode_AbstractShortcode
             'year' => $year,
             'month' => $month,
             'date' => $date,
+			'monthyear' => $monthyear,
             'birthdays' => $birthdays,
             'currentperson' => $currentPerson
         );

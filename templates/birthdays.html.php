@@ -6,45 +6,68 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Upavadi Birth dates</title>
+<title>Family Birth dates</title>
 </head>
-<!---- Jquery date picker strat -->
-<link rel="stylesheet" href="<?php echo plugins_url('css/jquery-ui-1.10.4.custom.css', dirname(__FILE__)); ?>" rel="stylesheet" type="text/css">
-<script src="<?php echo plugins_url('js/jquery-1.10.2.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
-<script src="<?php echo plugins_url('js/jquery-datepicker.min.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
-<!-- <script src="<?php echo plugins_url('js/jquery-datepicker.custom.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
---> 
-<script type="text/javascript">
-    $(function() {
-        $('.date-picker').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: '01/mm/yy',
-            onClose: function(dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, month, 1));
+<?php
+$monthList = array(
+	'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July ',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+	);
+?>
+<form action="#" style="display: inline-block;" method="get">
+<label style="text-align: right; width: 108px;" for="monthselect">Change Month:</label>
+<select name="monthselect" style="width: 100px; margin: 5px;" id="monthSelect" onchange="runBirth()">
+<option value="">--Select Month--</option>
+<?php
+for ($i = 0; $i <= 11; $i++) {
+$currentmonth = $i + 1;
+if ($currentmonth < 10) {
+$currentmonth = "0". $currentmonth;
+$currentmonthyear = $currentmonth. $year;
+}
+if ($currentmonth == $month) {
+?>
+<option value="<?php echo $currentmonth;?>" selected="selected"><?php echo $monthList[$i] ?></option>
+<?php
+} else {
+?>
+<option value="<?php echo $currentmonth;?>"><?php echo $monthList[$i] ?></option>
+<?php } }  ?>
+</select>
+<?php
+$currentyear = $year;
+?>
+<label for="yearselect" style="text-align: right; width: 108px;">Change Year:</label>
+<select name="yearselect" id="yearSelect" style="width: 100px; margin: 5px;" onchange="runBirth()">
+<option value="">--Select Year--</option>
+<option value="<?php echo $currentyear-3;?>"><?php echo $currentyear-3;?></option>
+<option value="<?php echo $currentyear-2;?>"><?php echo $currentyear-2;?></option>
+<option value="<?php echo $currentyear-1;?>"><?php echo $currentyear-1;?></option>
+<option value="<?php echo $currentyear;?>" selected="selected"><?php echo $currentyear;?></option>
+<option value="<?php echo $currentyear+1;?>"><?php echo $currentyear+1;?></option>
+<option value="<?php echo $currentyear+2;?>"><?php echo $currentyear+2;?></option>
+<option value="<?php echo $currentyear+3;?>"><?php echo $currentyear+3;?></option>
+</select>
+<input type="hidden" id="birthMonthYear" name="monthyear">
+ <input type="submit" value="Update" style="width:85px; margin: 10px;" />   
+</form> 
+<script>
+function runBirth() {
+    document.getElementById("birthMonthYear").value = "01/" + document.getElementById("monthSelect").value + "/" + document.getElementById("yearSelect").value;
+}
 
-            }
-        });
-    });
+
 </script>
-<style>
-    .ui-datepicker-calendar { display: none; }
-    .ui-datepicker .ui-datepicker-buttonpane  { display: none; }
-</style>
-</head>
-<!---- Jquery date picker end -->
-<!-- below is to get month selector -->
-<form style="display: inline-block;" method="get">
-    <label for="search-month">Click to select Month and Year: <input type="text" value="<?php echo $monthyear; ?>" name="monthyear" id="search-monthyear" class="date-picker" /></label> 
-<!-- <label for="search-year">Enter Year: <input type="text" value="<?php echo $year; ?>" name="year" id="search-year" size="4"></label>
-    -->
-<input type="submit" value="Update" style="width:85px;" />
-</form>
-<!-- above is to get month selector -->
-<p><br/></P>
 <h2><span style="color:#D77600; font-size:25px">Birthdays for <?php echo $date->format('F Y'); ?></span></h2>
 Clicking on a name takes you to the Individual's Family Page
 <?php
@@ -110,5 +133,4 @@ $usertree = $user['gedcom'];
 </table>
 </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </html>	

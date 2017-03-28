@@ -7,44 +7,66 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Family Anniversaries</title>
 </head>
-<!---- Jquery date picker strat -->
-<link rel="stylesheet" href="<?php echo plugins_url('css/jquery-ui-1.10.4.custom.css', dirname(__FILE__)); ?>" rel="stylesheet" type="text/css">
-<script src="<?php echo plugins_url('js/jquery-1.10.2.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
-<script src="<?php echo plugins_url('js/jquery-datepicker.min.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
-<!-- <script src="<?php echo plugins_url('js/jquery-datepicker.custom.js', dirname(__FILE__)); ?>" type="text/javascript"></script>
--->
-<script type="text/javascript">
-$(function() {
-    $('.date-picker').datepicker( {
-        changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
-        dateFormat: '01/mm/yy',
-        onClose: function(dateText, inst) {
-            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-            $(this).datepicker('setDate', new Date(year, month, 1));
-			
-        }
-    });
-});
+<?php
+$monthList = array(
+	'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July ',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+	);
+?>
+<form action="#" style="display: inline-block;" method="get">
+<label style="text-align: right; width: 108px;" for="monthselect3">Change Month:</label>
+<select name="monthselect3" style="width: 100px; margin: 5px;" id="monthSelect3" onchange="runDeath()">
+<option value="">--Select Month--</option>
+<?php
+for ($i = 0; $i <= 11; $i++) {
+$currentmonth = $i + 1;
+if ($currentmonth < 10) {
+$currentmonth = "0". $currentmonth;
+$currentmonthyear = $currentmonth. $year;
+}
+if ($currentmonth == $month) {
+?>
+<option value="<?php echo $currentmonth;?>" selected="selected"><?php echo $monthList[$i] ?></option>
+<?php
+} else {
+?>
+<option value="<?php echo $currentmonth;?>"><?php echo $monthList[$i] ?></option>
+<?php } }  ?>
+</select>
+<?php
+$currentyear = $year;
+?>
+<label for="yearselect3" style="text-align: right; width: 108px;">Change Year:</label>
+<select name="yearselect3" id="yearSelect3" style="width: 100px; margin: 5px;" onchange="runDeath()">
+<option value="">--Select Year--</option>
+<option value="<?php echo $currentyear-3;?>"><?php echo $currentyear-3;?></option>
+<option value="<?php echo $currentyear-2;?>"><?php echo $currentyear-2;?></option>
+<option value="<?php echo $currentyear-1;?>"><?php echo $currentyear-1;?></option>
+<option value="<?php echo $currentyear;?>" selected="selected"><?php echo $currentyear;?></option>
+<option value="<?php echo $currentyear+1;?>"><?php echo $currentyear+1;?></option>
+<option value="<?php echo $currentyear+2;?>"><?php echo $currentyear+2;?></option>
+<option value="<?php echo $currentyear+3;?>"><?php echo $currentyear+3;?></option>
+</select>
+<input type="hidden" id="deathMonthYear" name="monthyear">
+ <input type="submit" value="Update" style="width:85px; margin: 10px;" />   
+</form> 
+<script>
+function runDeath() {
+    document.getElementById("deathMonthYear").value = "01/" + document.getElementById("monthSelect3").value + "/" + document.getElementById("yearSelect3").value;
+}
+
+
 </script>
-<style>
-.ui-datepicker-calendar { display: none; }
-.ui-datepicker .ui-datepicker-buttonpane  { display: none; }
-</style>
-</head>
-<!---- Jquery date picker end -->
-<!-- below is to get month selector -->
-<body>
-<form style="display: inline-block;" method="get">
-	<label for="search-month">Click to select Month and Year: <input type="text" value="<?php echo $monthyear; ?>" name="monthyear" id="search-monthyear" class="date-picker" /></label> 
-<!-- <label for="search-year">Enter Year: <input type="text" value="<?php echo $year; ?>" name="year" id="search-year" size="4"></label>
--->
-<input type="submit" value="Update" style="width:85px;" />
-</form>
-<!-- above is to get month selector -->
-<p><br/></P>
 <h2><span style="color:#D77600; font-size:25px">Death Anniversaries for <?php echo $date->format('F Y'); ?></span></h2>
 Clicking on a name takes you to the Individual's FAMILY Page.</br>
 	<?php
@@ -53,7 +75,8 @@ Clicking on a name takes you to the Individual's FAMILY Page.</br>
 	$user = $tngcontent->getTngUser();
 	$usertree = $user['gedcom'];
 	?>
-<div class="container col-md-12 table-responsive">
+<div class="container-fluid table-responsive">
+<div class="col-md-12">
 <table class="table table-bordered"> 
 	<tr class="row">
 		<td class="tdback col-md-3" style="text-align: center">Name</td>
@@ -127,6 +150,7 @@ Clicking on a name takes you to the Individual's FAMILY Page.</br>
 	?>
 </tbody>
 </table>
+</div>
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
    
