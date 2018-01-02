@@ -2,7 +2,7 @@
 /***************************************************************
 Adds a sidebar widget to let users search TNG Database for names
 ****************************************************************/
-class Upavadi_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
+class Upavadi2_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
 {
 
     public function init()
@@ -10,17 +10,17 @@ class Upavadi_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
 
         // Check for the required plugin functions. This will prevent fatal
         // errors occurring when you deactivate the dynamic-sidebar plugin.
-        if (!function_exists('register_sidebar_widget'))
+        if (!function_exists('wp_register_sidebar_widget'))
             return;
 
         // Run our code later in case this loads prior to any required plugins.
         // This registers our widget so it appears with the other available
         // widgets and can be dragged and dropped into any active sidebars.
-        register_sidebar_widget(array('Family Search', 'widgets'), array($this, 'familySearch'));
+        wp_register_sidebar_widget(__CLASS__ . '_widget', array('Family Search', 'widgets'), array($this, 'familySearch'));
 
         // This registers our optional widget control form. Because of this
         // our widget will have a button that reveals a 300x100 pixel form.
-        register_widget_control(array('Family Search', 'widgets'), array($this, 'familySearchControl'), 300, 100);
+        wp_register_widget_control(__CLASS__ . '_control', array('Family Search', 'widgets'), array($this, 'familySearchControl'), 300, 100);
     }
 
 // This is the function that outputs the TNG search form.
