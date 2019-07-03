@@ -2,7 +2,7 @@
 /***************************************************************
 Adds a sidebar widget to let users search TNG Database for names
 ****************************************************************/
-class Upavadi2_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
+class Upavadi_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
 {
 
     public function init()
