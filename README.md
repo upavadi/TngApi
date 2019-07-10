@@ -40,18 +40,18 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
 ##Change Log
  - ### Current
   - Event templates (Birthdays, marriage and death anniversaries) - Removed flaky datepicker and replaced with drop down months.
- - ###3.2.2
+ - ### 3.2.2
   - Bug fixes post bootstrap
   
- - ###3.2.1
+ - ### 3.2.1
   - Added Tweeter Bootstrap for responsive display
   - Minor bug fixes
  
- - ###3.1.1
+ - ### 3.1.1
   - Fixed inconsistent display of 'hasKids' flag
   - remove typo in update family (line 788)
   - Allow display of completed changes submitted by user on 'thank-you' page
- - ###3.1.0
+ - ### 3.1.0
   - Changed plugin name to TngApi-V3
   - Modified settings and family template to cater for varying installations
   - Situation where only one of a new mother or father is added and then the head person would not be registered as a child - Fixed
@@ -63,20 +63,20 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
   - Event Report: Birthdays: Added default image if there is one
   - Media for individual allocated to All Trees and individual allocated to one tree: media did not show for individual - Fixed  
 
-  - ####3.04
+  - #### 3.04
   - Accept blank settings page on Activation
 
- - ####3.03
+ - #### 3.03
   - Bug fixes
 
- - ####3.0.2
+ - #### 3.0.2
   - Update README.md
   - Update Version Number
 
- - ####3.0.1
+ - #### 3.0.1
   - Bump up version number and tidy up
 
- - ####3.0
+ - #### 3.0
   - Temporary Wordpress tables to hold User Submitted Data
   - User Submission Page to display User Data
   - Admin Submission Page to User Submissions
@@ -89,16 +89,16 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
   - Option to remove wordpress temporary tables on deactivation
  - Bug fixes
 
- - ####2.0
+ - #### 2.0
   - Not released
   
- - ####1.3
+ - #### 1.3
   - Tab Shortcode
   - Image Upload Shortcode
   - Default Image upload from Family Page
   - Date Selector for Event Reports
   - Bug fixes
- - ####Initial Release
+ - #### Initial Release
 
 ## Installation
 This plugin assumes that:
