@@ -14,11 +14,10 @@ $row = $res->fetch_assoc();
 $photos = esc_attr(get_option('tng-api-tng-photo-folder'));
 $uploadPath = $photos;
 $tngPath = $content->getTngPath();
-if (!preg_match("/" . DIRECTORY_SEPARATOR . "$/", $tngPath)) {
+if (!preg_match("|" . DIRECTORY_SEPARATOR . "$|", $tngPath)) {
     $tngPath .= DIRECTORY_SEPARATOR;
 }
-
-if (!preg_match("/" . DIRECTORY_SEPARATOR . "$/", $uploadPath)) {
+if (!preg_match("|" . DIRECTORY_SEPARATOR . "$|", $uploadPath)) {
     $uploadPath .= DIRECTORY_SEPARATOR;
 }
 if (isset($_POST)) {
