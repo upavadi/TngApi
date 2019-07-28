@@ -40,6 +40,8 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
 ## Change Log
  - ### Current
   - Event templates (Birthdays, marriage and death anniversaries) - Removed flaky datepicker and replaced with drop down months.
+  - Search Family Widget: Fixed compatibility with Wordpress 5
+  - Image upload: Fixed coding bug 
  - ### 3.2.2
   - Bug fixes post bootstrap
   
