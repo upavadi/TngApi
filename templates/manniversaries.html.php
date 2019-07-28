@@ -76,6 +76,7 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 	$tngcontent = Upavadi_tngcontent::instance()->init();
 	$user = $tngcontent->getTngUser();
 	$usertree = $user['gedcom'];
+
 	?>
 <div class="container-fluid table-responsive">
 <div class="col-md-12">
@@ -90,8 +91,9 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 			$url = $tngcontent->getTngUrl();
 			if ($usertree == '') { ?>
 			<td class="tdback col-md-1">Tree</td>
-			<?php } ?>	
-		
+			<?php } ?>
+
+	<tbody>	
 	</tr>
 	<?php foreach ($manniversaries as $manniversary):
 		$manniversarydate = strtotime($manniversary['marrdate']);
@@ -101,6 +103,7 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 		$lastname1 = $manniversary['lastname1'];
 		$firstname2 = $manniversary['firstname2'];
 		$lastname2 = $manniversary['lastname2'];
+		$div_date = $manniversary['divdate'];
 	//get default media
 		 $photos = $tngcontent->getTngPhotoFolder();
 		$personId1 = $manniversary['personid1'];
@@ -110,8 +113,11 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 		$photosPath = $url. $photos;
 		$mediaID1 = $photosPath."/". $defaultmedia1['thumbpath'];
 		$mediaID2 = $photosPath."/". $defaultmedia2['thumbpath'];
+	
+		//Ignore if divorced.
+		if ($div_date == '') {
 	?>
-	<tbody>
+	
 		<tr class="row">
 			<td class="col-md-3" style="text-align: center">
 			<div>
@@ -133,8 +139,9 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 			if ($usertree == '') { ?>
 				<td class="col-md-1"><?php echo $manniversary['gedcom']; ?></td>
         </tr>
-    <?php 
-			}
+	<?php 
+		}
+		}
 	endforeach; ?>
 </tbody>
 </table>

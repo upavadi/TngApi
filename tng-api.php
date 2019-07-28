@@ -16,10 +16,8 @@
  */
 require_once __DIR__ . '/autoload.php';
 include_once __DIR__. '/tabs.php';
-//wp_enqueue_style('upavadi-styles', plugins_url( 'css/bootstrap.css',__FILE__) );
-//wp_enqueue_style('upavadi-styles', plugins_url( 'css/upavadi.css',__FILE__) );
-$content = Upavadi_TngContent::instance();
 
+$content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
 $content->addShortcode(new Upavadi_Shortcode_PersonNotes);
 $content->addShortcode(new Upavadi_Shortcode_FamilyUser);

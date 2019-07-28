@@ -8,7 +8,9 @@ Clicking on a name takes you to the Individual's Family Page.</br>
 			<th style="background-color: #EDEDED;">Place</th>
 			<th style="background-color: #EDEDED;">Years</th>
 	
-<?php foreach ($manniversariesplusone as $manniversary):?>
+<?php foreach ($manniversariesplusone as $manniversary):
+	var_dump($manniversariesplusone);
+	?>
 		<tr>
 			<td><a href="/family/?personId=<?php echo $manniversary['personid1'];?>">
 			<?php echo $manniversary['firstname1']; ?><?php echo $manniversary['lastname1']; ?></a></td>
