@@ -59,12 +59,18 @@ $currentyear = $year;
 <option value="<?php echo $currentyear+3;?>"><?php echo $currentyear+3;?></option>
 </select>
 <input type="hidden" id="birthMonthYear" name="monthyear">
- <input type="submit" value="Update" style="width:85px; margin: 10px;" />   
-</form> 
+ <input type="submit" value="Update" style="width:85px; margin: 10px;" /> 
+ <input type="submit"  value="Today" onclick="goToToday()"/>  
+</form>
+
 <script>
 function runBirth() {
     document.getElementById("birthMonthYear").value = "01/" + document.getElementById("monthSelect").value + "/" + document.getElementById("yearSelect").value;
 }
+function goToToday() {
+    document.getElementById("birthMonthYear").value = "01/" + document.getElementById("monthSelect").value + "/" + date("Y");
+}
+
 
 
 </script>
