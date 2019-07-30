@@ -1058,6 +1058,7 @@ SELECT
     f.familyID,
     f.marrdate,
     f.marrplace,
+    f.divdate,
     Year(Now()) - Year(marrdatetr) AS Years
 FROM {$this->tables['families_table']} as f
     LEFT JOIN {$this->tables['people_table']} AS h
