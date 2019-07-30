@@ -256,7 +256,18 @@
 		$parentsmarrplace = "Unknown";
 	} else {
 		$parentsmarrplace = $parents['marrplace'];
-	}	
+	}
+//parents divorced data
+$parentsDivDate = $parents['divdate'];
+$parentsDivplace = $parents['divplace'];
+if ($parentsDivDate) {
+	$parentsdivdata = "( Divorced: ". $parentsDivDate;
+		if ($parentsDivplace) {
+			$parentsdivdata = $parentsdivdata. " at ". $parentsDivplace;
+		}
+	$parentsdivdata = $parentsdivdata. " )";
+}
+
 //get default media
     $defaultmedia = $tngcontent->getDefaultMedia($personId, $tree);
     if ($defaultmedia['thumbpath'] == null AND $person['sex'] == "M") {
@@ -425,7 +436,7 @@
             ?>
 	<tr class="row">
 		<td class="tdback col-md-1">Parents</td>
-		<td class="col-md-8 <?php echo $bornClass; ?>""><?php echo $parentsmarrdate; ?></td>
+		<td class="col-md-8 <?php echo $bornClass; ?>""><?php echo $parentsmarrdate. " ". $parentsdivdata; ?></td>
 		<td class="tdback col-md-1">Place</td>
 		<td class="col-md-2"><?php echo $parentsmarrplace; ?></td>
 	</tr>
@@ -436,7 +447,16 @@
 		$marrdatetr = $family['marrdatetr'];
 		$marrdate = $family['marrdate'];
 		$marrplace = $family['marrplace'];
-		$order = null;
+		$divdate = $family['divdate'];
+		$divplace = $family['divplace'];
+		if ($divdate) {
+			$divdata = "( Divorced: ". $divdate;
+				if ($divplace) {
+					$divdata = $divdata. " at ". $divplace;
+				}
+			$divdata = $divdata. " )";
+		}	
+			$order = null;
 		if ($sortBy && count($families) > 1) {
 			$order = $family[$sortBy];
 		}
@@ -563,7 +583,7 @@
 				$marrdate = $family['marrdate'];
 			}
 		?>
-		<td class="col-md-8 <?php echo $bornClass; ?>"><?php echo $marrdate ?>
+		<td class="col-md-8 <?php echo $bornClass; ?>"><?php echo $marrdate. " ". $divdata; ?>
 		</td>
 		<td class="tdback col-md-1"><?php echo "Place"; ?></td>
 		<td class="col-md-2"><?php echo $marrplace; ?></td>
