@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Family Anniversaries</title>
+<title>Family Death Anniversaries</title>
 </head>
 <?php
 $monthList = array(
@@ -58,13 +58,17 @@ $currentyear = $year;
 <option value="<?php echo $currentyear+3;?>"><?php echo $currentyear+3;?></option>
 </select>
 <input type="hidden" id="deathMonthYear" name="monthyear">
- <input type="submit" value="Update" style="width:85px; margin: 10px;" />   
-</form> 
+ <input type="submit" value="Update" style="width:85px; margin: 10px;" />  
+ <input type="submit"  value="Today" onclick="goToToday()"/> 
+</form>
+
 <script>
 function runDeath() {
     document.getElementById("deathMonthYear").value = "01/" + document.getElementById("monthSelect3").value + "/" + document.getElementById("yearSelect3").value;
 }
-
+function goToToday() {
+    document.getElementById("birthMonthYear").value = "01/" + document.getElementById("monthSelect").value + "/" + date("Y");
+}
 
 </script>
 <h2><span style="color:#D77600; font-size:25px">Death Anniversaries for <?php echo $date->format('F Y'); ?></span></h2>
@@ -154,7 +158,4 @@ Clicking on a name takes you to the Individual's FAMILY Page.</br>
 </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
    
-</html>	
-
-
-
+</html>

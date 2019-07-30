@@ -1,13 +1,11 @@
 <!-- Marriage Anniversaries Modified for BootStrap March 2016-->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Family Anniversaries</title>
-
 </head>
 <?php
 $monthList = array(
@@ -61,12 +59,15 @@ $currentyear = $year;
 </select>
 <input type="hidden" id="anniversaryMonthYear" name="monthyear">
  <input type="submit" value="Update" style="width:85px; margin: 10px;" />   
+ <input type="submit"  value="Today" onclick="goToToday()"/>
 </form> 
 <script>
 function runAnniversary() {
     document.getElementById("anniversaryMonthYear").value = "01/" + document.getElementById("monthSelect2").value + "/" + document.getElementById("yearSelect2").value;
 }
-
+function goToToday() {
+    document.getElementById("birthMonthYear").value = "01/" + document.getElementById("monthSelect").value + "/" + date("Y");
+}
 
 </script>
 <h2><span style="color:#D77600; font-size:25px">Marriage Anniversaries for <?php echo $date->format('F Y'); ?></span></h2></p>

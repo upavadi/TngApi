@@ -1,7 +1,6 @@
 <!-- Birthdays Modified for BootStrap March 2016-->
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -60,7 +59,7 @@ $currentyear = $year;
 </select>
 <input type="hidden" id="birthMonthYear" name="monthyear">
  <input type="submit" value="Update" style="width:85px; margin: 10px;" /> 
- <input type="submit"  value="Today" onclick="goToToday()"/>  
+ <input type="submit"  value="Today" onclick="goToToday()"/> 
 </form>
 
 <script>
@@ -70,8 +69,6 @@ function runBirth() {
 function goToToday() {
     document.getElementById("birthMonthYear").value = "01/" + document.getElementById("monthSelect").value + "/" + date("Y");
 }
-
-
 
 </script>
 <h2><span style="color:#D77600; font-size:25px">Birthdays for <?php echo $date->format('F Y'); ?></span></h2>
@@ -124,9 +121,6 @@ $usertree = $user['gedcom'];
             <td class="col-md-2"><?php echo $birthday['birthdate']; ?></td>
             <td class="col-md-2"><?php echo $birthday['birthplace']; ?></td>
             <td class="col-md-1" style="text-align: center"><?php echo $birthday['age']; ?></td>
-		<!--
-	   <td class="tdfront"><a href="../genealogy/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $birthday['personid']; ?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo "View" ?></td>
-		-->
 			<?php 
 			if ($usertree == '') { ?>
 				<td class="col-md-1"><?php echo $birthday['gedcom']; ?></td>
