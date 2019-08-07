@@ -12,7 +12,6 @@
     
     <?php
     $tngcontent = Upavadi_TngContent::instance();
-
 	$genealogy = $tngcontent->getTngIntegrationPath();
 	$url = $tngcontent->getTngUrl();
 	$tngDirectory = basename($url );
@@ -41,7 +40,13 @@
     $deathdate = $person['deathdate'];
     $deathdatetr = ($person['deathdatetr']);
     $deathplace = $person['deathplace'];
-    $name = $person['firstname'] ." ".  $person['lastname'];
+	$name = $person['firstname'] ." ".  $person['lastname'];
+	var_dump($person['personID']);
+
+	// set variable for cousins page
+	$primaryID = "";
+	$primaryID = $person['personID']; //comment this out to hide cousins button
+
 //get person details for link to tng pages
 	$linkPerson = $person['personID'];
     $tree = $person['gedcom'];
@@ -300,28 +305,37 @@ if ($parentsDivDate) {
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-3  col-sm-3" id="link-btn" >
-					<input type="button" class="btn btn-primary" style="width:150px" value="submit-profile-photo" onclick="location.href = '#submit-profile-photo'"/>
-                    </div>
-					<div class="col-md-3  col-sm-3" id="link-btn" >
+					<div class="col-md-1  col-sm-2" id="link-btn" >
+					<?php
+					echo "<input type=\"button\" style=\"width:150px\" value=\"submit-profile-photo\" onclick=\"window.location.href = '#submit-profile-photo' \" />";
+                    ?>
+					</div>
+					<div class="col-md-1  col-sm-2" id="link-btn" >
+					<?php 
+					if ($primaryID) {
+					echo "<input type=\"button\" style=\"width:150px\" value=\"Cousins\" onclick=\"window.location.href = '$IntegratedPath/cousins.php?primaryID=$linkPerson&tree=$tree'\" />";
+                    } ?>
+					</div>
+
+				</div>	
+				<div class="row">
+				<div class="col-md-1  col-sm-2" id="link-btn" >
 					<?php if ($displayButtons) {
 					echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '$IntegratedPath/getperson.php?personID=$linkPerson&tree=$tree' \" />";
                     } ?>
 					</div>
-				</div>	
-				<div class="row">
-					<div class="col-md-3  col-sm-3" id="link-btn" >
+					<div class="col-md-1  col-sm-2" id="link-btn" >
 					<?php if ($displayButtons) {
 					echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '$IntegratedPath/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
                      } ?>
 					</div>
-					<div class="col-md-3  col-sm-3" id="link-btn" >
+					<div class="col-md-1  col-sm-2" id="link-btn" >
 					<?php if ($displayButtons) {
 					echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '$IntegratedPath/descend.php?personID=$linkPerson&tree=$tree'\" />";
 					} ?>
 					</div>
+					
 				</div>
-				
 			</td>
         </tr>
 </table>
