@@ -25,7 +25,7 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	 The plugin now caters for multiple trees and privacy flags.
  - Facility to track a customized special event is now implemented from the setup menu.
 
-###This plugin does not:
+### This plugin does not:
  -	Provide any registration process 
  -	Display TNG pages within Wordpress
 
