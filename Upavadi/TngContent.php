@@ -60,7 +60,11 @@ class Upavadi_TngContent
 
     public function getTngPath()
     {
-        return esc_attr(get_option('tng-api-tng-path'));
+        $path = esc_attr(get_option('tng-api-tng-path'));
+        if (!file_exists($path)) {
+            add_action( 'admin_notices', array($this, 'pathNotSpecified'));
+        }
+        return $path;
     }
 	public function getTngUrl()
     {
@@ -90,7 +94,7 @@ class Upavadi_TngContent
         $tngPath = $this->getTngPath();
         $configPath = $tngPath . DIRECTORY_SEPARATOR . "config.php";
         if (!file_exists($configPath)) {
-            return;
+            throw new DomainException('Could not find TNG config file');
         }
         include $configPath;
         $vars = get_defined_vars();
@@ -142,33 +146,45 @@ class Upavadi_TngContent
         }
 
         // get_currentuserinfo();
+        try {
+            $dbHost = esc_attr(get_option('tng-api-db-host'));
+            $dbUser = esc_attr(get_option('tng-api-db-user'));
+            $dbPassword = esc_attr(get_option('tng-api-db-password'));
+            $dbName = esc_attr(get_option('tng-api-db-database'));
+            $EventID = esc_attr(get_option('tng-api-tng-event'));
+            $db = mysqli_connect($dbHost, $dbUser, $dbPassword);
+            mysqli_select_db($db, $dbName);
+            $this->initTables();
 
-        $dbHost = esc_attr(get_option('tng-api-db-host'));
-        $dbUser = esc_attr(get_option('tng-api-db-user'));
-        $dbPassword = esc_attr(get_option('tng-api-db-password'));
-        $dbName = esc_attr(get_option('tng-api-db-database'));
-        $EventID = esc_attr(get_option('tng-api-tng-event'));
-        $db = mysqli_connect($dbHost, $dbUser, $dbPassword);
-        mysqli_select_db($db, $dbName);
-        $this->db = $db;
-        $this->initTables();
+            if (!isset($this->tables['users_table'])) {
+                return $this;
+            }
 
-        if (!$this->tables['users_table']) {
+            
+            $tng_user_name = $this->getTngUserName();
+            $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
+            $result = mysqli_query($db, $query);
+            if (!$result) {
+                throw new RuntimeException(mysqli_error($this->db));
+            }
+            $row = $result->fetch_assoc();
+            $this->currentPerson = $row['personID'];
+            $this->db = $db;
             return $this;
+        } catch (DomainException $e) {
+            add_action( 'admin_notices', array($this, 'pathNotSpecified'));
         }
-
-		
-        $tng_user_name = $this->getTngUserName();
-        $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
-        $result = mysqli_query($db, $query) or die("Cannot execute query: $query");
-        $row = $result->fetch_assoc();
-        $this->currentPerson = $row['personID'];
-        return $this;
     }
 
     public function query($sql)
     {
-        $result = mysqli_query($this->db, $sql) or die("Cannot execute query: $sql");
+        if (!$this->db) {
+            throw new RuntimeException("No DB configured please contact the administrator");
+        }
+        $result = mysqli_query($this->db, $sql);
+        if (!$result) {
+            throw new RuntimeException(mysqli_error($this->db));
+        }
         return $result;
     }
 
@@ -439,7 +455,7 @@ SQL;
 
     function getEventList()
     {
-        if (!$this->tables['eventtypes_table']) {
+        if (!isset($this->tables['eventtypes_table'])) {
             return array();
         }
 
@@ -1196,5 +1212,37 @@ SQL;
         return $user['gedcom'];
     }
 
+    public function pathNotSpecified()
+    {
+        ?>
+		<div>
+			<h2>We need to know where TNG is installed:</h2>
+		</div>
+		<form action=''  method="post">	
+		<div> 	
+			<input type="text"  style="width: 250px" name="tng_path" value= '<?php if(isset($_POST['tng_path'])) echo $_POST['tng_path'] ?>' placeholder='TNG Root Path:'>
+			TNG Root Path is absolute path to TNG. You may look this up from TNG Admin Setup or in config.php in TNG folder.
+		</div>
+		<?php
+		echo $tngPromt;
+		?>
+		<div> 	
+			<input style="color: green; width: 250px" type="text"  name="tng_url" value= '<?php echo $tngdomain; ?>' placeholder='TNG url:' disabled>
+			TNG URL (www.mysite.com/tng) from TNG Admin Setup.
+		</div>
+		<div> 	
+			<input style="color: green" type="text"  name="tng_photo_folder" style="width: 250px" value= '<?php echo $photopath; ?>' placeholder='TNG photo folder:' disabled>
+			Name of TNG Photo Folder in TNG Setup.  If you want to use different folder for this plugin, change it in admin menu>WP-TNG Login>Plugin Paths.
+		</div>
+		<p style="color: green; display: inline-block"><?php echo "<b>". $success. "</b><br />"; ?></p>
+		
+	<p>
+	<input type="submit" name="Update_Paths" value="Update Paths">
+	</p>
+	</div>
+	</form>
+	
+    <?php
+    }
 }
 ?>
