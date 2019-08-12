@@ -119,7 +119,7 @@ if (isset($_POST)) {
         $thumbLocation = $photos. "/". basename($thumb_DestRandImageName);
         $title = $_POST['title'];
         $desc = $_POST['Desc'] . "\n" . $_POST['Notes'];
-        $date = date('r');
+        $date = date("Y-m-d H:i:s");
         $username = $content->getTngUserName();
         $filetype = strtoupper($ImageExt);
         $sql = <<<SQL
@@ -130,10 +130,14 @@ SQL;
         $link = $content->getDbLink();
         $stmnt = mysqli_prepare($link, $sql);
         $stmnt->bind_param('sssssssss', $collection, $fileLocation, $filetype, $basename, $title, $desc, $thumbLocation, $date, $username);
-        $stmnt->execute();
+        if (!$stmnt->execute()) {
+            echo "<p>{$stmnt->error}</p>";
+            error_log($stmnt->error);
+        }
         $mediaID = $stmnt->insert_id;
         $personId = $content->getCurrentPersonId();
-        $sql = "INSERT into {$tables['medialinks_table']} (linktype, dontshow, personID, mediaID) VALUES ('I', '1', '{$personId}', {$mediaID})";
+        // $sql = "INSERT into {$tables['medialinks_table']} (linktype, dontshow, personID, mediaID, gedcom, eventID) VALUES ('I', '1', '{$personId}', {$mediaID}, '', '')";
+        $sql ="INSERT INTO {$tables['medialinks_table']} (`medialinkID`, `gedcom`, `linktype`, `personID`, `eventID`, `mediaID`, `altdescription`, `altnotes`, `ordernum`, `dontshow`, `defphoto`) VALUES (NULL, '', 'I', '{$personId}', '', '{$mediaID}', '', '', 0, 0, '')";
         $content->query($sql);
         
         $date = date('c');
