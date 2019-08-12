@@ -8,7 +8,7 @@ abstract class Upavadi_Shortcode_AbstractCustomShortcode extends Upavadi_Shortco
      */
     protected $custom;
 
-    public function init(Upavadi_TngContent $content, $templates, Upavadi_TngCustomContent $custom)
+    public function init(Upavadi_TngContent $content, $templates, Upavadi_TngCustomContent $custom = null)
     {
         parent::init($content, $templates);
         $this->custom = $custom;

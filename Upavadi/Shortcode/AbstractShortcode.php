@@ -14,7 +14,7 @@ abstract class Upavadi_Shortcode_AbstractShortcode
      */
     protected $templates;
 
-    public function init(Upavadi_TngContent $content, $templates)
+    public function init(Upavadi_TngContent $content, $templates, Upavadi_TngCustomContent $custom = null)
     {
         $this->content = $content;
         $this->templates = $templates;
