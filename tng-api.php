@@ -1,6 +1,6 @@
 <?php
 /*
- * Plugin Name: TngApi-V3 with Bootstrap developer
+ * Plugin Name: TngApi-V3 with Bootstrap developer master 322b
  * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated 
  *
  * Plugin URI: https://github.com/upavadi/TngApi
@@ -33,6 +33,7 @@ $content->addShortcode(new Upavadi_Shortcode_UserFamilySheet());
 $familySearch = new Upavadi_Widget_FamilySearch;
 $update = new Upavadi_Update_Admin($wpdb, $content);
 
+add_action('init', array($content, 'initVariables') );
 add_action('init', array($content, 'initPlugin'), 1);
 add_action('widgets_init', array($familySearch, 'init'));
 add_action( 'admin_menu', array($content, 'adminMenu') );
