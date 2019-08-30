@@ -39,6 +39,10 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
 
 ## Change Log
  - ### Current
+  - Trap PHP warnings so that the error does not lock up Wordpress.
+    - If TNG folder is not found, a mini form is generated in the dashboard to allow administrator to update value.
+    - If there is TNG database error, a mini form is generated in the dashboard to allow administrator to update values.
+   
   - Family Page - Added Divorced data next to Marr Date
   - Event - Marriage Anniversaries: Added: Ignore Divorced
   - Event templates (Birthdays, marriage and death anniversaries) - Removed flaky datepicker and replaced with drop down months. Added a Today button to revert to current month
