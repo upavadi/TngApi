@@ -132,7 +132,7 @@ class Upavadi_TngContent
            $e = new DomainException('TNG Path not found');
            error_log($e->getMessage());
            error_log($e->getTraceAsString());
-           echo "TNG Path not found (135)";
+           echo "TNG Path not found (" . __LINE__ . ")";
        //  Display admin message if tng path not specified
            add_action( 'admin_notices', array($this, 'pathNotSpecified') );
            return;
@@ -1244,7 +1244,7 @@ SQL;
             $this->tngUser = $row;
             return $row;
         }
-        die('User ' . $userName . ' not found in TNG (or donot have access to) (1247)'); //mu - change from wp_die
+        throw new InvalidArgumentException('User ' . $userName . ' not found in TNG (or donot have access to) (1247)'); //mu - change from wp_die
     }
 
     /**
