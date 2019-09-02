@@ -20,7 +20,7 @@
 	$photos = $tngcontent->getTngPhotoFolder();
 	$photosPath = $url. $photos;
 //get and hold current user
-    $currentperson = $tngcontent->getCurrentPersonId($person['personID']);
+    $currentperson = $tngcontent->getCurrentPersonId();
     $currentperson = $tngcontent->getPerson($currentperson);
     $currentuser = ($currentperson['firstname'] ." ". $currentperson['lastname']);
 // Uncomment below to use the current wordpres display name instead of the TNG user
@@ -31,7 +31,7 @@
 //user for upload photo
     $current_user = wp_get_current_user();
     $User = $current_user->user_firstname;
-    $UserID = $User->ID;
+    // $UserID = $User->ID;
 //get person details
     $person = $tngcontent->getPerson($personId, $tree);
     $birthdate = $person['birthdate'];
@@ -41,11 +41,10 @@
     $deathdatetr = ($person['deathdatetr']);
     $deathplace = $person['deathplace'];
 	$name = $person['firstname'] ." ".  $person['lastname'];
-	var_dump($person['personID']);
-
+	
 	// set variable for cousins page
 	$primaryID = "";
-	$primaryID = $person['personID']; //comment this out to hide cousins button
+	//$primaryID = $person['personID']; //comment this out to hide cousins button
 
 //get person details for link to tng pages
 	$linkPerson = $person['personID'];
@@ -93,7 +92,7 @@
     $personRow = $tngcontent->getSpEvent($person['personID'], $tree);
 	$spevent = $personRow['info'];
 //get Description of Event type
-	$EventRow = $tngcontent->getEventDisplay($event['display']);	
+	$EventRow = $tngcontent->getEventDisplay();	
 	$EventDisplay = $EventRow['display'];
 //get details of family
     if ($person['sex'] == 'M') {
@@ -265,6 +264,8 @@
 //parents divorced data
 $parentsDivDate = $parents['divdate'];
 $parentsDivplace = $parents['divplace'];
+
+$parentsdivdata = '';
 if ($parentsDivDate) {
 	$parentsdivdata = "( Divorced: ". $parentsDivDate;
 		if ($parentsDivplace) {
@@ -310,6 +311,7 @@ if ($parentsDivDate) {
 					echo "<input type=\"button\" style=\"width:150px\" value=\"submit-profile-photo\" onclick=\"window.location.href = '#submit-profile-photo' \" />";
                     ?>
 					</div>
+					
 					<div class="col-md-1  col-sm-2" id="link-btn" >
 					<?php 
 					if ($primaryID) {
@@ -458,6 +460,7 @@ if ($parentsDivDate) {
 <?php
 //Spouse(s)		
 	foreach ($families as $family):
+		$divdata = "";
 		$marrdatetr = $family['marrdatetr'];
 		$marrdate = $family['marrdate'];
 		$marrplace = $family['marrplace'];
@@ -474,7 +477,7 @@ if ($parentsDivDate) {
 		if ($sortBy && count($families) > 1) {
 			$order = $family[$sortBy];
 		}
-		$spouse['personID'] == '';
+		//$spouse['personID'] == '';
 
 		if ($person['personID'] == $family['wife']) {
 			if ($family['husband'] !== '') {
@@ -524,6 +527,7 @@ if ($parentsDivDate) {
 			$spousename = $spouse['firstname']. " ". $spouse['lastname'] . $deathdate;
 		}
 // Spouse - Special Event
+			$spouse_spevent = "";
 			if ($EventDisplay !== null)
 			{
 				if ($spouse['personID'] !== null)
@@ -580,7 +584,7 @@ if ($parentsDivDate) {
     <tr class="row">
 		<td class="tdback col-md-1"><?php echo "Married" ?></td>
 		<?php
-			if (marrdatetr == "0000-00-00") {
+			if ($marrdatetr == "0000-00-00") {
 				$marrmonth = null;
 			} else {
 				$marrmonth = substr($family['marrdatetr'], -5, 2);
@@ -631,7 +635,7 @@ if ($parentsDivDate) {
 				$childPerson = $tngcontent->getPerson($child['personID'], $tree);
 				$childName = $childPerson['firstname']. " ". $childPerson['lastname'];
 				$childdeathdate = $childPerson['deathdate'];
-
+				$kids = "";
 				if ($child['haskids']) {
 					$classes[] = 'haskids';
 				$kids = $kids + 1;
