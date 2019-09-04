@@ -107,16 +107,10 @@ if (isset($_POST)) {
 
         echo '</tr>';
         echo '</table>';
-
-        /*
-          // Insert info into database table!
-          mysql_query("INSERT INTO myImageTable (ImageName, ThumbName, ImgPath)
-          VALUES ($DestRandImageName, $thumb_DestRandImageName, 'uploads/')");
-         */
-        
-        $basename = $photos . '/' . basename($DestRandImageName);
-        $fileLocation = $photos . '/' . $basename;
-        $thumbLocation = $photos. "/". basename($thumb_DestRandImageName);
+                
+        $basename = basename($DestRandImageName);
+        $fileLocation =  $photos. '/' . $basename;
+        $thumbLocation = "/". basename($thumb_DestRandImageName);
         $title = $_POST['title'];
         $desc = $_POST['Desc'] . "\n" . $_POST['Notes'];
         $date = date("Y-m-d H:i:s");
@@ -136,8 +130,11 @@ SQL;
         }
         $mediaID = $stmnt->insert_id;
         $personId = $content->getCurrentPersonId();
-        // $sql = "INSERT into {$tables['medialinks_table']} (linktype, dontshow, personID, mediaID, gedcom, eventID) VALUES ('I', '1', '{$personId}', {$mediaID}, '', '')";
-        $sql ="INSERT INTO {$tables['medialinks_table']} (`medialinkID`, `gedcom`, `linktype`, `personID`, `eventID`, `mediaID`, `altdescription`, `altnotes`, `ordernum`, `dontshow`, `defphoto`) VALUES (NULL, '', 'I', '{$personId}', '', '{$mediaID}', '', '', 0, 0, '')";
+        $person = $content->getPerson($personId);
+        $gedcom = $person['gedcom'];
+
+
+        $sql ="INSERT INTO {$tables['medialinks_table']} (`medialinkID`, `gedcom`, `linktype`, `personID`, `eventID`, `mediaID`, `altdescription`, `altnotes`, `ordernum`, `dontshow`, `defphoto`) VALUES (NULL, '{$gedcom}', 'I', '{$personId}', '', '{$mediaID}', '', '', 0, 0, '')";
         $content->query($sql);
         
         $date = date('c');
