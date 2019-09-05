@@ -53,7 +53,7 @@ $currentyear = $year;
 <option value="<?php echo $currentyear-2;?>"><?php echo $currentyear-2;?></option>
 <option value="<?php echo $currentyear-1;?>"><?php echo $currentyear-1;?></option>
 <option value="<?php echo $currentyear;?>" selected="selected"><?php echo $currentyear;?></option>
-<option value="<?php echo $curren0tyear+1;?>"><?php echo $currentyear+1;?></option>
+<option value="<?php echo $currentyear+1;?>"><?php echo $currentyear+1;?></option>
 <option value="<?php echo $currentyear+2;?>"><?php echo $currentyear+2;?></option>
 <option value="<?php echo $currentyear+3;?>"><?php echo $currentyear+3;?></option>
 </select>

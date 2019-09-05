@@ -62,7 +62,8 @@
         /* @var $tngcontent Upavadi_TngContent  */
 		$allnotes = $tngcontent->getNotes($personId);
 		
-                $notes = array();
+		$notes = 'array()';
+		$note = 'array()';
 		foreach($allnotes as $PersonNote):
                     $key = $PersonNote['eventID'];
                     if ($PersonNote['eventID'] == null) {
@@ -80,7 +81,7 @@
                 );
 	
 	
-	//var_dump($allnotes);
+	
                 foreach ($noteOrder as $type => $header):
                     $note = $notes[$type];
                     if (!$note) {
@@ -92,7 +93,7 @@
                     }
                     if ($note['secret']) {
                         $note['note'] = null;
-                    }
+                    } var_dump($allnotes);
 	?>
             <p>
                 <input type="hidden" name="person_note[<?php echo $type; ?>][xnoteID]" value="<?php echo $note['xnoteID'] ?>" />
