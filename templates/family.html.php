@@ -328,12 +328,12 @@ if ($parentsDivDate) {
 					</div>
 					<div class="col-md-1  col-sm-2" id="link-btn" >
 					<?php if ($displayButtons) {
-					echo "<input type=\"button\" style=\"width:150px\" value=\"Ancestors\" onclick=\"window.location.href = '$IntegratedPath/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
+					echo "<input type=\"button\" style=\"width:150px; margin-left: 5px\" value=\"Ancestors\" onclick=\"window.location.href = '$IntegratedPath/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
                      } ?>
 					</div>
 					<div class="col-md-1  col-sm-2" id="link-btn" >
 					<?php if ($displayButtons) {
-					echo "<input type=\"button\" style=\"width:150px\" value=\"Descendants\" onclick=\"window.location.href = '$IntegratedPath/descend.php?personID=$linkPerson&tree=$tree'\" />";
+					echo "<input type=\"button\" style=\"width:150px; margin-left: 10px\" value=\"Descendants\" onclick=\"window.location.href = '$IntegratedPath/descend.php?personID=$linkPerson&tree=$tree'\" />";
 					} ?>
 					</div>
 					
