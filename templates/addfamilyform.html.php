@@ -10,8 +10,8 @@
 	<?php
 	$tngcontent = Upavadi_tngcontent::instance()->init();
 //get and hold current user
-	$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
-	//$person = $tngcontent->getPerson($currentperson);
+	$currentperson = $tngcontent->getCurrentPersonId();
+	$person = $tngcontent->getPerson($currentperson);
 	$currentuser = ($person['firstname']. $person['lastname']);
 	$currentuserLogin = wp_get_current_user();
 	$UserLogin = $currentuserLogin->user_login;
@@ -29,11 +29,11 @@
 //get Person SpecialEvent;
 	$personRow = $tngcontent->getSpEvent($person['personID'], $tree);
 	$person_SpEvent = $personRow['info'];
-	$EventDisplay = $personRow['display'];
+	//$EventDisplay = $personRow['display']; 
 //get Description of Event type
-	$EventRow = $tngcontent->getEventDisplay($event['display']);	
+	$EventRow = $tngcontent->getEventDisplay();	
 	$EventDisplay = $EventRow['display'];
-	$EventID = $EventRow['eventtypeID'];
+	$EventID = $EventRow['eventtypeID']; 
 // get familyuser
 	if ($person['sex'] == 'M') {
 		$sortBy = 'husborder';
@@ -344,9 +344,9 @@
 </form>
 </div>
 </div>
+
 <script>
- 
- var clone;
+var clone;
 function cloneRow()  { // create clone of empty child line for use during session
     var rows=$('#children').find('tr.child');
     var idx=rows.length;
