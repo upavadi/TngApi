@@ -2,12 +2,15 @@
 	/*
 	Search TNG database for names
 	*/
+		$result = array();
+		$firstName = "";
+		$lastName = "";
+		$tree ="";
 		$tngcontent = Upavadi_TngContent::instance()->init();
 		$user = $tngcontent->getTngUser();
 		$usertree = $user['gedcom'];
-		$tree = $result['gedcom'];
 
-	?>
+?>
 
 <form style="display: inline-block;" method="get">
 	<label for="search-lastname">Last Name: <input type="text" value="<?php echo $lastName; ?>" name="lastName" id="search-lastname"></label> 
@@ -34,15 +37,13 @@ if (!count($results)): ?>
 	</tr>
 
 <tbody>
-	<?php foreach($results as $result):
-	if ($result['birthdate'] == ''){
-		$age = " ";
-		} else {
-		$age = $result['Age'];
-		}
-	$tree = $result['gedcom'];
-	$firstname = $result['firstname'];
-	$lastname = $result['lastname'];
+	<?php
+	foreach($results as $result): 
+	if (isset($result)){
+		$tree = $result['gedcom'];
+		$firstname = $result['firstname'];
+		$lastname = $result['lastname'];
+	}
 	//if ($result['private'] == '1') {
 	//	$firstname = "Private:";
 	//	$lastname = " Details withheld";
@@ -67,4 +68,5 @@ if (!count($results)): ?>
 </tbody>
 </table>
 </div>
-<?php endif; ?>
+<?php endif; 
+?>
