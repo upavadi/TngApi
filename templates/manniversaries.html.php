@@ -126,7 +126,7 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 			<img src="<?php 
 			echo "$mediaID1";  ?>" border='1' height='50' border-color='#000000'/> <?php } ?>
 			<br /><a href="/family/?personId=<?php echo $manniversary['personid1'];?>&amp;tree=<?php echo $tree; ?>">
-			<?php echo $firstname1. $private1; ?><?php echo " ". $lastname1; ?></a></div></td>
+			<?php echo $firstname1. ""; ?><?php echo " ". $lastname1; ?></a></div></td>
 			<div>
 			<td class="col-md-3" style="text-align: center"><?php if ($defaultmedia2['thumbpath']) { ?>
 			<img src="<?php 
