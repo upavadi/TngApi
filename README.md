@@ -42,6 +42,8 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
   - Trap PHP warnings so that the error does not lock up Wordpress.
     - If TNG folder is not found, a mini form is generated in the dashboard to allow administrator to update value.
     - If there is TNG database error, a mini form is generated in the dashboard to allow administrator to update values.
+    - if Wordpress user is not in TNG, exit plugin page
+  - Anamolies in upload images: Fixed
    
   - Family Page - Added Divorced data next to Marr Date
   - Event - Marriage Anniversaries: Added: Ignore Divorced
@@ -125,7 +127,18 @@ Here you'll need to specify:
  - <b>TNG Integration Path:</b> Enter TNG folder name here. If you are using TNG Wordpress Integration by Mark Barnes, enter the name of the page you have specified to display TNG pages within Wordpress container. 
  - <b>TNG Photo Folder:</b> Enter the name of the folder to use to get media from TNG. Default is photos
 
- - <b>TNG Collection ID for Photo Uploads:</b> User images are uploaded in to one of TNG folders with the collection name specified by you in the admin set up. Enter the name for the collection you have set up in TNG admin > media. Mine is called “My Uploads”.Before you enter this, refer to the section, Image Upload, below
+ - <b>TNG Collection ID for Photo Uploads:</b> User images are uploaded in to one of TNG folders with the collection name specified by you in the admin set up. Enter the name for the collection you have set up in TNG admin > media. Mine is called “My Uploads”. Before you enter this, refer to the section, Image Upload, below.
+ -  Hint: My collection is set as 
+     * Collection ID:	uploads
+     - Export as:	PHOTO
+     - Display Title:	my uploads 
+     - Folder Name:	photos
+     - Icon File:	img/
+     - Thumbnail File:	img/
+     - Display Order:	0
+     - Same setup as: 	photos
+
+
 
  -	<b>TNG Event to Track:</b> If you would like to track a customized field or event, you may create this as a special event type (TNG Admin> Custom Event Types > Add New) or use an existing one. Select this event in the drop down list. This feature may be turned off by selecting <b>Do not track.</b>
  -	<b>Your Database connection settings:</b>
@@ -188,7 +201,7 @@ There are a number of useful shortcodes for you to play with. You can find them 
 </tr>
 </table>
 
-##Custom Shortcodes
+## Custom Shortcodes
  -	A custom shortcode directory is included with a sample shortcode to help you create and store your custom shortcodes.
  -	Copy (or move) the custom directory, tng-api-custom in to wp-content/plugins/.
 
@@ -264,7 +277,7 @@ Once the User has submitted changes, a thank-you page is displayed which will sh
  - Add `[upavadi_pages_userfamilysheet]` shortcode to display changes submitted by the user
  - A Thank You message is displayed and an email is sent to the administrator.
 
-##Approve User Submissions
+## Approve User Submissions
  - These are saved in temporary Wordpress tables. Administrator can view each submission, approve and then transfer the changes to the TNG database.
  - You are presented with a list of original values and changes. Here you would accept the changes you would like to implement. You also have an opportunity to modify most of the submitted changes.
  - Wordpress>admin>TNG Submits>Pending Submissions  displays number of outstanding submits.
@@ -280,7 +293,7 @@ Pending submissions gives a list of submissions with User name, affected person 
   - Children
     - A change is displayed with a flag. 
     - New data is displayed with a +. Here you have an opportunity to check and modify the submission. Accept>all will select this section for update.
-- ####IMPORTANT
+- #### IMPORTANT
 If you are selecting an event or Notes section for update, you must Accept ALL. As TNG stores this data differently, it is essential that all the data for the item is submitted.
 
  - Once you have checked the submission, you may Save Accepted Changes. 

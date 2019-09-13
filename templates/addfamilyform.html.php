@@ -200,7 +200,7 @@
 		<input type="hidden" name="spouse[wife]" value="<?php echo $spousewife ?>" />
 		<input type="hidden" name="spouse[husborder]" value="<?php echo $spousehusbandorder ?>" />
 		<input type="hidden" name="spouse[wifeorder]" value="<?php echo $spousewifeorder ?>" />
-		<input type="hidden" name="husband[event]" value="<?php echo $husbandSpEvent ?>" />
+		<input type="hidden" name="spouse[husbandevent]" value="<?php echo $person_SpEvent ?>" />
 	
 	</tbody>
 	</table>
@@ -267,6 +267,7 @@
 	<body>
 	<?php 			
 //get All notes
+$note_general = $note_name = $note_birth = $note_death = $note_funeral = "";
 	$note_general_secret = 0;
 	$note_general_ordernum = 999;
 	$note_name_secret = 0;
@@ -304,7 +305,7 @@
 	$note_birth,
 	$note_death,
 	$note_funeral,);
-	
+	var_dump($xnotes);
 	$xnote_eventID = Array (
 	null,
 	"NAME",
