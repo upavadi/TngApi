@@ -6,7 +6,7 @@
 				
 								
 				 //get and hold current user
-				$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
+				$currentperson = $tngcontent->getCurrentPersonId();
 				$currentperson = $tngcontent->getPerson($currentperson);
 				$currentuser = ($currentperson['firstname']. $currentperson['lastname']);
 				$currentuserLogin = wp_get_current_user();
@@ -62,8 +62,8 @@
         /* @var $tngcontent Upavadi_TngContent  */
 		$allnotes = $tngcontent->getNotes($personId);
 		
-		$notes = 'array()';
-		$note = 'array()';
+				$notes = array();
+				$note = array();
 		foreach($allnotes as $PersonNote):
                     $key = $PersonNote['eventID'];
                     if ($PersonNote['eventID'] == null) {
@@ -81,8 +81,7 @@
                 );
 	
 	
-	
-                foreach ($noteOrder as $type => $header):
+	     foreach ($noteOrder as $type => $header):
                     $note = $notes[$type];
                     if (!$note) {
                         $note['xnoteID'] = 'NewNote' . $type;
@@ -93,7 +92,8 @@
                     }
                     if ($note['secret']) {
                         $note['note'] = null;
-                    } var_dump($allnotes);
+                    }
+
 	?>
             <p>
                 <input type="hidden" name="person_note[<?php echo $type; ?>][xnoteID]" value="<?php echo $note['xnoteID'] ?>" />
@@ -114,4 +114,3 @@
 	<input type="submit" value="Submit Notes" />
 	</body>
 	</form>
-				
