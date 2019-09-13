@@ -84,11 +84,11 @@ Clicking on a name takes you to the Individual's FAMILY Page.</br>
 <table class="table table-bordered"> 
 	<tr class="row">
 		<td class="tdback col-md-3" style="text-align: center">Name</td>
-		<td class="tdback col-md-3">Date</td>
+		<td class="tdback col-md-2">Date</td>
 		<td class="tdback col-md-2">Death Place</td>
 		<td class="tdback col-md-2" style="text-align: center">Years</td>
 		<td class="tdback col-md-1" style="text-align: center">Age at Death</td>
-			
+		<td class="tdback col-md-1" style="text-align: center">Birth Date</td>	
 		<?php 
 		$url = $tngcontent->getTngUrl();
 			if ($usertree == '') { ?>
@@ -128,9 +128,9 @@ Clicking on a name takes you to the Individual's FAMILY Page.</br>
 		$photos = $tngcontent->getTngPhotoFolder();
 		$personId = $danniversary['personid'];
 		$defaultmedia = $tngcontent->getDefaultMedia($personId, $tree);
-
 		$photosPath = $url. $photos;
 		$mediaID = $photosPath."/". $defaultmedia['thumbpath'];
+		$birthdate = $danniversary['birthdate'];
 	?>
 		<tr class="row">
 			<td class="col-md-3" style="text-align: center">
@@ -140,10 +140,11 @@ Clicking on a name takes you to the Individual's FAMILY Page.</br>
 			echo "$mediaID";  ?>" border='1' height='50' border-color='#000000'/> <?php } ?>
 			<br /><a href="/family/?personId=<?php echo $danniversary['personid']; ?>&amp;tree=<?php echo $tree; ?>">
 			<?php echo $danniversary['firstname']. " "; echo $danniversary['lastname']; ?></a></div></td>
-			<td class="col-md-3"><?php echo $danniversary['deathdate']; ?></td>
+			<td class="col-md-2"><?php echo $danniversary['deathdate']; ?></td>
 			<td class="col-md-2"><?php echo $danniversary['deathplace']; ?></td>
 			<td class="col-md-2" style="text-align: center"><?php echo $Years ?></td>
 			<td class="col-md-1" style="text-align: center"><?php echo $ageAtDeath; ?> </td>
+			<td class="col-md-1" style="text-align: center"><?php echo $birthdate; ?> </td>
 			<?php 
 		if ($usertree == '') { ?>
 			<td class="col-md-1"><?php echo $danniversary['gedcom']; ?></td>
