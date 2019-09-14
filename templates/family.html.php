@@ -293,7 +293,7 @@ if ($parentsDivDate) {
     </span></a>
 <table border="0">
         <tr>
-            <td class="col-md-1 col-xs-4">
+            <td class="col-md-1 col-xs-4 col-sm-2">
 				<div>
 				<img src="<?php echo "$mediaID"; ?>" class='img-responsive' />
 				</div>
@@ -306,34 +306,34 @@ if ($parentsDivDate) {
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-1  col-sm-2" id="link-btn" >
+					<div class="col-md-1  col-sm-4" id="link-btn" >
 					<?php
-					echo "<input type=\"button\" style=\"width:150px\" value=\"submit-profile-photo\" onclick=\"window.location.href = '#submit-profile-photo' \" />";
+					echo "<input type=\"button\" style=\"width:155px; font-size: 1.2em\" value=\"submit-profile-photo\" onclick=\"window.location.href = '#submit-profile-photo' \" />";
                     ?>
 					</div>
 					
-					<div class="col-md-1  col-sm-2" id="link-btn" >
+					<div class="col-md-2  col-sm-4" id="link-btn" >
 					<?php 
 					if ($primaryID) {
-					echo "<input type=\"button\" style=\"width:150px\" value=\"Cousins\" onclick=\"window.location.href = '$IntegratedPath/cousins.php?primaryID=$linkPerson&tree=$tree'\" />";
+					echo "<input type=\"button\" style=\"width:155px; margin-right: 5px; font-size: 1.2em\" value=\"Cousins\" onclick=\"window.location.href = '$IntegratedPath/cousins.php?primaryID=$linkPerson&tree=$tree'\" />";
                     } ?>
 					</div>
 
 				</div>	
 				<div class="row">
-				<div class="col-md-1  col-sm-2" id="link-btn" >
+					<div class="col-md-2  col-sm-4" id="link-btn" >
 					<?php if ($displayButtons) {
-					echo "<input type=\"button\" style=\"width:150px\" value=\"Genealogy Page\" onclick=\"window.location.href = '$IntegratedPath/getperson.php?personID=$linkPerson&tree=$tree' \" />";
+					echo "<input type=\"button\" style=\"width:155px; margin-right:0px; font-size: 1.2em \" value=\"Genealogy Page\" onclick=\"window.location.href = '$IntegratedPath/getperson.php?personID=$linkPerson&tree=$tree' \" />";
                     } ?>
 					</div>
-					<div class="col-md-1  col-sm-2" id="link-btn" >
+					<div class="col-md-2  col-sm-4" id="link-btn" >
 					<?php if ($displayButtons) {
-					echo "<input type=\"button\" style=\"width:150px; margin-left: 5px\" value=\"Ancestors\" onclick=\"window.location.href = '$IntegratedPath/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
+					echo "<input type=\"button\" style=\"width:155px; margin-right: 0px; font-size: 1.2em\" value=\"Ancestors\" onclick=\"window.location.href = '$IntegratedPath/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
                      } ?>
 					</div>
-					<div class="col-md-1  col-sm-2" id="link-btn" >
+					<div class="col-md-2  col-sm-2" id="link-btn" >
 					<?php if ($displayButtons) {
-					echo "<input type=\"button\" style=\"width:150px; margin-left: 10px\" value=\"Descendants\" onclick=\"window.location.href = '$IntegratedPath/descend.php?personID=$linkPerson&tree=$tree'\" />";
+					echo "<input type=\"button\" style=\"width:155px; margin-left: 0px; font-size: 1.2em\" value=\"Descendants\" onclick=\"window.location.href = '$IntegratedPath/descend.php?personID=$linkPerson&tree=$tree'\" />";
 					} ?>
 					</div>
 					
