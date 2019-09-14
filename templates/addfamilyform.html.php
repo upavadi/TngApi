@@ -305,7 +305,6 @@ $note_general = $note_name = $note_birth = $note_death = $note_funeral = "";
 	$note_birth,
 	$note_death,
 	$note_funeral,);
-	var_dump($xnotes);
 	$xnote_eventID = Array (
 	null,
 	"NAME",
