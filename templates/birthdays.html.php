@@ -76,21 +76,24 @@ Clicking on a name takes you to the Individual's Family Page
 <?php
 //get and hold current user
 $tngcontent = Upavadi_tngcontent::instance()->init();
-$user = $tngcontent->getTngUser();
+$user = $tngcontent->getTngUser(); 
+$allowAdmin = $user['allow_private'];
 $usertree = $user['gedcom'];
+$tngFolder = $tngcontent->getTngIntegrationPath();
 ?>
 <div class="container-fluid table-responsive">
 <div class="col-md-12">
 <table class="table table-bordered">   
     <tr class="row">
-	<td class="tdback col-md-6" style="text-align: center">Name</td>
-    <td class="tdback col-md-2"> Date</td>
-    <td class="tdback col-md-2" >Birth Place</td>
+	<td class="tdback col-md-5" style="text-align: center">Name</td>
+    <td class="tdback col-md-2" style="text-align: center"> Date</td>
+    <td class="tdback col-md-2" style="text-align: center" >Birth Place</td>
     <td class="tdback col-md-1" style="text-align: center">Age</td>
+	<td class="tdback col-md-1" style="text-align: center">Relationship</td>
     <?php 
 	$url = $tngcontent->getTngUrl();	
 	echo $usertree;if ($usertree == '') { ?>
-	<td class="tdback col-md-1">Tree</td>
+	<td class="tdback col-md-1" style="text-align: center">Tree</td>
 			
 	<?php } ?>
 	</tr>
@@ -98,6 +101,15 @@ $usertree = $user['gedcom'];
 	$tree = $birthday['gedcom'];
 	$firstname = $birthday['firstname'];
 	$lastname = $birthday['lastname'];
+	$tree = $birthday['gedcom'];
+	$personId = $birthday['personid'];
+	$parentId = $birthday['famc'];
+	$families = $tngcontent->getFamilyUser($personId, $tree, null);
+	$parents = $tngcontent->getFamilyById($parentId, $tree = null); 
+	$personPrivacy = $birthday['private'];
+	$familyPrivacy = $families[0]['private'];
+	$parentPrivacy = $parents['private'];
+	$view = true;
 	//get default media
 	$photos = $tngcontent->getTngPhotoFolder();
 	$personId = $birthday['personid'];
@@ -109,6 +121,16 @@ $usertree = $user['gedcom'];
 	if ($defaultmedia['thumbpath']) {
 	$mediaID = $photosPath."/". $defaultmedia['thumbpath'];
 	}
+	$view = "View";
+	/**** privacy: if individual is private OR family is private (husband or wife) or famc is private (Parents) ***/
+	if (($personPrivacy || $familyPrivacy || $parentPrivacy) && !$allowAdmin) {
+		$firstname = 'Private:';
+		$lastname = ' Details withheld';
+		$birthday['birthdate'] = "?";
+		$mediaID = "";
+		$birthday['age'] = "";
+		$view = false;
+	}
 	?>
 	<tbody>
 	   <tr class="row">
@@ -118,10 +140,14 @@ $usertree = $user['gedcom'];
 			echo "$mediaID";  ?>" border='1' height='50' border-color='#000000'/> <?php } ?><br /> 
 			<a href="/family/?personId=<?php echo $birthday['personid'];?>&amp;tree=<?php echo $tree; ?>">
                     <?php echo $firstname . " "; ?><?php echo $lastname; ?></a></td>
-            <td class="col-md-2"><?php echo $birthday['birthdate']; ?></td>
-            <td class="col-md-2"><?php echo $birthday['birthplace']; ?></td>
+            <td class="col-md-2" style="text-align: center"><?php echo $birthday['birthdate']; ?></td>
+            <td class="col-md-2" style="text-align: center"><?php echo $birthday['birthplace']; ?></td>
             <td class="col-md-1" style="text-align: center"><?php echo $birthday['age']; ?></td>
-			<?php 
+			<?php if($view) 
+					?>
+			<td style="text-align: center";><a href="../<?php echo $tngFolder; ?>/relationship.php?altprimarypersonID=&savedpersonID=&secondpersonID=<?php echo $birthday['personid'];?>&maxrels=2&disallowspouses=0&generations=15&tree=upavadi_1&primarypersonID=<?php echo $currentperson; ?>"><?php echo $view?></td>
+			<?php
+			
 			if ($usertree == '') { ?>
 				<td class="col-md-1"><?php echo $birthday['gedcom']; ?></td>
 		</tr>

@@ -7,7 +7,6 @@
 		$lastName = "";
 		$tree ="";
 		$tngcontent = Upavadi_TngContent::instance()->init();
-		$user = $tngcontent->getTngUser();
 		$usertree = $user['gedcom'];
 
 ?>
@@ -40,14 +39,26 @@ if (!count($results)): ?>
 	<?php
 	foreach($results as $result): 
 	if (isset($result)){
+		$personId = $result['personID'];
+		$parentId = $result['famc'];
 		$tree = $result['gedcom'];
 		$firstname = $result['firstname'];
 		$lastname = $result['lastname'];
+
+		$families = $tngcontent->getFamilyUser($personId, $tree, null);
+		$parents = $tngcontent->getFamilyById($parentId, $tree = null); 
+	
+		$personPrivacy = $result['private'];
+		$familyPrivacy = $families[0]['private'];
+		$parentPrivacy = $parents['private'];
+		
+		if (($personPrivacy || $familyPrivacy || $parentPrivacy)) {
+			$firstname = 'Private:';
+			$lastname = ' Details withheld';
+			$result['birthdate'] = "?";
+		}
 	}
-	//if ($result['private'] == '1') {
-	//	$firstname = "Private:";
-	//	$lastname = " Details withheld";
-	//}
+
 	?>
 	<tr>
 		<td class="col-md-4 col-sm-2">

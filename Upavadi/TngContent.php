@@ -881,8 +881,7 @@ SQL;
         return $rows;
     }
 
-    public function getFamilyUser($personId = null, $tree = null, $sortBy = null)
-    {
+    public function getFamilyUser($personId = null, $tree = null, $sortBy = null)    {
 
         if (!$personId) {
             $personId = $this->currentPerson;
@@ -958,6 +957,7 @@ SELECT personid,
        birthdate,
        birthplace,
 	   private,
+       famc,
        gedcom
 FROM   {$this->tables['people_table']}
 WHERE  Month(birthdatetr) = {$month}
