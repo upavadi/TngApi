@@ -92,7 +92,7 @@ $tngFolder = $tngcontent->getTngIntegrationPath();
 	<td class="tdback col-md-1" style="text-align: center">Relationship</td>
     <?php 
 	$url = $tngcontent->getTngUrl();	
-	echo $usertree;if ($usertree == '') { ?>
+	if ($usertree == '') { ?>
 	<td class="tdback col-md-1" style="text-align: center">Tree</td>
 			
 	<?php } ?>
