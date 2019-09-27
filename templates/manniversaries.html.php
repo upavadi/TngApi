@@ -28,6 +28,10 @@ $monthList = array(
 <select name="monthselect2" style="width: 100px; margin: 5px;" id="monthSelect2" onchange="runAnniversary()">
 <option value="">--Select Month--</option>
 <?php
+		$tngcontent = Upavadi_TngContent::instance()->init();
+		$user = $tngcontent->getTngUser(); 
+		$usertree = $user['gedcom'];
+		$allowAdmin = $user['allow_private'];
 for ($i = 0; $i <= 11; $i++) {
 $currentmonth = $i + 1;
 if ($currentmonth < 10) {
@@ -121,7 +125,7 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 		$mediaID2 = $photosPath."/". $defaultmedia2['thumbpath'];
 
 		
-		if ($familyPrivacy) {
+		if ($familyPrivacy && !$allowAdmin) {
 			$manniversary['firstname1'] = 'Private:';
 			$manniversary['firstname2'] = 'Private:';
 			$manniversary['lastname1'] = ' Details withheld';
@@ -132,7 +136,7 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 			
 		}
 
-		if (!$familyPrivacy && $personPrivacy1) {
+		if (!$familyPrivacy && $personPrivacy1 && !$allowAdmin) {
 			$manniversary['firstname1'] = 'Private:';
 			$manniversary['lastname1'] = ' Details withheld';
 			$manniversary['marrdate'] = "?";
@@ -141,7 +145,7 @@ Clicking on a name takes you to the Individual's FAMILY Page.
 		}
 
 		
-		if (!$familyPrivacy && $personPrivacy2) {
+		if (!$familyPrivacy && $personPrivacy2 && !$allowAdmin) {
 			$manniversary['firstname2'] = 'Private:';
 			$manniversary['lastname2'] = ' Details withheld';
 			$manniversary['marrdate'] = "?";
