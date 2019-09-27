@@ -635,7 +635,7 @@ if ($parentsDivDate) {
 				$childPerson = $tngcontent->getPerson($child['personID'], $tree);
 				$childName = $childPerson['firstname']. " ". $childPerson['lastname'];
 				$childdeathdate = $childPerson['deathdate'];
-				$kids = "";
+				$kids = 0;
 				if ($child['haskids']) {
 					$classes[] = 'haskids';
 				$kids = $kids + 1;
