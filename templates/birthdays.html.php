@@ -104,10 +104,10 @@ $tngFolder = $tngcontent->getTngIntegrationPath();
 	$tree = $birthday['gedcom'];
 	$personId = $birthday['personid'];
 	$parentId = $birthday['famc'];
-	$families = $tngcontent->getFamilyUser($personId, $tree, null);
+	$families = $tngcontent->getFamily($personId, $tree, null);
 	$parents = $tngcontent->getFamilyById($parentId, $tree = null); 
 	$personPrivacy = $birthday['private'];
-	$familyPrivacy = $families[0]['private'];
+	$familyPrivacy = $families['private'];
 	$parentPrivacy = $parents['private'];
 	$view = true;
 	//get default media

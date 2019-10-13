@@ -18,7 +18,7 @@ class Upavadi_Shortcode_Manniversaries extends Upavadi_Shortcode_AbstractShortco
 		$year = substr($monthyear, 6, 4);
 		}
 						
-        $manniversaries = $this->content->getMarriageAnniversaries($month, $tree);
+        $manniversaries = $this->content->getMarriageAnniversaries($month);
             $date = new DateTime();
         $date->setDate($year, $month, 01);
 		       		
