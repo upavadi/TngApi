@@ -496,6 +496,7 @@ SQL;
         $row = $result->fetch_assoc();
         $userPrivate = $user['allow_private'];
         $familyPrivate = $row['private'];
+        $personPrivate = $this->getPerson()['private'];
         if ($personPrivate > $userPrivate) {
             $row['marrdate'] = 'Private';
 			$row['marrplace'] = ' Details withheld';
@@ -936,7 +937,7 @@ SQL;
         return 0;
     }
 
-    public function getBirthdays($month)
+    public function getBirthdays($month, $tree = null)
     {
 
         $user = $this->getTngUser();
@@ -981,7 +982,7 @@ SQL;
 		return $rows;
     }
 
-    public function getDeathAnniversaries($month)
+    public function getDeathAnniversaries($month, $tree = null)
     {
         $user = $this->getTngUser();
         $gedcom = $user['gedcom'];
@@ -1097,7 +1098,7 @@ SQL;
         return $rows;
     }
 
-    public function getMarriageAnniversaries($month)
+    public function getMarriageAnniversaries($month, $tree = null)
     {
         $user = $this->getTngUser();
         $gedcom = $user['gedcom'];
@@ -1244,7 +1245,7 @@ SQL;
             $this->tngUser = $row;
             return $row;
         }
-        throw new InvalidArgumentException('User ' . $userName . ' not found in TNG (or donot have access to) (1247)'); //mu - change from wp_die
+        throw new Upavadi_WpOnlyException('User ' . $userName . ' not found in TNG (or donot have access to) (1247)'); //mu - change from wp_die
     }
 
     /**
