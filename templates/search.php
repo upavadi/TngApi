@@ -48,11 +48,10 @@ if (!count($results)): ?>
 		$firstname = $result['firstname'];
 		$lastname = $result['lastname'];
 
-		$families = $tngcontent->getFamilyUser($personId, $tree, null);
+		$families = $tngcontent->getFamily($personId, $tree, null);
 		$parents = $tngcontent->getFamilyById($parentId, $tree = null); 
-	
-		$personPrivacy = $result['private'];
-		$familyPrivacy = $families[0]['private'];
+		personPrivacy = $result['private'];
+		$familyPrivacy = $families['private'];
 		$parentPrivacy = $parents['private'];
 		
 		if (($personPrivacy || $familyPrivacy || $parentPrivacy) && !$allowAdmin) {
