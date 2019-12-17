@@ -42,9 +42,9 @@
     $deathplace = $person['deathplace'];
 	$name = $person['firstname'] ." ".  $person['lastname'];
 	
-	// set variable for cousins page
-	$primaryID = "";
-	//$primaryID = $person['personID']; //comment this out to hide cousins button
+	// set variable for Family Chart page
+	$version = $tngcontent->guessVersion();
+	$primaryID = 12; //check for tng v12
 
 //get person details for link to tng pages
 	$linkPerson = $person['personID'];
@@ -306,7 +306,7 @@ if ($parentsDivDate) {
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-1  col-sm-4" id="link-btn" >
+					<div class="col-md-2  col-sm-4" id="link-btn" >
 					<?php
 					echo "<input type=\"button\" style=\"width:155px; font-size: 1.2em\" value=\"submit-profile-photo\" onclick=\"window.location.href = '#submit-profile-photo' \" />";
                     ?>
@@ -314,8 +314,8 @@ if ($parentsDivDate) {
 					
 					<div class="col-md-2  col-sm-4" id="link-btn" >
 					<?php 
-					if ($primaryID) {
-					echo "<input type=\"button\" style=\"width:155px; margin-right: 5px; font-size: 1.2em\" value=\"Cousins\" onclick=\"window.location.href = '$IntegratedPath/cousins.php?primaryID=$linkPerson&tree=$tree'\" />";
+					if ($primaryID >= 12) {
+					echo "<input type=\"button\" style=\"width:155px; margin-right: 5px; font-size: 1.2em\" value=\"Family Chart\" onclick=\"window.location.href = '$IntegratedPath/familychart.php?personID=$linkPerson&tree=$tree'\" />";
                     } ?>
 					</div>
 
