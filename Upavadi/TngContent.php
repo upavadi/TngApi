@@ -165,6 +165,19 @@ class Upavadi_TngContent
                 break;
             }
         }
+        while ($row = $result->fetch_assoc()) {	
+            if ($row['Field'] == 'languageID') {
+                $version = 11;
+                break;
+            }
+        }
+    
+        while ($row = $result->fetch_assoc()) {	
+            if ($row['Field'] == 'dt_consented') {
+                $version = 12;
+                break;
+            }
+        }
         return $version;
     }
 
