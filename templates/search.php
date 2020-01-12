@@ -50,7 +50,7 @@ if (!count($results)): ?>
 
 		$families = $tngcontent->getFamily($personId, $tree, null);
 		$parents = $tngcontent->getFamilyById($parentId, $tree = null); 
-		personPrivacy = $result['private'];
+		$personPrivacy = $result['private'];
 		$familyPrivacy = $families['private'];
 		$parentPrivacy = $parents['private'];
 		
