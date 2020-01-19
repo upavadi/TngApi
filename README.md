@@ -1,7 +1,7 @@
 TngApi Plugin for Wordpress (Not tested for TNG Version 12.x)
 =================================
 ## Download
-You can find the latest stable version (3.2.0) in the [releases](https://github.com/upavadi/TngApi/releases) section 
+You can find the latest stable version (3.2.2) in the [releases](https://github.com/upavadi/TngApi/releases) section 
 
 ## License
 The code is licenced under the [MIT licence](http://opensource.org/licenses/MIT)
@@ -38,17 +38,23 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ## Change Log
- - ### Current
+ - ### Current (3.3 under developement)
   - Trap PHP warnings so that the error does not lock up Wordpress.
     - If TNG folder is not found, a mini form is generated in the dashboard to allow administrator to update value.
     - If there is TNG database error, a mini form is generated in the dashboard to allow administrator to update values.
     - if Wordpress user is not in TNG, exit plugin page
   - Anamolies in upload images: Fixed
    
-  - Family Page - Added Divorced data next to Marr Date
+  - Family Page
+   - Added Divorced data next to Marr Date
+   - Tidied up Mobile view
+  
   - Event - Marriage Anniversaries: Added: Ignore Divorced
   - Event templates (Birthdays, marriage and death anniversaries) - Removed flaky datepicker and replaced with drop down months. Added a Today button to revert to current month
-  - Search Family Widget: Fixed compatibility with Wordpress 5
+  - Search Family Widget: 
+    -Fixed compatibility with Wordpress 5
+    - Fix Typo
+    - Fix table responsive
   - Image upload: Fixed coding bug
   - Added version check for 11 and 12
   - Family Page
