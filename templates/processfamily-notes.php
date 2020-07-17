@@ -92,7 +92,7 @@ Person Notes Added /Updated({$date}):
 MSG;
 $msg .= print_r($_REQUEST, true);
 //echo "<pre>{$msg}</pre>";
-mail($email, 'New data', $msg);
+//mail($email, 'New data', $msg);
 ?>
 <html>
     <head>

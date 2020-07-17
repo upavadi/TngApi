@@ -54,7 +54,7 @@
 	}
 // Spouses
 	$families = $tngcontent->getfamilyuser($person['personID'], $tree,  $sortBy);
-	$order = null;
+	$order = "";
 	foreach ($families as $family):
 		if ($sortBy && count($families) > 0) {
 			$order1 = $family[$sortBy];

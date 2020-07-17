@@ -66,7 +66,7 @@
 				$note = array();
 		foreach($allnotes as $PersonNote):
                     $key = $PersonNote['eventID'];
-                    if ($PersonNote['eventID'] == null) {
+                    if ($PersonNote['eventID'] == "") {
                         $key = 'GEN';
                     }
                     $notes[$key] = $PersonNote;
@@ -87,7 +87,7 @@
                         $note['xnoteID'] = 'NewNote' . $type;
                         $note['eventID'] = $type;
                         if ($note['eventID'] == 'GEN') {
-                            $note['eventID'] = null;
+                            $note['eventID'] = "";
                         }
                     }
                     if ($note['secret']) {

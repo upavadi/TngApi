@@ -8,6 +8,7 @@
     <title>Upavadi Update Family</title>
 </head>
 <?php
+	global $child;
 	$tngcontent = Upavadi_tngcontent::instance()->init();
  //get and hold current user
 	$currentperson = $tngcontent->getCurrentPersonId();

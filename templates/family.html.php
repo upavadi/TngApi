@@ -11,6 +11,7 @@
     <a name="Family"></a>
     
     <?php
+	//global $kids;
     $tngcontent = Upavadi_TngContent::instance();
 	$genealogy = $tngcontent->getTngIntegrationPath();
 	$url = $tngcontent->getTngUrl();

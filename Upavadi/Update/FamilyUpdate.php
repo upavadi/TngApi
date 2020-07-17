@@ -169,7 +169,7 @@ class Upavadi_Update_FamilyUpdate
     {
         $families = array();
         $families[] = $this->extractParentsFamily($data);
-        $families = $this->extractSpousesFamily($families, $data);
+        $families = $this->extractSpousesFamily($families, $data); var_dump($families); exit;
         return $families;
     }
 

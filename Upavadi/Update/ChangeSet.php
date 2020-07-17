@@ -129,6 +129,7 @@ class Upavadi_Update_ChangeSet
     {
         $people = array();
         foreach ($this->changes['people'] as $id => $person) {
+            if(isset($person['gedcom']))
             $tree = $person['gedcom'];
             $people[$id] = $this->repo->getPerson($id, $tree);
         }
@@ -139,6 +140,7 @@ class Upavadi_Update_ChangeSet
     {
         $families = array();
         foreach ($this->changes['family'] as $id => $family) {
+            if(isset($family['gedcom']))
             $tree = $family['gedcom'];
             $families[$id] = $this->repo->getFamily($id, $tree);
         }
@@ -149,6 +151,7 @@ class Upavadi_Update_ChangeSet
     {
         $children = array();
         foreach ($this->changes['children'] as $id => $child) {
+            if(isset($child['gedcom']))
             $tree = $child['gedcom'];
             $children[$id] = $this->repo->getChildFamily($id, $child['familyID'], $tree);
         }
@@ -385,6 +388,7 @@ class Upavadi_Update_ChangeSet
         $fields = $this->replaceIds($change['entity'], $ids);
 //        print_r($id);
 //        print_r($fields);
+        if(isset($headPerson['gedcom']))
         $gedcom = $headPerson['gedcom'];
         switch ($entity) {
             case 'people':
