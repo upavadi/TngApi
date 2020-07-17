@@ -49,8 +49,8 @@ if (!count($results)): ?>
 		$lastname = $result['lastname'];
 
 		$families = $tngcontent->getFamily($personId, $tree, null);
-		$parents = $tngcontent->getFamilyById($parentId, $tree = null); 
-		personPrivacy = $result['private'];
+		$parents = $tngcontent->getFamilyById($parentId, $tree = null);
+		$personPrivacy = $result['private'];
 		$familyPrivacy = $families['private'];
 		$parentPrivacy = $parents['private'];
 		
