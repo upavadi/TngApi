@@ -62,8 +62,8 @@
 				$order = $order1;
 			} 
 		}
-	endforeach;
-	$spouseorder = ($order+1);
+	endforeach; $order = (int)($order);
+	$spouseorder += ($order);
 	if ($spousehusband == "NewHusband") {
 		$spousehusbandorder = "1";
 		$spousewifeorder = $spouseorder;
