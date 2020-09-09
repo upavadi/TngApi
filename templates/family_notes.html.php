@@ -82,7 +82,8 @@
 	
 	
 	     foreach ($noteOrder as $type => $header):
-                    $note = $notes[$type];
+			if (isset($notes[$type]))	
+			$note = $notes[$type];
                     if (!$note) {
                         $note['xnoteID'] = 'NewNote' . $type;
                         $note['eventID'] = $type;
@@ -90,20 +91,20 @@
                             $note['eventID'] = "";
                         }
                     }
-                    if ($note['secret']) {
+                    if (isset($note['secret']) && $note['secret']) {
                         $note['note'] = null;
                     }
 
 	?>
             <p>
                 <input type="hidden" name="person_note[<?php echo $type; ?>][xnoteID]" value="<?php echo $note['xnoteID'] ?>" />
-                <input type="hidden" name="person_note[<?php echo $type; ?>][notelinkID]" value="<?php echo $note['notelinkID'] ?>" />
+                <input type="hidden" name="person_note[<?php echo $type; ?>][notelinkID]" value="<?php echo isset($note['notelinkID']) ? $note['notelinkID'] : null?>" />
                 <span style="font-size:14pt">
                     <b>
                         <?php echo $header; ?>
                     </b>
                 </span><br />
-                <textarea style="width:98%" name="person_note[<?php echo $type; ?>][note]" rows="3" cols="100"><?php echo $note['note']; ?></textarea>
+                <textarea style="width:98%" name="person_note[<?php echo $type; ?>][note]" rows="3" cols="100"><?php echo isset($note['note']) ? $note['note'] : null; ?></textarea>
                 <input type="hidden" name="person_note[<?php echo $type; ?>][xeventID]" value="<?php echo $note['eventID']; ?>" />
                 <input type="hidden" name="person_note[<?php echo $type; ?>][secret]" value="<?php echo $note['secret']; ?>" />
                 <input type="hidden" name="person_note[<?php echo $type; ?>][ordernum]" value="<?php echo $note['ordernum']; ?>" />
