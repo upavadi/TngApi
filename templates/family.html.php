@@ -12,7 +12,7 @@
     
     <?php
 	//global $kids;
-    $tngcontent = Upavadi_TngContent::instance();
+	$tngcontent = Upavadi_TngContent::instance();
 	$genealogy = $tngcontent->getTngIntegrationPath();
 	$url = $tngcontent->getTngUrl();
 	$tngDirectory = basename($url );
@@ -419,7 +419,7 @@ if ($parentsDivDate) {
 			If ($currentmonth == $motherdeathmonth and $mother['personID'] !== null) {
 			?>
 			<a href="?personId=<?php echo $mother['personID']; ?>">
-				<?php echo $motherrname; ?></a>,<span style="background-color:#E0E0F7"><?php echo $motherdeathdate; ?>, </span><?php echo $mother['deathplace']; ?>
+				<?php echo $mothername; ?></a>,<span style="background-color:#E0E0F7"><?php echo $motherdeathdate; ?>, </span><?php echo $mother['deathplace']; ?>
 			<?php
 			} elseif ($mother['personID'] !== null) {
 			?>
