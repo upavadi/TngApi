@@ -288,7 +288,7 @@ if ($parentsDivDate) {
 	}
 	?>
 <!------ Html Header table -------------------------------------------->
-<div class="container-fluid col-md-12 col-sm-12 table-responsive">
+<div class="container-fluid">
     <a href="?personId=<?php echo $currentperson['personID']; ?>"><span style="color:#D77600; font-size:14pt">			
     <?php echo "Welcome " . $currentuser; ?>
     </span></a>
@@ -307,34 +307,34 @@ if ($parentsDivDate) {
 					</div>
 				</div>
 				<div class="row">
-					<div class="col-md-2  col-sm-4" id="link-btn" >
+					<div class="col-md-2  col-sm-4" >
 					<?php
-					echo "<input type=\"button\" style=\"width:155px; font-size: 1.2em\" value=\"submit-profile-photo\" onclick=\"window.location.href = '#submit-profile-photo' \" />";
+					echo "<input type=\"button\" id=\"link-btn\" value=\"submit-profile-photo\" onclick=\"window.location.href = '#submit-profile-photo' \" />";
                     ?>
 					</div>
 					
-					<div class="col-md-2  col-sm-4" id="link-btn" >
+					<div class="col-md-2  col-sm-4" >
 					<?php 
 					if ($primaryID >= 12) {
-					echo "<input type=\"button\" style=\"width:155px; margin-right: 5px; font-size: 1.2em\" value=\"Family Chart\" onclick=\"window.location.href = '$IntegratedPath/familychart.php?personID=$linkPerson&tree=$tree'\" />";
+					echo "<input type=\"button\" id=\"link-btn\" value=\"Family Chart\" onclick=\"window.location.href = '$IntegratedPath/familychart.php?personID=$linkPerson&tree=$tree'\" />";
                     } ?>
 					</div>
 
 				</div>	
 				<div class="row">
-					<div class="col-md-2  col-sm-4" id="link-btn" >
+					<div class="col-md-2  col-sm-4" >
 					<?php if ($displayButtons) {
-					echo "<input type=\"button\" style=\"width:155px; margin-right:0px; font-size: 1.2em \" value=\"Genealogy Page\" onclick=\"window.location.href = '$IntegratedPath/getperson.php?personID=$linkPerson&tree=$tree' \" />";
+					echo "<input type=\"button\" id=\"link-btn\" value=\"Genealogy Page\" onclick=\"window.location.href = '$IntegratedPath/getperson.php?personID=$linkPerson&tree=$tree' \" />";
                     } ?>
 					</div>
-					<div class="col-md-2  col-sm-4" id="link-btn" >
+					<div class="col-md-2  col-sm-4" >
 					<?php if ($displayButtons) {
-					echo "<input type=\"button\" style=\"width:155px; margin-right: 0px; font-size: 1.2em\" value=\"Ancestors\" onclick=\"window.location.href = '$IntegratedPath/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
+					echo "<input type=\"button\" id=\"link-btn\" value=\"Ancestors\" onclick=\"window.location.href = '$IntegratedPath/pedigree.php?personID=$linkPerson&tree=$tree'\" />";
                      } ?>
 					</div>
-					<div class="col-md-2  col-sm-2" id="link-btn" >
+					<div class="col-md-2  col-sm-2">
 					<?php if ($displayButtons) {
-					echo "<input type=\"button\" style=\"width:155px; margin-left: 0px; font-size: 1.2em\" value=\"Descendants\" onclick=\"window.location.href = '$IntegratedPath/descend.php?personID=$linkPerson&tree=$tree'\" />";
+					echo "<input type=\"button\" id=\"link-btn\" value=\"Descendants\" onclick=\"window.location.href = '$IntegratedPath/descend.php?personID=$linkPerson&tree=$tree'\" />";
 					} ?>
 					</div>
 					
@@ -343,7 +343,7 @@ if ($parentsDivDate) {
         </tr>
 </table>
 <!------------ Person Details table -------------------------------------------->	
-<div class="table-responsive">
+<div class="table-resp onsive">
   <table class="table table-bordered"> 
 	<tr class="row">
 		<td class="tdback col-md-1 col-sm-1"><?php echo "Name"; ?></td>
@@ -360,9 +360,9 @@ if ($parentsDivDate) {
 	?>
 	<tr class="row">
 		<td class="tdback col-md-1"><?php echo "Born"; ?></td>
-		<td class="col-md-8 <?php echo $bornClass; ?>"><?php echo $birthdate; ?></td>
-		<td class="tdback col-md-1"><?php echo "Place"; ?></td>
-      	<td class="col-md-2"><?php echo $birthplace; ?></td>
+		<td class="col-md-8 col-sm-8 <?php echo $bornClass; ?>"><?php echo $birthdate; ?></td>
+		<td class="tdback col-md-1 col-sm-1"><?php echo "Place"; ?></td>
+      	<td class="col-md-2 col-sm-2"><?php echo $birthplace; ?></td>
 	</tr>
 	<tr class="row">
 			<?php
@@ -372,17 +372,17 @@ if ($parentsDivDate) {
 				$bornClass = "";
 			}
 			?>
-		<td class="tdback col-md-1"><?php echo "Died"; ?></td>
-		<td class="col-md-8 <?php echo $bornClass; ?>"><?php echo $deathdate. $cause_of_death; ?></td>
-		<td class="tdback col-md-1"><?php echo "Place"; ?></td>
-      	<td class="col-md-2"><?php echo $deathplace; ?></td>
+		<td class="tdback col-md-1 col-sm-1"><?php echo "Died"; ?></td>
+		<td class="col-md-8  col-sm-8 <?php echo $bornClass; ?>"><?php echo $deathdate. $cause_of_death; ?></td>
+		<td class="tdback col-md-1 col-sm-1"><?php echo "Place"; ?></td>
+      	<td class="col-md-2 col-sm-2"><?php echo $deathplace; ?></td>
 	</tr>
  </table>
 <!-- Father ------------> 
 <table class="table table-bordered"> 
 	<tr class="row">
-		<td class="tdback col-md-1">Father</td>
-		<td class="col-md-8">
+		<td class="tdback col-md-1 col-sm-1">Father</td>
+		<td class="col-md-8 col-sm-8">
 			<?php
 			If ($currentmonth == $fatherdeathmonth and $father['personID'] !== null) {
 			?>
@@ -407,14 +407,14 @@ if ($parentsDivDate) {
 				$bornClass = "";
 			}
 			?>
-		<td class="tdback col-md-1">Born</td>
-		<td class="col-md-2 <?php echo $bornClass; ?>""><?php echo $fatherbirthdate; ?></td>
+		<td class="tdback col-md-1 col-sm-1">Born</td>
+		<td class="col-md-2 col-sm-2 <?php echo $bornClass; ?>""><?php echo $fatherbirthdate; ?></td>
 		
 	</tr>
 <!-- Mother -->
 	<tr class="row">
-		<td class="tdback col-md-1">Mother</td>
-		<td class="col-md-8">
+		<td class="tdback col-md-1 col-sm-1">Mother</td>
+		<td class="col-md-8 col-sm-8">
 			<?php
 			If ($currentmonth == $motherdeathmonth and $mother['personID'] !== null) {
 			?>
@@ -439,8 +439,8 @@ if ($parentsDivDate) {
 				$bornClass = "";
 			}
 			?>
-		<td class="tdback col-md-1">Born</td>
-		<td class="col-md-2 <?php echo $bornClass; ?>""><?php echo $motherbirthdate; ?></td>
+		<td class="tdback col-md-1 col-sm-1">Born</td>
+		<td class="col-md-2 col-sm-2 <?php echo $bornClass; ?>""><?php echo $motherbirthdate; ?></td>
 		
 	</tr>	
 <!-- Parents -->
@@ -452,10 +452,10 @@ if ($parentsDivDate) {
 			}
             ?>
 	<tr class="row">
-		<td class="tdback col-md-1">Parents</td>
-		<td class="col-md-8 <?php echo $bornClass; ?>""><?php echo $parentsmarrdate. " ". $parentsdivdata; ?></td>
-		<td class="tdback col-md-1">Place</td>
-		<td class="col-md-2"><?php echo $parentsmarrplace; ?></td>
+		<td class="tdback col-md-1 col-sm-1">Parents</td>
+		<td class="col-md-8 col-sm-8 <?php echo $bornClass; ?>""><?php echo $parentsmarrdate. " ". $parentsdivdata; ?></td>
+		<td class="tdback col-md-1 col-sm-1">Place</td>
+		<td class="col-md-2 col-sm-2"><?php echo $parentsmarrplace; ?></td>
 	</tr>
  </table>
 <?php
@@ -535,9 +535,9 @@ if ($parentsDivDate) {
 				{
 				$spouseRow = $tngcontent->getSpEvent($spouse['personID'], $tree);
 					if ($spouseRow !== null)  {
-					$spouse_spevent = " (". $EventDisplay. ":". $spouseRow['info']. " )";
+					$spouse_spevent = " (". $EventDisplay. ": ". $spouseRow['info']. " )";
 					} else {
-				$spouse_spevent = " (". $EventDisplay. ":Unknown)";
+				$spouse_spevent = " (". $EventDisplay. ": Unknown)";
 					}
 				}	
 			}
@@ -552,8 +552,8 @@ if ($parentsDivDate) {
  <!--- spousees -->
  <table class="table table-bordered"> 
 	<tr class="row">
-	    <td class="tdback col-md-1"><?php echo "Spouse ", $order; ?></td>
-		<td class="col-md-8">	
+	    <td class="tdback col-md-1 col-sm-1"><?php echo "Spouse ", $order; ?></td>
+		<td class="col-md-8 col-sm-8">	
 		<?php
 			if ($spouse['personID'] == '') {
 				$spousename = "Unknown";
@@ -570,7 +570,7 @@ if ($parentsDivDate) {
 		?>
 			</a>
 		</td>
-        <td class="tdback col-md-1">Born</td>
+        <td class="tdback col-md-1 col-sm-1">Born</td>
 			<?php
 			$spousebirthmonth = substr($spouse['birthdatetr'], -5, 2);
 			If ($currentmonth == $spousebirthmonth) {
@@ -579,11 +579,11 @@ if ($parentsDivDate) {
 				$bornClass = "";
 			}
 			?>
-        <td class="col-md-2 <?php echo $bornClass; ?>"><?php echo $spousebirthdate; ?></td>
+        <td class="col-md-2 col-sm-2 <?php echo $bornClass; ?>"><?php echo $spousebirthdate; ?></td>
 
     </tr>
     <tr class="row">
-		<td class="tdback col-md-1"><?php echo "Married" ?></td>
+		<td class="tdback col-md-1 col-sm-1"><?php echo "Married" ?></td>
 		<?php
 			if ($marrdatetr == "0000-00-00") {
 				$marrmonth = null;
@@ -602,10 +602,10 @@ if ($parentsDivDate) {
 				$marrdate = $family['marrdate'];
 			}
 		?>
-		<td class="col-md-8 <?php echo $bornClass; ?>"><?php echo $marrdate. " ". $divdata; ?>
+		<td class="col-md-8 col-sm-8 <?php echo $bornClass; ?>"><?php echo $marrdate. " ". $divdata; ?>
 		</td>
-		<td class="tdback col-md-1"><?php echo "Place"; ?></td>
-		<td class="col-md-2"><?php echo $marrplace; ?></td>
+		<td class="tdback col-md-1 col-sm-1"><?php echo "Place"; ?></td>
+		<td class="col-md-2 col-sm-2"><?php echo $marrplace; ?></td>
 
     </tr>
 	<tr class="row">
@@ -617,17 +617,17 @@ if ($parentsDivDate) {
 			$bornClass = "";
 		}
 		?>
-		<td class="tdback col-md-1"><?php echo "Died"; ?></td>
+		<td class="tdback col-md-1 col-sm-1"><?php echo "Died"; ?></td>
 
-		<td class="col-md-8 <?php echo $bornClass; ?>"><?php echo $spousedeathdate. $spouse_cause_of_death; ?></td>
+		<td class="col-md-8 col-sm-8 <?php echo $bornClass; ?>"><?php echo $spousedeathdate. " ". $spouse_cause_of_death; ?></td>
 
-		<td class="tdback col-md-1"><?php echo "Place"; ?></td>
-		<td class="col-md-2"><?php echo $spousedeathplace; ?></td>
+		<td class="tdback col-md-1 col-sm-1"><?php echo "Place"; ?></td>
+		<td class="col-md-2 col-sm-2"><?php echo $spousedeathplace; ?></td>
     </tr>
     <tr class="row">
 <!-- Children -->				
-		<td class="tdback col-md-1">Children</td>
-		<td class="col-md-8" colspan="3">
+		<td class="tdback col-md-1 col-sm-1">Children</td>
+		<td class="col-md-8 col-sm-8" colspan="3">
 		<ul>
 		<?php
 		$children = $tngcontent->getChildren($family['familyID'], $tree);
@@ -884,34 +884,34 @@ if (!$uploadPersonId) {
     $uploadPersonId = $tngcontent->getCurrentPersonId();
 }
 ?>
-	<div class="row-fluid col-md-offset-2">
-		<div id="upload-wrapper">
-		<div id="submit-profile-photo"></div>
-			<div align="center">
-				<input type="button" id="return-btn" value="Return" onclick="location.href = '#Family'"/>
-				<h3>Submit Profile Image for </br><?php echo $name; ?></h3>
+	
+	<div id="upload-wrapper">
+		<!-- <div id="submit-profile-photo"></div> -->
+		<div align="center">
+			<input type="button" id="return-btn" value="Return" onclick="location.href = '#Family'"/>
+			<h3>Submit Profile Image for </br><?php echo $name; ?></h3>
 
-				<b>Profile image submitted by <?php echo $User; ?></b>
-				<form class="upload-wrapper upload-wrapper-aligned" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
-					<input type="hidden" name="title" value="<?php echo "Person Profile ID=". $uploadPersonId; ?>" />
-					<input type="hidden" name="Desc" value='<?php echo "Submit Profile Image for <br />". $name; ?>' />
-					<fieldset>
-						<div class="upload-control-group">
-							<label for="Image">Select Image</label>
-							<input name="ImageFile" id="imageInput" type="file" placeholder="no file selected">
-							<br/>Maximum size 5Mb
-						</div>
-
-						<p>
-							<input type="submit"  id="submit-btn" value="Upload Photo" />
-							<img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
-						</p>
-					</fieldset>
-				</form>
-			<div id="output"></div>
+			<b>Profile image submitted by <?php echo $User; ?></b>
+			<form class="upload-wrapper upload-wrapper-aligned" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
+			<input type="hidden" name="title" value="<?php echo "Person Profile ID=". $uploadPersonId; ?>" />
+			<input type="hidden" name="Desc" value='<?php echo "Submit Profile Image for <br />". $name; ?>' />
+			<fieldset>
+			<div class="upload-control-group">
+				<label for="Image">Select Image</label>
+				<input name="ImageFile" id="imageInput" type="file" placeholder="no file selected">
+				<br/>Maximum size 5Mb
 			</div>
-			
+
+			<p>
+			<input type="submit"  id="submit-btn" value="Upload Photo" />
+			<img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
+			</p>
+			</fieldset>
+			</form>
+			<div id="output"></div>
 		</div>
+			
 	</div>
-</div>
+
+
 </html>
