@@ -33,7 +33,6 @@ $parenttag = 'DEAT';
 $info = '';
 $datemodified = date('Y-m-d H:i:s');
 
-
 $people = array();
 $people[] = $person[0];
 

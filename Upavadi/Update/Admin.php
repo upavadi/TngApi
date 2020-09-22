@@ -251,7 +251,7 @@ class Upavadi_Update_Admin
                                 $type = $data['type'];
                             }
                             $disabled = null;
-                            if ($data['disabled']) {
+                            if (isset($data['disabled']) && $data['disabled']) {
                                 $disabled = "readonly";
                             }
                             $change = null;
@@ -398,7 +398,7 @@ class Upavadi_Update_Admin
                 $change = $changes['diff'][$field]['type'];
             }
             $fields[$field] = array_merge($data, array(
-                'old' => $changes['old'][$field],
+                'old' => isset($changes['old'][$field]) ? $changes['old'][$field] : null,
                 'new' => $changes['new'][$field],
                 'change' => $change,
             ));
