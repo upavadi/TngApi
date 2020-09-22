@@ -81,19 +81,20 @@
                 );
 	
 	
-	     foreach ($noteOrder as $type => $header):
+		 foreach ($noteOrder as $type => $header):
+			$note = null;
 			if (isset($notes[$type]))	
-			$note = $notes[$type];
-                    if (!$note) {
-                        $note['xnoteID'] = 'NewNote' . $type;
-                        $note['eventID'] = $type;
-                        if ($note['eventID'] == 'GEN') {
-                            $note['eventID'] = "";
-                        }
-                    }
-                    if (isset($note['secret']) && $note['secret']) {
-                        $note['note'] = null;
-                    }
+				$note = $notes[$type];
+			if (!$note) {
+				$note['xnoteID'] = 'NewNote' . $type;
+				$note['eventID'] = $type;
+				if ($note['eventID'] == 'GEN') {
+					$note['eventID'] = "";
+				}
+			}
+			if (isset($note['secret']) && $note['secret']) {
+				$note['note'] = null;
+			}
 
 	?>
             <p>
