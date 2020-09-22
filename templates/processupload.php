@@ -6,7 +6,8 @@ $content = Upavadi_TngContent::instance();
 $content->init();
 $email = esc_attr(get_option('tng-api-email'));
 $collection = esc_attr(get_option('tng-api-tng-photo-upload'));
-
+//php_value upload_max_filesize "5M"
+//var_dump($_FILES['ImageFile']);
 $tables = $content->getTngTables();
 $res = $content->query('select path from ' . $tables['mediatypes_table'] . ' WHERE mediatypeID = "' . $collection . '"');
 $row = $res->fetch_assoc();
@@ -20,9 +21,10 @@ if (!preg_match("|" . DIRECTORY_SEPARATOR . "$|", $tngPath)) {
 if (!preg_match("|" . DIRECTORY_SEPARATOR . "$|", $uploadPath)) {
     $uploadPath .= DIRECTORY_SEPARATOR;
 }
+
 if (isset($_POST)) {
     ############ Edit settings ##############
-    $ThumbSquareSize = 100; //Thumbnail will be 200x200
+    $ThumbSquareSize = 80; //Thumbnail will be 200x200
     $BigImageMaxSize = 500; //Image Maximum height or width
     $ThumbPrefix = "thumb_"; //Normal thumb Prefix
     $DestinationDirectory = $tngPath . $uploadPath; //specify upload directory ends with / (slash)
