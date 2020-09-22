@@ -189,13 +189,13 @@ class Upavadi_Update_ChangeSet
             if ($value === null) {
                 $changes[$key] = array(
                     'type' => 'exclude',
-                    'old' => $old[$key],
+                    'old' => isset($old[$key]) ? $old[$key] : '',
                     'new' => $value
                 );
-            } else if ($value !== $old[$key]) {
+            } else if (!isset($old[$key]) || $value !== $old[$key]) {
                 $changes[$key] = array(
                     'type' => 'edit',
-                    'old' => $old[$key],
+                    'old' => isset($old[$key]) ? $old[$key] : '',
                     'new' => $value
                 );
             }
@@ -250,6 +250,9 @@ class Upavadi_Update_ChangeSet
     public function getFatherId()
     {
         $familyId = $this->userSubmission['famc'];
+        if (!$familyId) {
+            return null;
+        }
         if ($this->changes['family'][$familyId]['husband']) {
             return $this->changes['family'][$familyId]['husband'];
         }
@@ -258,6 +261,9 @@ class Upavadi_Update_ChangeSet
     public function getMotherId()
     {
         $familyId = $this->userSubmission['famc'];
+        if (!$familyId) {
+            return null;
+        }
         return $this->changes['family'][$familyId]['wife'];
     }
 
@@ -289,7 +295,7 @@ class Upavadi_Update_ChangeSet
         $famC = $this->getSpouseFamilyId($parentId);
         $children = array();
         foreach ($this->changes['people'] as $personId => $person) {
-            if ($person['famc'] === $famC) {
+            if ($person['famc'] === $famC && isset($this->changes['children'][$personId])) {
                 $childFamily = $this->changes['children'][$personId];
                 $children[$childFamily['ordernum']] = $personId;
             }
