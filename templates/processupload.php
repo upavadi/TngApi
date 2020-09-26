@@ -2,6 +2,7 @@
 
 require_once '../../../../wp-load.php';
 require_once '../autoload.php';
+$end_msg = " Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this.";
 $content = Upavadi_TngContent::instance();
 $content->init();
 $email = esc_attr(get_option('tng-api-email'));
@@ -21,7 +22,6 @@ if (!preg_match("|" . DIRECTORY_SEPARATOR . "$|", $tngPath)) {
 if (!preg_match("|" . DIRECTORY_SEPARATOR . "$|", $uploadPath)) {
     $uploadPath .= DIRECTORY_SEPARATOR;
 }
-
 if (isset($_POST)) {
     ############ Edit settings ##############
     $ThumbSquareSize = 80; //Thumbnail will be 200x200
@@ -100,13 +100,8 @@ if (isset($_POST)) {
         $thumbPath = $domain . str_replace('//', '/', $thumbPath);
 		
         echo '<table width="80%" border="0" cellpadding="4" cellspacing="0">';
-        echo '<tr><p> Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this.</p> </td></tr>';
-
-
+        echo '<tr><td><p>'. $end_msg. '</td></tr>';
         echo '<tr><td align="center"><img src="' . $thumbPath . '" alt="Thumbnail"></td>';
-        echo '</tr><tr>';
-
-
         echo '</tr>';
         echo '</table>';
                 
