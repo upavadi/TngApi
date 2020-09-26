@@ -1,10 +1,17 @@
 <!-- Upload images Modified for BootStrap March 2016-->
 <?php
-//$ini_size = ini_get('upload_max_filesize');
+//Get max file size
 $upload_content = file_get_contents( __DIR__ ."/.htaccess");
 $file_size = (int)(substr($upload_content, 29));
+
+//Enter User Messages below
+$msg_welcome = "you may upload photo of you and your family.";
+$msg_para_1 = "If you wish to upload a profile image for a person, it is easier for you ( and me ) if you submit from Family page.";
+$msg_para_2 = "Select image to upload by clicking on Browse Button.";
+$msg_para_3 = "There is a limit of ".$file_size. "Mb for the picture size. ";
+
 ?>
-changes here
+
 <!doctype html>
 <html lang="en">
 <meta charset="utf-8">
@@ -54,9 +61,16 @@ function beforeSubmit(){
 <div class="container-fluid">
   <div id="upload-wrapper" style="max-width: 700px; margin: auto" >  
      
-         <p><?php echo $User; ?>, you may upload photo of you and your family.<br/> 
-        If you wish to upload a profile image for a person, it is easier for you ( and me ) if you submit from Family page.<br />
-         Select image to upload by clicking on Browse Button. There is a limit of <b><?php echo $file_size ?>Mb</b> for the picture size.   
+    <p>
+    <?php echo $User. ", ". $msg_welcome.  "<br/>".
+    $msg_para_1. 
+    "<br />". 
+    $msg_para_2.
+    "<br />".
+    $msg_para_3     
+    ?>
+    </p>
+
   </div>
   <div style="margin-bottom: 1em"> </div>
   <!-- Input Form -->
@@ -104,8 +118,8 @@ function beforeSubmit(){
     	<div class="col-sm-3 col-md-3" style="wi dth: 250px">Notes about the event - If group photograph, people in the photograh
       </div>
 	</div>
-	<div class="col-sm-3 col-sm-offset-3">
-	<input type="submit"  id="submit-btn" value="Upload Photo" style="position: center;"/><br />
+	<div align='center'>
+	<input type="submit"  id="submit-btn" value="Upload Photo" style="text-align: center;"/><br />
 	<img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
 	</div>
 </div>
