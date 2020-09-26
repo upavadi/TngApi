@@ -792,126 +792,124 @@ foreach ($allnotes as $PersonNote):
 </div>
 
 
-<!-- DO NOT MOVE the 2 files to top!! -->	
-<script type="text/javascript" src="<?php echo plugins_url('js/jquery-1.10.2.min.js', dirname(__FILE__)); ?>"></script>
-<script type="text/javascript" src="<?php echo plugins_url('js/jquery.form.min.js', dirname(__FILE__)); ?>"></script>
-<script type="text/javascript">
-$(document).ready(function() {
-    var options = {
-        target: '#output', // target element(s) to be updated with server response 
-        beforeSubmit: beforeSubmit, // pre-submit callback 
-        success: afterSuccess, // post-submit callback 
-        resetForm: true        // reset the form after successful submit 
-    };
+<!-- Upload Profile Image -->	
+<a name="submit-profile-photo"></a>
+<?php
+$upload_content = file_get_contents( __DIR__ ."/.htaccess");
+$file_size = (int)(substr($upload_content, 29));
+$current_user = wp_get_current_user();
+$User = $current_user->user_firstname;
+?>
 
-    $('#MyUploadForm').submit(function() {
-        $(this).ajaxSubmit(options);
-        // always return false to prevent standard browser submit and page navigation 
-        return false;
-    });
-});
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Upload photos</title>
+    
+	<script type="text/javascript" src="<?php echo plugins_url('js/jquery-1.10.2.min.js', dirname(__FILE__)); ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url('js/jquery.form.min.js', dirname(__FILE__)); ?>"></script>
+
+	<?php 	
+	?>
+<head>
+<script type="text/javascript">
+
+$(document).ready(function() { 
+	var options = { 
+			target:   '#output',   // target element(s) to be updated with server response 
+			beforeSubmit:  beforeSubmit,  // pre-submit callback 
+			success:       afterSuccess,  // post-submit callback 
+			resetForm: true        // reset the form after successful submit 
+		}; 
+		
+	 $('#MyUploadForm').submit(function() { 
+			$(this).ajaxSubmit(options);  			
+			// always return false to prevent standard browser submit and page navigation 
+			return false; 
+		}); 
+}); 
 
 function afterSuccess()
 {
-    $('#submit-btn').show(); //hide submit button
-    $('#loading-img').hide(); //hide submit button
+	$('#submit-btn').show(); //hide submit button
+	$('#loading-img').hide(); //hide submit button
 
 }
 
-//function to check file size before uploading.
-function beforeSubmit() {
-    //check whether browser fully supports all File API
-    if (window.File && window.FileReader && window.FileList && window.Blob)
-    {
-
-        if (!$('#imageInput').val()) //check empty input filed
-        {
-            $("#output").html("Please Select an Image to upload");
-            return false
-        }
-
-        var fsize = $('#imageInput')[0].files[0].size; //get file size
-        var ftype = $('#imageInput')[0].files[0].type; // get file type
-
-
-        //allow only valid image file types 
-        switch (ftype)
-        {
-            case 'image/png':
-            case 'image/gif':
-            case 'image/jpeg':
-            case 'image/pjpeg':
-                break;
-            default:
-                $("#output").html("<b>" + ftype + "</b> Unsupported file type!");
-                return false
-        }
-
-        //Allowed file size is less than 1 MB (1048576)
-        if (fsize > (5 * 1024 * 1024))
-        {
-            $("#output").html("<b>" + bytesToSize(fsize) + "</b> Too big Image file! <br />Please reduce the size of your photo using an image editor.");
-            return false
-        }
-
-        $('#submit-btn').hide(); //hide submit button
-        $('#loading-img').show(); //hide submit button
-        $("#output").html("");
-    }
-    else
-    {
-        //Output error to older unsupported browsers that doesn't support HTML5 File API
-        $("#output").html("Please upgrade your browser, because your current browser lacks some new features we need!");
-        return false;
-    }
+function beforeSubmit(){
+		$('#submit-btn').hide(); //hide submit button
+		$('#loading-img').show(); //hide submit button
+		$("#output").html("");  
 }
-
-//function to format bites bit.ly/19yoIPO
-function bytesToSize(bytes) {
-    var sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes == 0)
-        return '0 Bytes';
-    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-}
-
-
 </script>
+</head>
+<body>
+<div class="container-fluid" >
+  <div style="margin-bottom: 1em"> </div>
+  <div id="upload-wrapper" style="max-width: 700px; margin: auto" >
+    <div align="center">
+        <input type="button" id="return-btn" value="Return" onclick="location.href = '#Family'"/>
+        <h3>Submit Profile Image for </br><?php echo $name; ?>.</br>
+        Profile image submitted by <?php echo $User; ?></h3>
+    </div>
 
-<?php
-$uploadPersonId = $personId;
-if (!$uploadPersonId) {
-    $uploadPersonId = $tngcontent->getCurrentPersonId();
-}
-?>
-	
-	<div id="upload-wrapper">
-		<!-- <div id="submit-profile-photo"></div> -->
-		<div align="center">
-			<input type="button" id="return-btn" value="Return" onclick="location.href = '#Family'"/>
-			<h3>Submit Profile Image for </br><?php echo $name; ?></h3>
+  <form class="form-horizontal" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
+<input type="hidden" name="title" value="<?php echo "Person Profile ID=". $uploadPersonId; ?>" />
+<input type="hidden" name="Desc" value='<?php echo "Submit Profile Image for <br />". $name; ?>' />
+<fieldset>
+    <div class="form-group upload-control-group">
+        <label for="Image" class="upload-width control-label col-sm-3">Select Image</label>
+            <div class="control-label col-sm-6">
+            <input name="ImageFile" id="chooseFile" class="form-control" type="file" placeholder="no file selected" accept="image/x-png,image/jpeg, image/pjpeg" required style="border: 1px solid lightgrey">
+    </div>
+        <div class="col-sm-3 col-md-3"><?php echo "Maximum Image size = ". $file_size. "Mb" ?>
+        </div>
+    </div>
+    <div class="user-image mb-3 text-center"><b>Preview</b>
+      <div style="width: 100px; height: 100px; overflow: hidden; background: #cccc; margin: 0 auto">
+        <img src="..." class="figure-img img-fluid rounded" id="imgPlaceholder" alt="">
+      </div>
+      <div class="form-group upload-control-group" style="margin-top: 1em"></div>
+        <div align='center'>
+	    <input type="submit"  id="submit-btn" value="Upload Photo" style="position: center;"/><br />
+	    <img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
+	    </div>
+    </div>
+    </fieldset>
+</form>
+</div>
+    <div class="row">
+    <div id="output" style="max-width: 700px; margin: auto"></div>
+    </div><! -- coupload wrapper ->
+</div><! -- container-fluid" ->
+</body>
+<script>
+function readURL(input) {
 
-			<b>Profile image submitted by <?php echo $User; ?></b>
-			<form class="upload-wrapper upload-wrapper-aligned" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
-			<input type="hidden" name="title" value="<?php echo "Person Profile ID=". $uploadPersonId; ?>" />
-			<input type="hidden" name="Desc" value='<?php echo "Submit Profile Image for <br />". $name; ?>' />
-			<fieldset>
-			<div class="upload-control-group">
-				<label for="Image">Select Image</label>
-				<input name="ImageFile" id="imageInput" type="file" placeholder="no file selected">
-				<br/>Maximum size 5Mb
-			</div>
+      var uploadSize = "<?php Print($file_size ); ?>";
+      var FileSize = input.files[0].size / 1024 / 1024; // in MB
+      if (FileSize > uploadSize) {
+      var  msg = 'File size exceeds ' + uploadSize + 'Mb';
+         alert(msg); return; 
+      }
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
 
-			<p>
-			<input type="submit"  id="submit-btn" value="Upload Photo" />
-			<img src="<?php echo plugins_url('images/ajax-loader.gif', dirname(__FILE__)); ?>" id="loading-img" style="display:none;" alt="Please Wait"/>
-			</p>
-			</fieldset>
-			</form>
-			<div id="output"></div>
-		</div>
-			
-	</div>
+        reader.onload = function (e) {
+          $('#imgPlaceholder').attr('src', e.target.result);
+      }
 
+        // base64 string conversion
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    $("#chooseFile").change(function () {
+      readURL(this);
+    });
+</script>
+<style>
+.upload-width { width: 155px; padding-left: 15px;}
+</style>
 
 </html>
