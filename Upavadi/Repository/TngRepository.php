@@ -141,7 +141,7 @@ class Upavadi_Repository_TngRepository
         $row = $res->fetch_assoc();
         $newIdInt = intval($row['id']) + 1;
         $newId = 'I' . $newIdInt;
-        $sql = "INSERT INTO {$tables['people_table']} ";
+        $sql = "INSERT IGNORE INTO {$tables['people_table']} ";
         $args = array();
         $sets = array();
         $vals = array();
@@ -187,7 +187,7 @@ class Upavadi_Repository_TngRepository
         $row = $res->fetch_assoc();
         $newIdInt = intval($row['id']) + 1;
         $newId = 'F' . $newIdInt;
-        $sql = "INSERT INTO {$tables['families_table']} ";
+        $sql = "INSERT IGNORE INTO {$tables['families_table']} ";
         $args = array();
         $sets = array();
         $vals = array();
@@ -218,7 +218,7 @@ class Upavadi_Repository_TngRepository
     public function addChildren($fields)
     {
         $tables = $this->content->getTngTables();
-        $sql = "INSERT INTO {$tables['children_table']} ";
+        $sql = "INSERT IGNORE INTO {$tables['children_table']} ";
         $args = array();
         $sets = array();
         $vals = array();

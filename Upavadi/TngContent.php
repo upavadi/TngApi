@@ -177,6 +177,7 @@ class Upavadi_TngContent
                 $version = 12;
                 break;
             }
+
         }
         return $version;
     }

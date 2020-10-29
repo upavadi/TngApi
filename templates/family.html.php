@@ -20,6 +20,7 @@
 	$displayButtons = $tngcontent->getTngShowButtons();
 	$photos = $tngcontent->getTngPhotoFolder();
 	$photosPath = $url. $photos;
+	
 //get and hold current user
     $currentperson = $tngcontent->getCurrentPersonId();
     $currentperson = $tngcontent->getPerson($currentperson);
@@ -44,8 +45,12 @@
 	$name = $person['firstname'] ." ".  $person['lastname'];
 	
 	// set variable for Family Chart page
-	$version = $tngcontent->guessVersion();
-	$primaryID = 12; //check for tng v12
+	$version = $tngcontent->guessVersion(); var_dump($version);
+	//$versionID = 12; //check for tng v12
+
+	// set variable for Cousins Mod. Remove comment ( // ) to show the Cousins Button
+	$cousins = true;
+
 
 //get person details for link to tng pages
 	$linkPerson = $person['personID'];
@@ -315,8 +320,14 @@ if ($parentsDivDate) {
 					
 					<div class="col-md-2  col-sm-4" >
 					<?php 
-					if ($primaryID >= 12) {
+					if ($version>= 12 && ($displayButtons) ) {
 					echo "<input type=\"button\" id=\"link-btn\" value=\"Family Chart\" onclick=\"window.location.href = '$IntegratedPath/familychart.php?personID=$linkPerson&tree=$tree'\" />";
+                    } ?>
+					</div>
+					<div class="col-md-2  col-sm-4" >
+					<?php 
+					if ($version >= 12 && ($displayButtons) && $cousins ) {
+					echo "<input type=\"button\" id=\"link-btn\" value=\"Cousins\" onclick=\"window.location.href = '$IntegratedPath/cousins.php?primaryID=$linkPerson&tree=$tree'\" />";
                     } ?>
 					</div>
 
