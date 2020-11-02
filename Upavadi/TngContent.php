@@ -157,7 +157,9 @@ class Upavadi_TngContent
     public function guessVersion()
     {
         $sql = 'describe ' . $this->tables['people_table'];
+        $sql2 = 'describe ' . $this->tables['users_table'];
         $result = $this->query($sql);
+        $result2 = $this->query($sql2);
         $version = 9;
         while ($row = $result->fetch_assoc()) {
             if ($row['Field'] == 'burialtype') {
@@ -165,14 +167,14 @@ class Upavadi_TngContent
                 break;
             }
         }
-        while ($row = $result->fetch_assoc()) {	
+        while ($row = $result2->fetch_assoc()) {	
             if ($row['Field'] == 'languageID') {
                 $version = 11;
                 break;
             }
         }
     
-        while ($row = $result->fetch_assoc()) {	
+        while ($row = $result2->fetch_assoc()) {	
             if ($row['Field'] == 'dt_consented') {
                 $version = 12;
                 break;
