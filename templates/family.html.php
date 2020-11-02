@@ -45,7 +45,7 @@
 	$name = $person['firstname'] ." ".  $person['lastname'];
 	
 	// set variable for Family Chart page
-	$version = $tngcontent->guessVersion(); var_dump($version);
+	$version = $tngcontent->guessVersion();
 	//$versionID = 12; //check for tng v12
 
 	// set variable for Cousins Mod. Remove comment ( // ) to show the Cousins Button
@@ -865,8 +865,8 @@ function beforeSubmit(){
     </div>
 
   <form class="form-horizontal" action="<?php echo plugins_url('templates/processupload.php', dirname(__FILE__)); ?>" method="post" enctype="multipart/form-data" id="MyUploadForm">
-<input type="hidden" name="title" value="<?php echo "Person Profile ID=". $uploadPersonId; ?>" />
-<input type="hidden" name="Desc" value='<?php echo "Submit Profile Image for <br />". $name; ?>' />
+<input type="" name="title" value="<?php echo "Person Profile ID=". $linkPerson; ?>" />
+<input type="" name="Desc" value='<?php echo "Submit Profile Image for <br />". $name; ?>' />
 <fieldset>
     <div class="form-group upload-control-group">
         <label for="Image" class="upload-width control-label col-sm-3">Select Image</label>
