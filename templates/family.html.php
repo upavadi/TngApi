@@ -11,7 +11,9 @@
     <a name="Family"></a>
     
     <?php
-	//global $kids;
+	// set variable for Cousins Mod. Remove comment ( // ) to show the Cousins Button
+	$cousins = true;
+	//$cousins = false;
 	$tngcontent = Upavadi_TngContent::instance();
 	$genealogy = $tngcontent->getTngIntegrationPath();
 	$url = $tngcontent->getTngUrl();
@@ -46,11 +48,7 @@
 	
 	// set variable for Family Chart page
 	$version = $tngcontent->guessVersion();
-	//$versionID = 12; //check for tng v12
-
-	// set variable for Cousins Mod. Remove comment ( // ) to show the Cousins Button
-	$cousins = true;
-
+	//$versionID = 11; //check for tng v12
 
 //get person details for link to tng pages
 	$linkPerson = $person['personID'];
