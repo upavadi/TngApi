@@ -12,8 +12,8 @@
     
     <?php
 	// set variable for Cousins Mod. Remove comment ( // ) to show the Cousins Button
-	$cousins = true;
-	//$cousins = false;
+	$cousins = false;
+	//$cousins = true;
 	$tngcontent = Upavadi_TngContent::instance();
 	$genealogy = $tngcontent->getTngIntegrationPath();
 	$url = $tngcontent->getTngUrl();
