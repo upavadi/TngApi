@@ -59,7 +59,7 @@ class Upavadi_Repository_TngRepository
             throw new RuntimeException($e->getMessage() . ' -- ' . $sql, 0, $e);
         }
         if (!$stmnt) {
-            var_dump($db->error);
+           // var_dump($db->error);
             return;
         }
         array_unshift($args, $types);
@@ -68,7 +68,7 @@ class Upavadi_Repository_TngRepository
         call_user_func_array(array($stmnt, 'bind_param'), $args);
         
         if (!$stmnt->execute()) {
-            var_dump($db->error);
+            //var_dump($db->error);
         }
     }
 
