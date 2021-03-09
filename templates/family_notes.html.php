@@ -106,9 +106,11 @@
                     </b>
                 </span><br />
                 <textarea style="width:98%" name="person_note[<?php echo $type; ?>][note]" rows="3" cols="100"><?php echo isset($note['note']) ? $note['note'] : null; ?></textarea>
-                <input type="hidden" name="person_note[<?php echo $type; ?>][xeventID]" value="<?php echo $note['eventID']; ?>" />
-                <input type="hidden" name="person_note[<?php echo $type; ?>][secret]" value="<?php echo $note['secret']; ?>" />
-                <input type="hidden" name="person_note[<?php echo $type; ?>][ordernum]" value="<?php echo $note['ordernum']; ?>" />
+            <?php if ($note) { ?>  
+			    <input type="hidden" name="person_note[<?php echo $type; ?>][xeventID]" value="<?php if (isset($note['eventID'])) echo $note['eventID']; ?>" />
+                <input type="hidden" name="person_note[<?php echo $type; ?>][secret]" value="<?php if (isset($note['secret'])) echo $note['secret']; ?>" />
+                <input type="hidden" name="person_note[<?php echo $type; ?>][ordernum]" value="<?php if (isset($note['ordernum'])) echo $note['ordernum']; ?>" />
+			<?php } ?> 	
             </p>
 	<?php
             endforeach;
