@@ -11,9 +11,14 @@
     <a name="Family"></a>
     
     <?php
-	// set variable for Cousins Mod. Remove comment ( // ) to show the Cousins Button
-	$cousins = false;
-	//$cousins = true;
+	//set variable for Cousins Mod. Remove comment ( // ) to show the Cousins Button: For TNG V12+ and Cousins Mod.
+	//$cousins = false;
+	$cousins = true;
+	
+	//set variable for Connections Mod. Remove comment ( // ) to show the Connections Button: For TNG V13 and Connections Mod
+	//$Connections = false;
+	$Connections = true;
+
 	$tngcontent = Upavadi_TngContent::instance();
 	$genealogy = $tngcontent->getTngIntegrationPath();
 	$url = $tngcontent->getTngUrl();
@@ -27,7 +32,8 @@
     $currentperson = $tngcontent->getCurrentPersonId();
     $currentperson = $tngcontent->getPerson($currentperson);
     $currentuser = ($currentperson['firstname'] ." ". $currentperson['lastname']);
-// Uncomment below to use the current wordpres display name instead of the TNG user
+
+// Uncomment below to use the current wordpress display name instead of the TNG user
 /*
 	$current_user = wp_get_current_user();
 	$currentuser = $current_user->display_name;
@@ -328,7 +334,13 @@ if ($parentsDivDate) {
 					echo "<input type=\"button\" id=\"link-btn\" value=\"Cousins\" onclick=\"window.location.href = '$IntegratedPath/cousins.php?primaryID=$linkPerson&tree=$tree'\" />";
                     } ?>
 					</div>
-
+					<div class="col-md-2  col-sm-4" >
+					<?php 
+					if ($version >= 13 && ($displayButtons) && $Connections ) {
+					echo "<input type=\"button\" id=\"link-btn\" value=\"Connections\" onclick=\"window.location.href = '$IntegratedPath/connections-form.php?primaryID=$linkPerson&tree=$tree'\" />";
+                    } ?>
+					</div>
+					
 				</div>	
 				<div class="row">
 					<div class="col-md-2  col-sm-4" >
