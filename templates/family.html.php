@@ -14,7 +14,7 @@
 	//set variable for Cousins Mod. Remove comment ( // ) to show the Cousins Button: For TNG V12+ and Cousins Mod.
 	//$cousins = false;
 	$cousins = true;
-	
+	global $father, $mother;
 	//set variable for Connections Mod. Remove comment ( // ) to show the Connections Button: For TNG V13 and Connections Mod
 	//$Connections = false;
 	$Connections = true;
