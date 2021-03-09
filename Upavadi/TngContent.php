@@ -158,8 +158,10 @@ class Upavadi_TngContent
     {
         $sql = 'describe ' . $this->tables['people_table'];
         $sql2 = 'describe ' . $this->tables['users_table'];
+        $sql3 = 'describe ' . $this->tables['image_tags_table'];
         $result = $this->query($sql);
         $result2 = $this->query($sql2);
+        $result3 = $this->query($sql3);
         $version = 9;
         while ($row = $result->fetch_assoc()) {
             if ($row['Field'] == 'burialtype') {
@@ -177,6 +179,13 @@ class Upavadi_TngContent
         while ($row = $result2->fetch_assoc()) {	
             if ($row['Field'] == 'dt_consented') {
                 $version = 12;
+                break;
+            }
+
+        }
+        while ($row = $result3->fetch_assoc()) {	
+            if ($row['Field'] == 'ID') {
+                $version = 13;
                 break;
             }
 
