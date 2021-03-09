@@ -8,6 +8,7 @@
     <title>Upavadi Add Family</title>
 </head>
 	<?php
+	global $husbandlastname;
 	$tngcontent = Upavadi_tngcontent::instance()->init();
 //get and hold current user
 	$currentperson = $tngcontent->getCurrentPersonId();
