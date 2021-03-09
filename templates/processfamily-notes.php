@@ -80,7 +80,7 @@ foreach ($personNotes as $Notes):
         'datemodified' => $datemodified,
     );
     if (!$wpdb->insert($notes_table, $row)) {
-        var_dump($row);
+        //var_dump($row);
     }
     //print_r($Notes);
 endforeach;

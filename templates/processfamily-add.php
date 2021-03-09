@@ -156,7 +156,7 @@ foreach ($personNotes as $Array):
             'datemodified' => $datemodified,
         );
         if (!$wpdb->insert($notes_table, $row)) {
-            var_dump($row);
+            //var_dump($row);
         }
     endforeach;
 endforeach;
