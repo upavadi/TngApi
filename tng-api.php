@@ -1,7 +1,7 @@
 <?php
 /*
- * Plugin Name: TngApi-V3.3.1 for V9 to V12
- * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated. For TNG V9 to V12 
+ * Plugin Name: TngApi-V3.3.1 for V9 to V13
+ * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated. For TNG V9 to V13 
  *
  * Plugin URI: https://github.com/upavadi/TngApi
  * Version: 3.3.2 under developement
