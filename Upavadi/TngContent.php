@@ -330,7 +330,16 @@ class Upavadi_TngContent
 			admin set up. Enter the name for the collection you have set up in TNG admin > media. Mine is called “My Uploads”.
 			";
         }, 'tng-api', 'tng');
-        $this->init();
+
+        try {
+            $this->init();
+        } catch (Upavadi_WpOnlyException $e) {
+            ?>
+<h2>You do not have sufficient privilege to view this page.
+Please log-in to Continue</h2>
+<?php
+            return;
+        }
         $events = $this->getEventList();
         add_settings_field('tng-event', 'TNG Event to Track', function () use ($events) {
             $tngEvent = esc_attr(get_option('tng-api-tng-event'));
