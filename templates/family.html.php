@@ -172,17 +172,21 @@
 		} else {
 		$fathername = "Unknown";
 		}
-// Father - Special Event
-	if ($father['personID'] !== null)
-	{
-	$fatherRow = $tngcontent->getSpEvent($father['personID'], $tree);
-	$father_spevent = $fatherRow['info'];
-	} else {
-	$father_spevent = "Unknown";
-	}
-	if ($father['living'] == '1') {
-		$fatherdeathdate = "  (Living)";
-	}
+ //Father - Special Event
+ $father_spevent = "";
+ if ($EventDisplay !== null)
+ {
+	 if ($father['personID'] !== null)
+	 {
+	 $fatherRow = $tngcontent->getSpEvent($father['personID'], $tree);
+		 if ($fatherRow !== null)  {
+		 $father_spevent = " (". $EventDisplay. ": ". $fatherRow['info']. " )";
+		 } else {
+	 $father_spevent = " (". $EventDisplay. ": Unknown)";
+		 }
+	 }	
+ }
+
 //get Cause of Death for Father
 	$fatherRow = $tngcontent->getCause($father['personID'], $tree);
 	if ($fatherRow['eventtypeID'] == "0") {
@@ -243,13 +247,19 @@
 		$mothername = "Unknown";
 		}
 // Mother - Special Event
+$mother_spevent = "";
+if ($EventDisplay !== null)
+{
 	if ($mother['personID'] !== null)
 	{
 	$motherRow = $tngcontent->getSpEvent($mother['personID'], $tree);
-	$mother_spevent = $motherRow['info'];
-	} else {
-	$mother_spevent = "Unknown";
-	}
+		if ($motherRow !== null)  {
+		$mother_spevent = " (". $EventDisplay. ": ". $motherRow['info']. " )";
+		} else {
+	$mother_spevent = " (". $EventDisplay. ": Unknown)";
+		}
+	}	
+}
 //get Cause of Death for Mother
 	$motherRow = $tngcontent->getCause($mother['personID'], $tree);
 	if ($motherRow['eventtypeID'] == "0") {
@@ -414,7 +424,7 @@ if ($parentsDivDate) {
 			?>
 				<a href="?personId=<?php echo $father['personID']; ?>&amp;tree=<?php echo $father['gedcom']; ?>">
 					<?php echo $fathername; ?></a>,<?php echo $fatherdeathdate; ?>, </span><?php
-				echo $fatherdeathplace. $father_cause_of_death;
+				echo $fatherdeathplace. $father_cause_of_death. $father_spevent;
 			} else {
 
 				echo $fathername;
@@ -446,7 +456,7 @@ if ($parentsDivDate) {
 			?>
 				<a href="?personId=<?php echo $mother['personID']; ?>&amp;tree=<?php echo $mother['gedcom']; ?>">
 					<?php echo $mothername; ?></a>,<?php echo $motherdeathdate; ?>, </span><?php
-				echo $motherdeathplace. $mother_cause_of_death;
+				echo $motherdeathplace. $mother_cause_of_death. $mother_spevent;
 			} else {
 
 				echo $mothername;
@@ -657,6 +667,21 @@ if ($parentsDivDate) {
 				$childPerson = $tngcontent->getPerson($child['personID'], $tree);
 				$childName = $childPerson['firstname']. " ". $childPerson['lastname'];
 				$childdeathdate = $childPerson['deathdate'];
+			//child special event
+			$child_spevent = "";
+				if ($EventDisplay !== null)
+				{
+					if ($child['personID'] !== null)
+					{
+					$childRow = $tngcontent->getSpEvent($child['personID'], $tree);
+						if ($childRow !== null)  {
+						$child_spevent = " (". $EventDisplay. ": ". $childRow['info']. " )";
+						} else {
+					$child_spevent = " (". $EventDisplay. ": Unknown)";
+						}
+					}	
+				}
+				
 				$kids = 0;
 				if ($child['haskids']) {
 					$classes[] = 'haskids';
@@ -698,24 +723,24 @@ if ($parentsDivDate) {
 					If ($currentmonth == $childbirthmonth) {
 
 						echo $childName;
-						?></a>,<span style="background-color:#E0E0F7"> born: <?php echo $childbirthdate; ?>, </span><?php echo $childPerson['birthplace']; ?><?php echo $childdeathdate; ?>
+						?></a>,<span style="background-color:#E0E0F7"> born: <?php echo $childbirthdate; ?>, </span><?php echo $childPerson['birthplace']; ?><?php echo $childdeathdate. ", ". $child_spevent; ?>
 				</li> 
 				<?php
 			} elseif ($currentmonth == $childdeathmonth) {
 				echo $childName;
-				?></a>, born: <?php echo $childbirthdate; ?>,<?php echo $childPerson['birthplace']; ?><span style="background-color:#E0E0F7"><?php echo $childdeathdate; ?>
+				?></a>, born: <?php echo $childbirthdate; ?>,<?php echo $childPerson['birthplace']; ?><span style="background-color:#E0E0F7"><?php echo $childdeathdate. ", ". $child_spevent; ?>
 				</span>
 				</li> 
 				<?php
 			} elseif (($currentmonth == $childbirthmonth) AND ( $currentmonth == $childdeathmonth)) {
 				echo $childName;
-				?></a>,<span style="background-color:#E0E0F7"> born: <?php echo $childbirthdate; ?>,<?php echo $childPerson['birthplace']; ?><span style="background-color:#E0E0F7"><?php echo $childdeathdate; ?>
+				?></a>,<span style="background-color:#E0E0F7"> born: <?php echo $childbirthdate; ?>,<?php echo $childPerson['birthplace']; ?><span style="background-color:#E0E0F7"><?php echo $childdeathdate. ", ". $child_spevent; ?>
 					</span>
 					</li>
 					<?php
 				} else {
 					echo $childName;
-					?></a>, born: <?php echo $childbirthdate; ?>, <?php echo $childPerson['birthplace']; ?><?php echo $childdeathdate; ?>
+					?></a>, born: <?php echo $childbirthdate; ?>, <?php echo $childPerson['birthplace']; ?><?php echo $childdeathdate. ", ". $child_spevent; ?>
 					</li>
 
                                     <?php
