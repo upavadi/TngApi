@@ -33,7 +33,6 @@ $parenttag = 'DEAT';
 $info = '';
 $datemodified = date('Y-m-d H:i:s');
 
-
 $people = array();
 $people[] = $person[0];
 
@@ -229,7 +228,7 @@ $msg = <<<MSG
 
 MSG;
 $msg .= print_r($_REQUEST, true);
-//echo "<pre>{$msg}</pre>";
+echo "<pre>{$msg}</pre>";
 mail($email, 'New data', $msg);
 ?>
 Person Notes Added /Updated

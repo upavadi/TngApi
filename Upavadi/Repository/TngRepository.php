@@ -52,18 +52,23 @@ class Upavadi_Repository_TngRepository
                 $types .= 's';
             }
         }
-        // var_dump($sql);
-        $stmnt = $db->prepare($sql);
+       // var_dump($sql);
+        try {
+            $stmnt = $db->prepare($sql);
+        } catch (Exception $e) {
+            throw new RuntimeException($e->getMessage() . ' -- ' . $sql, 0, $e);
+        }
         if (!$stmnt) {
-            var_dump($db->error);
+           // var_dump($db->error);
             return;
         }
         array_unshift($args, $types);
-        // var_dump(array($sql, $args));
+        // var_dump(array($sql, $args)); 
+        var_dump($args);
         call_user_func_array(array($stmnt, 'bind_param'), $args);
         
         if (!$stmnt->execute()) {
-            var_dump($db->error);
+            //var_dump($db->error);
         }
     }
 
@@ -129,13 +134,14 @@ class Upavadi_Repository_TngRepository
         $version = $this->content->guessVersion();
         $db = $this->content->getDbLink();
         $tables = $this->content->getTngTables();
-        $db->query("LOCK TABLES {$tables['people_table']}");
+        $sql = "LOCK TABLES {$tables['people_table']} WRITE";
+        $db->query($sql);
         $sql =  "SELECT MAX(CAST(SUBSTRING(personID, 2) AS SIGNED)) as id FROM {$tables['people_table']} WHERE gedcom = '" . $fields['gedcom']. "'";
         $res = $db->query($sql);
         $row = $res->fetch_assoc();
         $newIdInt = intval($row['id']) + 1;
         $newId = 'I' . $newIdInt;
-        $sql = "INSERT INTO {$tables['people_table']} ";
+        $sql = "INSERT IGNORE INTO {$tables['people_table']} ";
         $args = array();
         $sets = array();
         $vals = array();
@@ -175,13 +181,13 @@ class Upavadi_Repository_TngRepository
     {
         $db = $this->content->getDbLink();
         $tables = $this->content->getTngTables();
-        $db->query("LOCK TABLES {$tables['families_table']}");
+        $db->query("LOCK TABLES {$tables['families_table']} WRITE");
         $sql =  "SELECT MAX(CAST(SUBSTRING(familyID, 2) AS SIGNED)) as id FROM {$tables['families_table']} WHERE gedcom = '" . $fields['gedcom']. "'";
         $res = $db->query($sql);
         $row = $res->fetch_assoc();
         $newIdInt = intval($row['id']) + 1;
         $newId = 'F' . $newIdInt;
-        $sql = "INSERT INTO {$tables['families_table']} ";
+        $sql = "INSERT IGNORE INTO {$tables['families_table']} ";
         $args = array();
         $sets = array();
         $vals = array();
@@ -212,7 +218,7 @@ class Upavadi_Repository_TngRepository
     public function addChildren($fields)
     {
         $tables = $this->content->getTngTables();
-        $sql = "INSERT INTO {$tables['children_table']} ";
+        $sql = "INSERT IGNORE INTO {$tables['children_table']} ";
         $args = array();
         $sets = array();
         $vals = array();
@@ -241,16 +247,18 @@ class Upavadi_Repository_TngRepository
 
     public function getNote($personId, $id, $tree = null)
     {
+        // $version = $this->content->guessVersion();
         if (!isset($this->notes[$personId][$id])) {
             $notes = $this->content->getNotes($personId, $tree);
             foreach ($notes as $note) {
                 $xid = $note['xnoteID'];
-                $this->notes[$xid] = array(
+                $xnote = array(
                     'persfamID' => $note['persfamID'],
                     'eventID' => $note['eventID'],
                     'note' => $note['note'],
                     'xnoteID' => $note['xnoteID']
                 );
+                $this->notes[$xid] = $xnote;
             }
         }
         return $this->notes[$id];
@@ -258,6 +266,7 @@ class Upavadi_Repository_TngRepository
 
     public function addNote($fields)
     {
+        $version = $this->content->guessVersion();
         $noteLinks = $fields;
         unset($noteLinks['note']);
         $xnotes = array(
@@ -267,8 +276,32 @@ class Upavadi_Repository_TngRepository
         
         $xnoteId = $this->addXNote($xnotes);
         $noteLinks['xnoteID'] = $xnoteId;
+
         $this->addNoteLink($noteLinks);
         return $xnoteId;
+    }
+
+    public function updateNoteLink($id, $fields, $tree)
+    {
+        if (!count($fields)) {
+            return;
+        }
+
+        $tables = $this->content->getTngTables();
+        $sql = "UPDATE {$tables['notelinks_table']} SET ";
+        $args = array();
+        $sets = array();
+
+        foreach ($fields as $name => $value) {
+            $sets[] = "$name = ?";
+            $args[] = & $fields[$name];
+        }
+        $sql .= join(', ', $sets);
+        $sql .= ' WHERE xnoteID = ? AND gedcom = ?';
+        $args[] = & $id;
+        $args[] = & $tree;
+        $this->execute($sql, $args);
+        unset($this->notes[$id]);
     }
 
     public function updateNote($id, $fields, $tree)
@@ -276,6 +309,16 @@ class Upavadi_Repository_TngRepository
         if (!count($fields)) {
             return;
         }
+        if (isset($fields['eventID'])) {
+            $this->updateNoteLink($id, array('eventID' => $fields['eventID']), $tree);
+            unset($fields['eventID']);
+        }
+
+        if (isset($fields['eventid'])) {
+            $this->updateNoteLink($id, array('eventID' => $fields['eventid']), $tree);
+            unset($fields['eventid']);
+        }
+
         $tables = $this->content->getTngTables();
         $sql = "UPDATE {$tables['xnotes_table']} SET ";
         $args = array();
@@ -300,7 +343,9 @@ class Upavadi_Repository_TngRepository
         $args = array();
         $sets = array();
         $vals = array();
-
+        if (!isset($fields['noteID'])) {
+            $fields['noteID'] = '';
+        }
         foreach ($fields as $name => $value) {
             $sets[] = $name;
             $vals[] = '?';

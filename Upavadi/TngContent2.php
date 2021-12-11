@@ -50,40 +50,6 @@ class Upavadi_TngContent
         $this->shortcodes[] = $shortcode;
     }
 
-    public function initVariables()
-    {
-        //check for TNG Path
-        $path = esc_attr(get_option('tng-api-tng-path'));
-        $configPath = $path . DIRECTORY_SEPARATOR . "config.php";
-        if (!file_exists($configPath)) {
-            $e = new Exception('TNG Path not found');
-            error_log($e->getMessage());
-            error_log($e->getTraceAsString());
-            echo "TNG Path not Specified";
-        //  Display admin message if tng path not specified
-            add_action( 'admin_notices', array($this, 'pathNotSpecified') );
-            return;
-        }
-
-        //check Database
-        $dbHost = esc_attr(get_option('tng-api-db-host'));
-        $dbUser = esc_attr(get_option('tng-api-db-user'));
-        $dbPassword = esc_attr(get_option('tng-api-db-password'));
-        $dbName = esc_attr(get_option('tng-api-db-database'));
-        $EventID = esc_attr(get_option('tng-api-tng-event'));
-        try {
-        mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);  //DB error reporting
-        $db = @mysqli_connect($dbHost, $dbUser, $dbPassword,$dbName );
-        } catch (exception $e) {
-        error_log($e->getMessage());
-        error_log($e->getTraceAsString());
-        echo "DB not configured. Please contact the administrator (80)";
-        add_action( 'admin_notices', array($this, 'dbNotSpecified') );
-        return;
-        } 
-   
-    }
-
     public function initPlugin()
     {
         $templates = new Upavadi_Templates();
@@ -128,14 +94,7 @@ class Upavadi_TngContent
         $tngPath = $this->getTngPath();
         $configPath = $tngPath . DIRECTORY_SEPARATOR . "config.php";
         if (!file_exists($configPath)) {
-           //throw new DomainException('Could not find TNG config file');
-           $e = new DomainException('TNG Path not found');
-           error_log($e->getMessage());
-           error_log($e->getTraceAsString());
-           echo "TNG Path not found (" . __LINE__ . ")";
-       //  Display admin message if tng path not specified
-           add_action( 'admin_notices', array($this, 'pathNotSpecified') );
-           return;
+            throw new DomainException('Could not find TNG config file');
         }
         include $configPath;
         $vars = get_defined_vars();
@@ -157,14 +116,7 @@ class Upavadi_TngContent
     public function guessVersion()
     {
         $sql = 'describe ' . $this->tables['people_table'];
-        $sql2 = 'describe ' . $this->tables['users_table'];
-        if ($this->tables['image_tags_table']) {
-        $sql3 = 'describe ' . $this->tables['image_tags_table'];
-        $result3 = $this->query($sql3); 
-        }
         $result = $this->query($sql);
-        $result2 = $this->query($sql2);
-        
         $version = 9;
         while ($row = $result->fetch_assoc()) {
             if ($row['Field'] == 'burialtype') {
@@ -172,31 +124,6 @@ class Upavadi_TngContent
                 break;
             }
         }
-        while ($row = $result2->fetch_assoc()) {	
-            if ($row['Field'] == 'languageID') {
-                $version = 11;
-                break;
-            }
-        }
-    
-        while ($row = $result2->fetch_assoc()) {	
-            if ($row['Field'] == 'dt_consented') {
-                $version = 12;
-                break;
-            }
-
-        }
-
-        if(isset($result3)) {
-        while ($row = $result3->fetch_assoc()) {	
-            if ($row['Field'] == 'ID') {
-                $version = 13;
-                break;
-            }
-        }
-
-        }
-   
         return $version;
     }
 
@@ -219,28 +146,17 @@ class Upavadi_TngContent
         }
 
         // get_currentuserinfo();
-        
+        try {
             $dbHost = esc_attr(get_option('tng-api-db-host'));
             $dbUser = esc_attr(get_option('tng-api-db-user'));
             $dbPassword = esc_attr(get_option('tng-api-db-password'));
             $dbName = esc_attr(get_option('tng-api-db-database'));
             $EventID = esc_attr(get_option('tng-api-tng-event'));
-            try {
-                mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);  //DB error reporting
-                $db = mysqli_connect($dbHost, $dbUser, $dbPassword);
-                mysqli_select_db($db, $dbName);
-            } catch (exception $e) {
-                error_log($e->getMessage());
-                error_log($e->getTraceAsString());
-                echo "DB not configured. Please contact the administrator (203)";
-                add_action( 'admin_notices', array($this, 'dbNotSpecified') );
-                return;
-                } 
-           // mysqli_select_db($db, $dbName);
-            $this->db = $db; // added
-            $this->initTables(); 
+            $db = mysqli_connect($dbHost, $dbUser, $dbPassword);
+            mysqli_select_db($db, $dbName);
+            $this->initTables();
 
-            if (!isset($this->tables['users_table'])) { 
+            if (!isset($this->tables['users_table'])) {
                 return $this;
             }
 
@@ -249,21 +165,21 @@ class Upavadi_TngContent
             $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$tng_user_name}'";
             $result = mysqli_query($db, $query);
             if (!$result) {
-             //   throw new RuntimeException(mysqli_error($this->db));
+                throw new RuntimeException(mysqli_error($this->db));
             }
             $row = $result->fetch_assoc();
             $this->currentPerson = $row['personID'];
             $this->db = $db;
             return $this;
-
-        
+        } catch (DomainException $e) {
+            add_action( 'admin_notices', array($this, 'pathNotSpecified'));
+        }
     }
 
     public function query($sql)
     {
         if (!$this->db) {
-            
-            throw new RuntimeException("No DB configured please contact the administrator(233)");
+            throw new RuntimeException("No DB configured please contact the administrator");
         }
         $result = mysqli_query($this->db, $sql);
         if (!$result) {
@@ -330,16 +246,7 @@ class Upavadi_TngContent
 			admin set up. Enter the name for the collection you have set up in TNG admin > media. Mine is called “My Uploads”.
 			";
         }, 'tng-api', 'tng');
-
-        try {
-            $this->init();
-        } catch (Upavadi_WpOnlyException $e) {
-            ?>
-<h2>You do not have sufficient privilege to view this page.
-Please log-in to Continue</h2>
-<?php
-            return;
-        }
+        $this->init();
         $events = $this->getEventList();
         add_settings_field('tng-event', 'TNG Event to Track', function () use ($events) {
             $tngEvent = esc_attr(get_option('tng-api-tng-event'));
@@ -537,7 +444,6 @@ SQL;
         $row = $result->fetch_assoc();
         $userPrivate = $user['allow_private'];
         $familyPrivate = $row['private'];
-        $personPrivate = $this->getPerson()['private'];
         if ($personPrivate > $userPrivate) {
             $row['marrdate'] = 'Private';
 			$row['marrplace'] = ' Details withheld';
@@ -923,7 +829,8 @@ SQL;
         return $rows;
     }
 
-    public function getFamilyUser($personId = null, $tree = null, $sortBy = null)    {
+    public function getFamilyUser($personId = null, $tree = null, $sortBy = null)
+    {
 
         if (!$personId) {
             $personId = $this->currentPerson;
@@ -978,7 +885,7 @@ SQL;
         return 0;
     }
 
-    public function getBirthdays($month, $tree = null)
+    public function getBirthdays($month)
     {
 
         $user = $this->getTngUser();
@@ -999,7 +906,6 @@ SELECT personid,
        birthdate,
        birthplace,
 	   private,
-       famc,
        gedcom
 FROM   {$this->tables['people_table']}
 WHERE  Month(birthdatetr) = {$month}
@@ -1023,7 +929,7 @@ SQL;
 		return $rows;
     }
 
-    public function getDeathAnniversaries($month, $tree = null)
+    public function getDeathAnniversaries($month)
     {
         $user = $this->getTngUser();
         $gedcom = $user['gedcom'];
@@ -1139,7 +1045,7 @@ SQL;
         return $rows;
     }
 
-    public function getMarriageAnniversaries($month, $tree = null)
+    public function getMarriageAnniversaries($month)
     {
         $user = $this->getTngUser();
         $gedcom = $user['gedcom'];
@@ -1274,20 +1180,15 @@ SQL;
 			$currentUser = wp_get_current_user();
 			$userName = $currentUser->user_login;
 		}
-        */
-
-       $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$userName}'";
-        //$result = $conn->query($query);
-        
-
-       $result = $this->query($query);
-    if (!$result) return;
+		*/
+        $query = "SELECT * FROM {$this->tables['users_table']} WHERE username='{$userName}'";
+        $result = $this->query($query);
         $row = $result->fetch_assoc();
         if ($row) {
             $this->tngUser = $row;
             return $row;
         }
-        throw new Upavadi_WpOnlyException('User ' . $userName . ' not found in TNG (or donot have access to) (1247)'); //mu - change from wp_die
+        wp_die('User ' . $userName . ' not found in TNG');
     }
 
     /**
@@ -1311,46 +1212,15 @@ SQL;
         return $user['gedcom'];
     }
 
-
-
     public function pathNotSpecified()
     {
-      $tngPath = get_option('tng-api-tng-path');
-     // $tngdomain = get_option('tng-api-tng-url');
-      //$photopath = get_option('tng-api-tng-photo-folder');
-      $success = "";
-        if(isset ($_POST['Update_api_Paths'])) {
-            $tngFileError = $this->checkForTngApiPath();
-            $tngPromt = "";
-            if ($tngFileError[0] == true) {
-                $tngPromt = "<div style='color: red; font-size: 1.2em'>Cannot find TNG folder. Please check TNG setup.</div>";
-            }
-            
-            if ($tngFileError[0] == false) {
-                $tngPromt = "<div style='color: green; font-size: 1.2em'>Found TNG folder</div>";
-                $tngPath = $_POST['tng_api_path'];
-                $tngdomain = $tngFileError[2];
-                $photopath = $tngFileError[3];
-                update_option('tng-api-tng-path', $tngPath);
-                update_option('tng-api-tng-url', $tngdomain);
-                update_option('tng-api-tng-photo-folder', $photopath);
-                $success = "Paths saved";
-            }
-        }
-
-        if($success) {
-            echo "<div class='notice notice-success'>";
-        } else {
-            echo "<div class='notice notice-error'>";
-        }
-       
-         ?>
+        ?>
 		<div>
-			<h2>TngApi: We need to know where TNG is installed:</h2>
+			<h2>We need to know where TNG is installed:</h2>
 		</div>
 		<form action=''  method="post">	
 		<div> 	
-			<input type="text"  style="width: 250px" name="tng_api_path" value= '<?php echo $tngPath; ?>' placeholder='TNG Root Path:'>
+			<input type="text"  style="width: 250px" name="tng_path" value= '<?php if(isset($_POST['tng_path'])) echo $_POST['tng_path'] ?>' placeholder='TNG Root Path:'>
 			TNG Root Path is absolute path to TNG. You may look this up from TNG Admin Setup or in config.php in TNG folder.
 		</div>
 		<?php
@@ -1367,113 +1237,12 @@ SQL;
 		<p style="color: green; display: inline-block"><?php echo "<b>". $success. "</b><br />"; ?></p>
 		
 	<p>
-	<input type="submit" name="Update_api_Paths" value="Update Paths">
+	<input type="submit" name="Update_Paths" value="Update Paths">
 	</p>
 	</div>
 	</form>
 	
     <?php
-    }
-
-    public function dbNotSpecified()
-    {
-        $dbHost = (get_option('tng-api-db-host'));
-        $dbUser = esc_attr(get_option('tng-api-db-user'));
-        $dbPassword = esc_attr(get_option('tng-api-db-password'));
-        $dbName = esc_attr(get_option('tng-api-db-database'));
-       
-        
-        if (isset ($_POST['Update_credentials']))  {
-            $tngPrompt = "";
-            $success = "";
-            $dbHost = $_POST['tng_db_host'];
-            $dbUser = $_POST['tng_db_user'];
-            $dbPassword = $_POST['tng_db_password'];
-            $dbName = $_POST['tng_db_name'];
-            update_option('tng-api-db-host',  $dbHost);
-            update_option('tng-api-db-user',  $dbUser);
-            update_option('tng-api-db-password',  $dbPassword);
-            update_option('tng-api-db-database',  $dbName);
-            $dbPromt = $this->checkForTngDb($dbHost, $dbUser, $dbPassword, $dbName);
-        }
-        
-        if ($dbPromt == true) {
-            $tngPromt = "<div style='color: green; font-size: 1.2em'>DB: No Errors</div>";
-            $fieldColor = "color: green; width: 250px";
-            $success = "db re-configured successfully"; 
-          }    
-      
-
-        if ($dbPromt == false) {
-            $tngPromt = "<div style='color: red; font-size: 1.2em'>Cannot connect to DB. Please check TNG DB setup.</div>";
-          $fieldColor = "color: red; width: 250px";
-          
-        } 
-
-        if($success) {
-            echo "<div class='notice notice-success'>";
-        } else {
-            echo "<div class='notice notice-error'>";
-        }   
-    ?>
-    	<div>
-			<h2>TngApi: Please check TNG DB Credentials:</h2>
-		</div>
-        <form action=''  method="post">	
-		<div> 	
-			<input type="text"  style="<?php echo $fieldColor; ?>" name="tng_db_host" value= '<?php echo $dbHost; ?>' placeholder='DB Host Name'>
-			Host Name: You may look these up from TNG Admin Setup or in config.php in TNG folder.
-		</div>
-		<?php
-		
-		?>
-		<div> 	
-			<input style= '<?php echo $fieldColor; ?>' type="text"  name="tng_db_user" value= '<?php echo $dbUser; ?>' placeholder='DB User Name:'>
-			DB User Name.
-		</div>
-		<div> 	
-			<input style="<?php echo $fieldColor; ?>" type="text"  name="tng_db_password" style="width: 250px" value= '<?php echo $dbPassword; ?>' placeholder='DB Password:'> DB Password:
-			
-		</div>
-        <div> 	
-			<input style="<?php echo $fieldColor; ?>" type="text"  name="tng_db_name" style="width: 250px" value= '<?php echo $dbName; ?>' placeholder='DB Name:'> DB Name:
-		</div>
-        <p><?php echo $tngPromt; ?></p>
-        <p>
-        <input type="submit" name="Update_credentials" value="Update Credentials">
-        </p>
-        </div>
-        <p style="color: green; display: inline-block"><?php echo "<b>". $success. "</b><br />"; ?></p>
-        </form>
-	
-    
-        <?php
-    }  
-    
-    public function checkForTngApiPath() {
-        $wp_tng_path = $_POST['tng_api_path']. 'config.php';
-        $tngFileError = "";
-        if (!file_exists($wp_tng_path) || !is_readable($wp_tng_path)) {	
-            return array(true, "", "","");
-        } else {
-        include($wp_tng_path);
-        
-        return array(false, $rootpath, $tngdomain, $photopath);
-        }
-    }
-
-    public function checkForTngDb($dbHost, $dbUser, $dbPassword, $dbName) {
-        try {
-            $tngPrompt = true;
-            mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);  //DB error reporting
-            $db = @mysqli_connect($dbHost, $dbUser, $dbPassword,$dbName );
-            } catch (exception $e) {
-            $tngPrompt = false;
-               return $tngPrompt;
-            }
-         
-        return $tngPrompt;
-        
     }
 }
 ?>

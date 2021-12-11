@@ -6,7 +6,7 @@
 				
 								
 				 //get and hold current user
-				$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
+				$currentperson = $tngcontent->getCurrentPersonId();
 				$currentperson = $tngcontent->getPerson($currentperson);
 				$currentuser = ($currentperson['firstname']. $currentperson['lastname']);
 				$currentuserLogin = wp_get_current_user();
@@ -48,7 +48,7 @@
 				
 				
  				
-	<form id="edit-family-form" action = "<?php echo plugins_url('templates/test.html', dirname(__FILE__)); ?>" method = "POST">
+	<form id="edit-family-form" action = "<?php echo plugins_url('templates/processfamily-notes.php', dirname(__FILE__)); ?>" method = "POST">
 	<input type="hidden" name="User" value="<?php echo $UserLogin; ?>" />
 	<input type="hidden" name="personId" value="<?php echo $person['personID']; ?>" />
 	<input type="hidden" name="personfirstname" value="<?php echo $firstname; ?>" />
@@ -62,10 +62,11 @@
         /* @var $tngcontent Upavadi_TngContent  */
 		$allnotes = $tngcontent->getNotes($personId);
 		
-                $notes = array();
+				$notes = array();
+				$note = array();
 		foreach($allnotes as $PersonNote):
                     $key = $PersonNote['eventID'];
-                    if ($PersonNote['eventID'] == null) {
+                    if ($PersonNote['eventID'] == "") {
                         $key = 'GEN';
                     }
                     $notes[$key] = $PersonNote;
@@ -80,32 +81,36 @@
                 );
 	
 	
-	//var_dump($allnotes);
-                foreach ($noteOrder as $type => $header):
-                    $note = $notes[$type];
-                    if (!$note) {
-                        $note['xnoteID'] = 'NewNote' . $type;
-                        $note['eventID'] = $type;
-                        if ($note['eventID'] == 'GEN') {
-                            $note['eventID'] = null;
-                        }
-                    }
-                    if ($note['secret']) {
-                        $note['note'] = null;
-                    }
+		 foreach ($noteOrder as $type => $header):
+			$note = null;
+			if (isset($notes[$type]))	
+				$note = $notes[$type];
+			if (!$note) {
+				$note['xnoteID'] = 'NewNote' . $type;
+				$note['eventID'] = $type;
+				if ($note['eventID'] == 'GEN') {
+					$note['eventID'] = "";
+				}
+			}
+			if (isset($note['secret']) && $note['secret']) {
+				$note['note'] = null;
+			}
+
 	?>
             <p>
                 <input type="hidden" name="person_note[<?php echo $type; ?>][xnoteID]" value="<?php echo $note['xnoteID'] ?>" />
-                <input type="hidden" name="person_note[<?php echo $type; ?>][notelinkID]" value="<?php echo $note['notelinkID'] ?>" />
+                <input type="hidden" name="person_note[<?php echo $type; ?>][notelinkID]" value="<?php echo isset($note['notelinkID']) ? $note['notelinkID'] : null?>" />
                 <span style="font-size:14pt">
                     <b>
                         <?php echo $header; ?>
                     </b>
                 </span><br />
-                <textarea style="width:98%" name="person_note[<?php echo $type; ?>][note]" rows="3" cols="100"><?php echo $note['note']; ?></textarea>
-                <input type="hidden" name="person_note[<?php echo $type; ?>][xeventID]" value="<?php echo $note['eventID']; ?>" />
-                <input type="hidden" name="person_note[<?php echo $type; ?>][secret]" value="<?php echo $note['secret']; ?>" />
-                <input type="hidden" name="person_note[<?php echo $type; ?>][ordernum]" value="<?php echo $note['ordernum']; ?>" />
+                <textarea style="width:98%" name="person_note[<?php echo $type; ?>][note]" rows="3" cols="100"><?php echo isset($note['note']) ? $note['note'] : null; ?></textarea>
+            <?php if ($note) { ?>  
+			    <input type="hidden" name="person_note[<?php echo $type; ?>][xeventID]" value="<?php if (isset($note['eventID'])) echo $note['eventID']; ?>" />
+                <input type="hidden" name="person_note[<?php echo $type; ?>][secret]" value="<?php if (isset($note['secret'])) echo $note['secret']; ?>" />
+                <input type="hidden" name="person_note[<?php echo $type; ?>][ordernum]" value="<?php if (isset($note['ordernum'])) echo $note['ordernum']; ?>" />
+			<?php } ?> 	
             </p>
 	<?php
             endforeach;
@@ -113,4 +118,3 @@
 	<input type="submit" value="Submit Notes" />
 	</body>
 	</form>
-				

@@ -14,7 +14,7 @@ abstract class Upavadi_Shortcode_AbstractShortcode
      */
     protected $templates;
 
-    public function init(Upavadi_TngContent $content, $templates)
+    public function init(Upavadi_TngContent $content, $templates, Upavadi_TngCustomContent $custom = null)
     {
         $this->content = $content;
         $this->templates = $templates;
@@ -24,8 +24,12 @@ abstract class Upavadi_Shortcode_AbstractShortcode
 
     public function showShortcode()
     {
-        $this->content->init();
-        return $this->show();
+        try {
+            $this->content->init();
+            return $this->show();
+        } catch (Upavadi_WpOnlyException $e) {
+            return '<div class="error">You must be a TNG user to use this part of the site, please contact your administrator</div>';
+        }
     }
 
     abstract public function show();

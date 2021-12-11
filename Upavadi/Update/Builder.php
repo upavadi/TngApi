@@ -337,8 +337,8 @@ class Upavadi_Update_Builder
             }
             $nextUpdate['pass'] += 1;
             if ($nextUpdate['pass'] > $maxPasses) {
-                var_dump($nextUpdate);
-                var_dump($updates);
+               // var_dump($nextUpdate);
+               // var_dump($updates);
                 throw new RuntimeException('There is no good order to insert these records');
             }
             $dep = $this->updateDependsOn($nextUpdate, $updates);

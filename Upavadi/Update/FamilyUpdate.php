@@ -170,11 +170,15 @@ class Upavadi_Update_FamilyUpdate
         $families = array();
         $families[] = $this->extractParentsFamily($data);
         $families = $this->extractSpousesFamily($families, $data);
-        return $families;
+        return array_filter($families);
     }
 
     public function extractParentsFamily($data)
     {
+        if (!isset($data['parents'])) {
+            return null;
+        }
+
         $familyID = $this->extractFamilyId($data['person']);
         
         $father = $data['father'];
@@ -211,7 +215,6 @@ class Upavadi_Update_FamilyUpdate
             'wifeorder' => $wifeOrder,
             'living' => $living
         );
-
         return $family;
     }
 

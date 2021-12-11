@@ -8,9 +8,10 @@
     <title>Upavadi Update Family</title>
 </head>
 <?php
+	global $child, $father, $mother, $father_SpEventId, $mother_SpEventId;
 	$tngcontent = Upavadi_tngcontent::instance()->init();
  //get and hold current user
-	$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
+	$currentperson = $tngcontent->getCurrentPersonId();
 	$person = $tngcontent->getPerson($currentperson);
 	$currentuser = ($person['firstname']. " ". $person['lastname']);
 	$currentuserLogin = wp_get_current_user();
@@ -22,6 +23,7 @@
 	$person_gedcom = $person['gedcom'];
 	$person_birthdate = $person['birthdate'];
 	$person_birthdatetr = ($person['birthdatetr']);
+	$birthdatetr = ($person['birthdatetr']);
 	$person_birthplace = $person['birthplace'];
 	$person_deathdate = $person['deathdate'];
 	$person_deathdatetr = ($person['deathdatetr']);
@@ -31,12 +33,13 @@
 	$person_sex = $person['sex'];
 	$person_famc = $person['famc'];
 	$person_living = $person['living'];
+	$deathdatetr = ($person['deathdatetr']);
 //get Person Special Event
 	$personRow = $tngcontent->getSpEvent($person['personID'], $tree);
 	$person_SpEvent = $personRow['info'];
 	$person_SpEventId = $personRow['eventID'];
 //get Description of Event type
-	$EventRow = $tngcontent->getEventDisplay($event['display']);	
+	$EventRow = $tngcontent->getEventDisplay();	
 	$EventDisplay = $EventRow['display'];
 	$EventTypeID = $EventRow['eventtypeID'];
 //get month of the events
@@ -80,7 +83,7 @@
 	$personfamc = $person['famc']; 
 	$parents = '';
 	$parents = $tngcontent->getFamilyById($person['famc'], $tree);
-
+	
 	if ($person['famc'] !== '' and $parents['wife'] !== '') {
 	$mother = $tngcontent->getPerson($parents['wife'], $tree);
 	}
@@ -281,7 +284,7 @@
 		</div>
 	</div>
 	<div id="step-2">
-<h2 class="StepTitle">Update Details of Parents for <?php echo $person_name.$Person_surname;?></h2> 
+<h2 class="StepTitle">Update Details of Parents for <?php echo $person_name. $person_surname;?></h2> 
 <span style="color:#D77600; font-size:10pt"></br><?php echo "Make changes below and then press NEXT. Do not Change or Refresh the page until you have submitted the changes by clicking on SAVE below"; ?>
        
 <!-- step TWO content  -->
@@ -401,7 +404,7 @@
 <input type="hidden" name="mother[eventID]" value="<?php echo $mother_SpEventId; ?>" />
 <input type="hidden" name="parents[husborder]" value="<?php echo $parenthusborder; ?>" />
 <input type="hidden" name="parents[wifeorder]" value="<?php echo $parentwifeorder; ?>" />
-<input type="hidden" name="parents[living]" value="<?php echo $parents['parents_living']; ?>" />
+<input type="hidden" name="parents[living]" value="<?php echo $parents['living']; ?>" />
 
 		</div>
 	</div>                     
@@ -411,6 +414,7 @@
 <span style="color:#D77600; font-size:10pt"></br><?php echo "Make changes below and then press NEXT. Do not Change or Refresh the page until you have submitted the changes by clicking on SAVE below"; ?>
   	<?php
 // Spouses
+
 	foreach ($families as $index => $family):
 		$spousemarrdate = $family['marrdate'];
 		$spousemarrplace = $family['marrplace'];
@@ -545,7 +549,7 @@
 		</table>
 	</div>	
 	<?php
-	endforeach; 
+	endforeach; ;	
 	?> 
 </div>
 <div id="step-4">
@@ -669,7 +673,7 @@ function initChildren(order) {
 		</thead>
 		<tbody>
 		<?php
-        $childorder = 0;
+        $childorder = 0; 
 		foreach ($children as $index => $child):
 			$classes = array('child');
 			$childPerson = $tngcontent->getPerson($child['personID'], $tree);
@@ -681,9 +685,9 @@ function initChildren(order) {
 			$childdeathdate = $childPerson['deathdate'];
 			$childdeathplace = $childPerson['deathplace'];
 			$childorder = $child['ordernum'];
-			$childliving = $childPerson['living'];
+			$childliving = $child['living'] = $childPerson['living']; //aug2019
 			$childsex = $childPerson['sex'];
-			
+					
 // init sex selector
 			$Msex = $Fsex = $Usex = "";
 		

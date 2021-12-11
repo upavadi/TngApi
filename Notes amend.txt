@@ -1,0 +1,67 @@
+Person Notes Added /Updated(2020-04-09T10:46:15+00:00):
+Array
+(
+    [User] => gondal
+    [personId] => I695
+    [personfirstname] => Mahesh Mansukhlal
+    [personsurname] => Upadhyaya
+    [persongedcom] => upavadi_1
+    [person_note] => Array
+        (
+            [GEN] => Array
+                (
+                    [xnoteID] => 44
+                    [notelinkID] => 44
+                    [note] => Apil 9th
+		                                                
+                    [xeventID] => 
+                    [secret] => 0
+                    [ordernum] => 999
+                )
+
+            [NAME] => Array
+                (
+                    [xnoteID] => 45
+                    [notelinkID] => 45
+                    [note] => Apil 9th
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.                                                
+                    [xeventID] => NAME
+                    [secret] => 0
+                    [ordernum] => 999
+                )
+
+            [BIRT] => Array
+                (
+                    [xnoteID] => 48
+                    [notelinkID] => 48
+                    [note] => Apil 9th
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.                                                
+                    [xeventID] => BIRT
+                    [secret] => 0
+                    [ordernum] => 999
+                )
+
+            [DEAT] => Array
+                (
+                    [xnoteID] => 77
+                    [notelinkID] => 77
+                    [note] => Apil 9th
+                    [xeventID] => DEAT
+                    [secret] => 0
+                    [ordernum] => 999
+                )
+
+            [BURI] => Array
+                (
+                    [xnoteID] => 78
+                    [notelinkID] => 78
+                    [note] => Apil 9th
+                    [xeventID] => BURI
+                    [secret] => 0
+                    [ordernum] => 999
+                )
+
+        )
+
+)
+

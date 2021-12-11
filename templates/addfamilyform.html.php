@@ -8,10 +8,11 @@
     <title>Upavadi Add Family</title>
 </head>
 	<?php
+	global $husbandlastname;
 	$tngcontent = Upavadi_tngcontent::instance()->init();
 //get and hold current user
-	$currentperson = $tngcontent->getCurrentPersonId($person['personID']);
-	//$person = $tngcontent->getPerson($currentperson);
+	$currentperson = $tngcontent->getCurrentPersonId();
+	$person = $tngcontent->getPerson($currentperson);
 	$currentuser = ($person['firstname']. $person['lastname']);
 	$currentuserLogin = wp_get_current_user();
 	$UserLogin = $currentuserLogin->user_login;
@@ -29,11 +30,11 @@
 //get Person SpecialEvent;
 	$personRow = $tngcontent->getSpEvent($person['personID'], $tree);
 	$person_SpEvent = $personRow['info'];
-	$EventDisplay = $personRow['display'];
+	//$EventDisplay = $personRow['display']; 
 //get Description of Event type
-	$EventRow = $tngcontent->getEventDisplay($event['display']);	
+	$EventRow = $tngcontent->getEventDisplay();	
 	$EventDisplay = $EventRow['display'];
-	$EventID = $EventRow['eventtypeID'];
+	$EventID = $EventRow['eventtypeID']; 
 // get familyuser
 	if ($person['sex'] == 'M') {
 		$sortBy = 'husborder';
@@ -54,7 +55,8 @@
 	}
 // Spouses
 	$families = $tngcontent->getfamilyuser($person['personID'], $tree,  $sortBy);
-	$order = null;
+	$order = "";
+	$spouseorder = null;
 	foreach ($families as $family):
 		if ($sortBy && count($families) > 0) {
 			$order1 = $family[$sortBy];
@@ -62,8 +64,8 @@
 				$order = $order1;
 			} 
 		}
-	endforeach;
-	$spouseorder = ($order+1);
+	endforeach; $order = (int)($order);
+	$spouseorder += ($order);
 	if ($spousehusband == "NewHusband") {
 		$spousehusbandorder = "1";
 		$spousewifeorder = $spouseorder;
@@ -200,7 +202,7 @@
 		<input type="hidden" name="spouse[wife]" value="<?php echo $spousewife ?>" />
 		<input type="hidden" name="spouse[husborder]" value="<?php echo $spousehusbandorder ?>" />
 		<input type="hidden" name="spouse[wifeorder]" value="<?php echo $spousewifeorder ?>" />
-		<input type="hidden" name="husband[event]" value="<?php echo $husbandSpEvent ?>" />
+		<input type="hidden" name="spouse[husbandevent]" value="<?php echo $person_SpEvent ?>" />
 	
 	</tbody>
 	</table>
@@ -267,6 +269,7 @@
 	<body>
 	<?php 			
 //get All notes
+$note_general = $note_name = $note_birth = $note_death = $note_funeral = "";
 	$note_general_secret = 0;
 	$note_general_ordernum = 999;
 	$note_name_secret = 0;
@@ -304,7 +307,6 @@
 	$note_birth,
 	$note_death,
 	$note_funeral,);
-	
 	$xnote_eventID = Array (
 	null,
 	"NAME",
@@ -344,9 +346,9 @@
 </form>
 </div>
 </div>
+
 <script>
- 
- var clone;
+var clone;
 function cloneRow()  { // create clone of empty child line for use during session
     var rows=$('#children').find('tr.child');
     var idx=rows.length;

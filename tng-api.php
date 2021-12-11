@@ -1,10 +1,10 @@
 <?php
 /*
- * Plugin Name: TngApi-V3 with Bootstrap
- * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated 
+ * Plugin Name: TngApi-V3.3.1b for V9 to V13
+ * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated. For TNG V9 to V13 
  *
  * Plugin URI: https://github.com/upavadi/TngApi
- * Version: 3.2.1
+ * Version: 3.3.2 under developement
  *         
  * Author: Neel Upadhyaya & Mahesh Upadhyaya
  * Author URI: http://www.upavadi.net/
@@ -16,10 +16,8 @@
  */
 require_once __DIR__ . '/autoload.php';
 include_once __DIR__. '/tabs.php';
-//wp_enqueue_style('upavadi-styles', plugins_url( 'css/bootstrap.css',__FILE__) );
-//wp_enqueue_style('upavadi-styles', plugins_url( 'css/upavadi.css',__FILE__) );
-$content = Upavadi_TngContent::instance();
 
+$content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
 $content->addShortcode(new Upavadi_Shortcode_PersonNotes);
 $content->addShortcode(new Upavadi_Shortcode_FamilyUser);
@@ -35,6 +33,7 @@ $content->addShortcode(new Upavadi_Shortcode_UserFamilySheet());
 $familySearch = new Upavadi_Widget_FamilySearch;
 $update = new Upavadi_Update_Admin($wpdb, $content);
 
+add_action('init', array($content, 'initVariables') );
 add_action('init', array($content, 'initPlugin'), 1);
 add_action('widgets_init', array($familySearch, 'init'));
 add_action( 'admin_menu', array($content, 'adminMenu') );
@@ -181,4 +180,3 @@ $customDir = $dir . "/../tng-api-custom";
 if (is_dir($customDir)) {
     $customContent = new TngApiCustom_TngCustom($content);
 }
-?>

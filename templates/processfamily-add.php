@@ -12,6 +12,8 @@ $notes_table = $wpdb->prefix . "tng_notes";
 $events_table = $wpdb->prefix . "tng_events";
 $update = new Upavadi_Update_FamilyAdd($wpdb, $people_table, $families_table, $children_table, $notes_table, $events_table);
 $datemodified = $update->process($_POST);
+//var_dump($_POST); exit;
+
 
 //SpecialEvent Identifiers
 $Spouse = array($_POST['spouse']);
@@ -154,7 +156,7 @@ foreach ($personNotes as $Array):
             'datemodified' => $datemodified,
         );
         if (!$wpdb->insert($notes_table, $row)) {
-            var_dump($row);
+            //var_dump($row);
         }
     endforeach;
 endforeach;

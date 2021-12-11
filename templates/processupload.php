@@ -2,11 +2,13 @@
 
 require_once '../../../../wp-load.php';
 require_once '../autoload.php';
+$end_msg = " Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this.";
 $content = Upavadi_TngContent::instance();
 $content->init();
 $email = esc_attr(get_option('tng-api-email'));
 $collection = esc_attr(get_option('tng-api-tng-photo-upload'));
-
+//php_value upload_max_filesize "5M"
+//var_dump($_FILES['ImageFile']);
 $tables = $content->getTngTables();
 $res = $content->query('select path from ' . $tables['mediatypes_table'] . ' WHERE mediatypeID = "' . $collection . '"');
 $row = $res->fetch_assoc();
@@ -14,16 +16,15 @@ $row = $res->fetch_assoc();
 $photos = esc_attr(get_option('tng-api-tng-photo-folder'));
 $uploadPath = $photos;
 $tngPath = $content->getTngPath();
-if (!preg_match("/" . DIRECTORY_SEPARATOR . "$/", $tngPath)) {
+if (!preg_match("|" . DIRECTORY_SEPARATOR . "$|", $tngPath)) {
     $tngPath .= DIRECTORY_SEPARATOR;
 }
-
-if (!preg_match("/" . DIRECTORY_SEPARATOR . "$/", $uploadPath)) {
+if (!preg_match("|" . DIRECTORY_SEPARATOR . "$|", $uploadPath)) {
     $uploadPath .= DIRECTORY_SEPARATOR;
 }
 if (isset($_POST)) {
     ############ Edit settings ##############
-    $ThumbSquareSize = 100; //Thumbnail will be 200x200
+    $ThumbSquareSize = 80; //Thumbnail will be 200x200
     $BigImageMaxSize = 500; //Image Maximum height or width
     $ThumbPrefix = "thumb_"; //Normal thumb Prefix
     $DestinationDirectory = $tngPath . $uploadPath; //specify upload directory ends with / (slash)
@@ -99,28 +100,17 @@ if (isset($_POST)) {
         $thumbPath = $domain . str_replace('//', '/', $thumbPath);
 		
         echo '<table width="80%" border="0" cellpadding="4" cellspacing="0">';
-        echo '<tr><p> Thanks for submitting. Once the Image is processed, it will be available in the Family Tree. I will let you know by email, once I have done this.</p> </td></tr>';
-
-
+        echo '<tr><td><p>'. $end_msg. '</td></tr>';
         echo '<tr><td align="center"><img src="' . $thumbPath . '" alt="Thumbnail"></td>';
-        echo '</tr><tr>';
-
-
         echo '</tr>';
         echo '</table>';
-
-        /*
-          // Insert info into database table!
-          mysql_query("INSERT INTO myImageTable (ImageName, ThumbName, ImgPath)
-          VALUES ($DestRandImageName, $thumb_DestRandImageName, 'uploads/')");
-         */
-        
-        $basename = $photos . '/' . basename($DestRandImageName);
-        $fileLocation = $photos . '/' . $basename;
-        $thumbLocation = $photos. "/". basename($thumb_DestRandImageName);
+                
+        $basename = basename($DestRandImageName);
+        $fileLocation =  $photos. '/' . $basename;
+        $thumbLocation = "/". basename($thumb_DestRandImageName);
         $title = $_POST['title'];
         $desc = $_POST['Desc'] . "\n" . $_POST['Notes'];
-        $date = date('r');
+        $date = date("Y-m-d H:i:s");
         $username = $content->getTngUserName();
         $filetype = strtoupper($ImageExt);
         $sql = <<<SQL
@@ -131,10 +121,17 @@ SQL;
         $link = $content->getDbLink();
         $stmnt = mysqli_prepare($link, $sql);
         $stmnt->bind_param('sssssssss', $collection, $fileLocation, $filetype, $basename, $title, $desc, $thumbLocation, $date, $username);
-        $stmnt->execute();
+        if (!$stmnt->execute()) {
+            echo "<p>{$stmnt->error}</p>";
+            error_log($stmnt->error);
+        }
         $mediaID = $stmnt->insert_id;
         $personId = $content->getCurrentPersonId();
-        $sql = "INSERT into {$tables['medialinks_table']} (linktype, dontshow, personID, mediaID) VALUES ('I', '1', '{$personId}', {$mediaID})";
+        $person = $content->getPerson($personId);
+        $gedcom = $person['gedcom'];
+
+
+        $sql ="INSERT INTO {$tables['medialinks_table']} (`medialinkID`, `gedcom`, `linktype`, `personID`, `eventID`, `mediaID`, `altdescription`, `altnotes`, `ordernum`, `dontshow`, `defphoto`) VALUES (NULL, '{$gedcom}', 'I', '{$personId}', '', '{$mediaID}', '', '', 0, 0, '')";
         $content->query($sql);
         
         $date = date('c');
