@@ -1,4 +1,4 @@
-TngApi Plugin for Wordpress (Not tested for TNG Version 12.x)
+TngApi Plugin for Wordpress
 =================================
 ## Download
 You can find the latest stable version (3.3.1) in the [releases](https://github.com/upavadi/TngApi/releases) section 
