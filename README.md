@@ -1,7 +1,7 @@
 TngApi Plugin for Wordpress (Not tested for TNG Version 12.x)
 =================================
 ## Download
-You can find the latest stable version (3.3.1) in the [releases](https://github.com/upavadi/TngApi/releases) section 
+You can find the latest stable version (3.3.2) in the [releases](https://github.com/upavadi/TngApi/releases) section 
 
 ## License
 The code is licenced under the [MIT licence](http://opensource.org/licenses/MIT)
@@ -27,7 +27,8 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
 
 ### This plugin does not:
  -	Provide any registration process 
- -	Display TNG pages within Wordpress
+ -	Display TNG pages within Wordpress (Wordpress-TNG Integratio)
+ -  **work with modified TNG table names - eg. wp_tng_xxxx instead of default tng_xxxx)**
  -  My plugin, [***tng-wp-plugin***](https://github.com/upavadi/tng-wp-login) can be installed to provide Registration and integrated login.
 
 ## Requirements
@@ -109,7 +110,8 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
   - Bump up version number and tidy up
 
  - #### 3.0
-  - Temporary Wordpress tables to hold User Submitted Data
+  - Five Temporary Wordpress tables to hold User Submitted Data.
+    - **wp_tng_children, wp_tng_events, wp_tng_families, wp_tng_notes and wp_tng_peop-le** 
   - User Submission Page to display User Data
   - Admin Submission Page to User Submissions
   - Facility to update TNG database from submission page
