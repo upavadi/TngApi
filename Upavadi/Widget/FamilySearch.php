@@ -30,16 +30,16 @@ class Upavadi_Widget_FamilySearch implements Upavadi_Widget_WidgetInterface
 // This is the function that outputs the TNG search form.
     function familySearch($args)
     {
-global $lastName, $firstName;
+global $lastName, $firstName, $title;
 // $args is an array of strings that help widgets to conform to
 // the active theme: before_widget, before_title, after_widget,
 // and after_title are the array keys. Default tags: li and h2.
         extract($args);
 
 // Each widget can store its own options. We keep strings here.
-        $options = get_option('widget_familysearch');
-        $title = $options['title'];
-        $results = $options['results'];
+        $options = get_option('widget_familysearch', false);
+       if (isset($options['title'])) $title = $options['title'];
+       // $results = $options['results']; Do not think this is used!
 
 // These lines generate our output. Adjust the form action path to the path of your own site.
 // Adjust the style to the style of your own Wordpress site
