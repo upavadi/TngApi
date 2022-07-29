@@ -397,7 +397,7 @@ HTML;
         }, 'tng-api', 'db');
         add_settings_field('db-password', 'Password', function () {
             $dbPassword = esc_attr(get_option('tng-api-db-password'));
-            echo "<input type='password' name='tng-api-db-password' value='$dbPassword' />";
+            echo "<input type='text' name='tng-api-db-password' value='$dbPassword' />";
         }, 'tng-api', 'db');
         add_settings_field('db-database', 'Database Name', function () {
             $dbName = esc_attr(get_option('tng-api-db-database'));
@@ -1382,7 +1382,7 @@ SQL;
         $dbUser = esc_attr(get_option('tng-api-db-user'));
         $dbPassword = esc_attr(get_option('tng-api-db-password'));
         $dbName = esc_attr(get_option('tng-api-db-database'));
-       
+        var_dump($dbPassword);
         
         if (isset ($_POST['Update_credentials']))  {
             $tngPrompt = "";
