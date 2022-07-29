@@ -1,7 +1,7 @@
 TngApi Plugin for Wordpress
 =================================
 ## Download
-You can find the latest stable version (3.3.2) in the [releases](https://github.com/upavadi/TngApi/releases) section 
+You can find the latest stable version (3.3.3) in the [releases](https://github.com/upavadi/TngApi/releases) section 
 
 ## License
 The code is licenced under the [MIT licence](http://opensource.org/licenses/MIT)
