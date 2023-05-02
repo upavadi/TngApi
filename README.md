@@ -45,6 +45,7 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
     - Jquery version jquery-1.10.2.min.js replaced with jquery-3.5.0.min.js in /js folder
     - Coy of current 3.5.0 version is jquery-current.min.js in /js folder
   - Modified familyuser.html.php and submit_images.html.htp to use jquery-current.min.js.
+  - Deleted js/jquery-1.10.2.min.js
  - 3.3.3
     - Special characters, Æ, Ø, Å or Swedish Ä, Ö, showing as ???. Fixed.
     - There was an obscure condition when the plugin would crash
