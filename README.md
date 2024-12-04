@@ -1,7 +1,7 @@
 TngApi Plugin for Wordpress
 =================================
 ## Download
-You can find the latest stable version (3.3.3) in the [releases](https://github.com/upavadi/TngApi/releases) section 
+You can find the latest stable version (3.3.3B) in the [releases](https://github.com/upavadi/TngApi/releases) section 
 
 ## License
 The code is licenced under the [MIT licence](http://opensource.org/licenses/MIT)
@@ -40,8 +40,12 @@ The TngApi plugin for Wordpress is a stand-alone plugin. It integrates smoothly 
  -	User has logged in.
 
 ## Change Log
+-  __Current Released Version V3.3.3B__
+   - Release of Wordpress 6.6.xx created couple of conflicts in Wordpress admin area due to changes in how WordPress handles objects, classes, or namespaces. 
+   - If you are running version 3.3.3, you may find it easier, just to replace the plugin file, **tng-api.php**.
+  
 - __Current Released Version V3.3.3A__
-  - Security Update
+   - Security Update
     - Jquery version "jquery-1.10.2.min .js" replaced with jquery-3.5.0.min .js in /js folder
     - Coy of current 3.5.0 version is jquery-current.min .js in /js folder
   - Modified familyuser.html.php and submit_images.html.htp to use jquery-current.min .js.
