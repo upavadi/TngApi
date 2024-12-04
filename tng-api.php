@@ -1,10 +1,10 @@
 <?php
 /*
- * Plugin Name: TngApi-V3.3.3 for V9 to V13
- * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated. For TNG V9 to V13 
+ * Plugin Name: TngApi-V3.3.3B for V9 to V14
+ * Description: This is a stand-alone plugin which allows access to the TNG database. For access to TNG pages, within Wordpress, tng-wordpress-plugin must be installed and activated. For TNG V9 to V14 
  *
  * Plugin URI: https://github.com/upavadi/TngApi
- * Version: 3.3.3A under developement
+ * Version: 3.3.3B
  *         
  * Author: Neel Upadhyaya & Mahesh Upadhyaya
  * Author URI: http://www.upavadi.net/
@@ -177,6 +177,11 @@ register_deactivation_hook( __FILE__, 'droptables' );
 /***********************************************/
 $dir = dirname(__FILE__);
 $customDir = $dir . "/../tng-api-custom";
-if (is_dir($customDir)) {
-    $customContent = new TngApiCustom_TngCustom($content);
-}
+/***********************************
+ * To prevent the code from interfering with wp-admin, $customContent is wrapped using wordpress hook, wp.
+ ************************************/
+add_action('wp', function () use ($customDir, $content) {
+    if (is_dir($customDir)) {
+        $customContent = new TngApiCustom_TngCustom($content);
+    }
+});
