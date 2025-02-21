@@ -503,10 +503,13 @@ SQL;
         $result = $this->query($sql);
         $row = $result->fetch_assoc();
         $userPrivate = $user['allow_private'];
-        $personPrivate = $row['private'];
+
+        if (isset($row['private'])) {
+         $personPrivate = $row['private'];
         if ($personPrivate > $userPrivate) {
             $row['firstname'] = 'Private:';
 			$row['lastname'] = ' Details withheld';
+        }
         }
         return $row;
     }
@@ -563,7 +566,7 @@ ORDER BY display
 SQL;
         $result = $this->query($sql);
 
-        $rows = array();
+        $eventrows = array();
         while ($row = $result->fetch_assoc()) {
             $eventrows[] = $row;
         }

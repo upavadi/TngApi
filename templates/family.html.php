@@ -75,7 +75,7 @@
 	}
 //get Cause of Death for person
 	$personRow = $tngcontent->getCause($person['personID'], $tree);
-	if ($personRow['eventtypeID'] == "0") {
+	if (isset($personRow['eventtypeID']) && $personRow['eventtypeID'] == "0") {
 		$cause_of_death = ". Cause: ". $personRow['cause'];
 	} else {
 	$cause_of_death = "";
@@ -189,7 +189,7 @@
 
 //get Cause of Death for Father
 	$fatherRow = $tngcontent->getCause($father['personID'], $tree);
-	if ($fatherRow['eventtypeID'] == "0") {
+	if (isset($fatherRow['eventtypeID']) && $fatherRow['eventtypeID'] == "0") {
 		$father_cause_of_death = ". Cause: ". $fatherRow['cause'];
 	} else {
 	$father_cause_of_death = "";
@@ -262,7 +262,7 @@ if ($EventDisplay !== null)
 }
 //get Cause of Death for Mother
 	$motherRow = $tngcontent->getCause($mother['personID'], $tree);
-	if ($motherRow['eventtypeID'] == "0") {
+	if (isset($motherRow['eventtypeID']) && $motherRow['eventtypeID'] == "0") {
 		$mother_cause_of_death = ". Cause: ". $motherRow['cause'];
 	} else {
 	$mother_cause_of_death = "";
@@ -574,7 +574,7 @@ if ($parentsDivDate) {
 			}
 //get Cause of Death for Spouse
 			$spouseRow = $tngcontent->getCause($spouse['personID'], $tree);
-			if ($spouseRow['eventtypeID'] == "0") {
+			if (isset($spouseRow['eventtypeID']) && $spouseRow['eventtypeID'] == "0") {
 				$spouse_cause_of_death = ". Cause: ". $spouseRow['cause'];
 			} else {
 			$spouse_cause_of_death = "";
