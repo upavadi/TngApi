@@ -16,7 +16,7 @@
  */
 require_once __DIR__ . '/autoload.php';
 include_once __DIR__. '/tabs.php';
-
+global $wpdb; 
 $content = Upavadi_TngContent::instance();
 $content->addShortcode(new Upavadi_Shortcode_FamilySearch);
 $content->addShortcode(new Upavadi_Shortcode_PersonNotes);
